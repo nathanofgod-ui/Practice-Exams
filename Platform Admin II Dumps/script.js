@@ -73,6 +73,30 @@
         {l:"Define the Run Order of Record-Triggered Flows for an Object — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.flow_task_trigger_run_order.htm&language=en_US&type=5"},
         {l:"Set Trigger Order on Flows — Apex Hours", u:"https://www.apexhours.com/set-trigger-order-on-flows/"}
       ]
+    },
+    {
+      topic:"Lightning App Builder and Page Customization",
+      select:1,
+      prompt:"A company notices that its Lightning record pages load slowly due to many components. What should the admin use to analyze performance?",
+      options:[
+        {k:"A", t:"Apex Execution Logs"},
+        {k:"B", t:"Lightning App Builder Analyze Tool"},
+        {k:"C", t:"Developer Console Queries"},
+        {k:"D", t:"SOQL Performance Inspector"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Lightning App Builder has a built-in Analyze button (top-right corner while editing a record page) built for exactly this: it inspects the page's fields, Related Lists component instances, and other metadata, then returns a predicted desktop load time and a mobile page-performance index, broken down by org-specific metrics, desktop, and phone — plus concrete suggestions like "remove this Related List component" or "reduce the number of fields." It's declarative, requires no code, and it's the tool built directly into the page-editing surface the admin is already working in.
+
+**Why A is wrong.** Apex Execution Logs (debug logs) capture what happens during Apex code execution — governor-limit usage, DML, callouts — which is useful for diagnosing slow triggers or classes, not for measuring how long a declaratively-built Lightning record page with standard components takes to render.
+
+**Why C is wrong.** The Developer Console's Query Editor runs ad hoc SOQL/SOSL against the database. It has no visibility into how many components a Lightning page loads or how that affects render time — it's a data tool, not a page-performance tool.
+
+**Why D is wrong.** There's no such tool as a "SOQL Performance Inspector" in Salesforce. SOQL optimization (selectivity, indexes) is a separate concern from record-page rendering performance, which is exactly what makes this option a plausible-sounding distractor.`,
+      sources:[
+        {l:"Lightning Page Performance — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.lightning_page_performance.htm&language=en_US&type=5"},
+        {l:"The Analyze Button: Improve Your Salesforce Lightning Page Load Speed — Salesforce Ben", u:"https://www.salesforceben.com/the-analyze-button-improve-your-salesforce-lightning-page-load-speed/"}
+      ]
     }
   ];
 
