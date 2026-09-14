@@ -97,6 +97,54 @@
         {l:"Lightning Page Performance — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.lightning_page_performance.htm&language=en_US&type=5"},
         {l:"The Analyze Button: Improve Your Salesforce Lightning Page Load Speed — Salesforce Ben", u:"https://www.salesforceben.com/the-analyze-button-improve-your-salesforce-lightning-page-load-speed/"}
       ]
+    },
+    {
+      topic:"Process Automation and Logic",
+      select:1,
+      prompt:"A screen flow used for onboarding resets to the first screen after completion, confusing users. What is the best fix?",
+      options:[
+        {k:"A", t:"Configure the launch action to redirect after completion"},
+        {k:"B", t:"Add a second flow to handle navigation"},
+        {k:"C", t:"Use Apex to redirect users"},
+        {k:"D", t:"Add a decision element at the end"}
+      ],
+      correct:["A"],
+      explanation:
+`**Why A is right.** What users are seeing is normal behavior for a flow that finishes with no navigation instruction attached: the interview ends, but if nothing tells the browser to go anywhere else, the same component or URL just reinitializes and a new interview starts from screen one — it looks like a "reset." The fix lives on whatever launches the flow, not inside the flow's screens. For a URL-launched flow (a custom button, link, or Lightning page reference), Salesforce supports a \`retURL\` parameter on that launch URL — e.g. \`/flow/Onboarding_Flow?retURL={!Contact.Id}\` — that sends the user to a specific record or page once the flow finishes, instead of leaving them sitting on the same reinitializing component. That's exactly "configure the launch action to redirect after completion," and it's a pure configuration change with no new flow logic or code required.
+
+**Why B is wrong.** A second flow adds an entire extra interview to maintain for a problem that isn't about flow logic at all — it's about what the browser does once the existing flow's interview has already ended. It doesn't address the root cause and adds unnecessary complexity.
+
+**Why C is wrong.** Apex can force a redirect, but it's unnecessary here: Salesforce ships a declarative mechanism (the launch URL's retURL parameter, or an equivalent finish-behavior setting) for exactly this scenario. Reaching for code when a supported clicks-not-code option exists goes against standard admin best practice.
+
+**Why D is wrong.** A Decision element evaluates conditions to branch the flow's own internal path *while it's running* — it has no effect on what happens to the user's browser after the interview has already finished, so it can't stop the "reset to screen one" behavior at all.`,
+      sources:[
+        {l:"Customize a Flow URL to Control Finish Behavior — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.flow_distribute_internal_url_retURL.htm&language=en_US&type=5"},
+        {l:"Flow: How To Redirect Your Users When Flows Finish (retURL) — Flowsome", u:"https://salesforce-flowsome.com/how-to-redirect-users-returl/"}
+      ]
+    },
+    {
+      topic:"Process Automation and Logic",
+      select:1,
+      prompt:"A SaaS company wants renewal subscriptions to be created automatically once a contract is marked as completed. What is the best approach?",
+      options:[
+        {k:"A", t:"Send reminder emails to account managers"},
+        {k:"B", t:"Create a validation rule blocking completion"},
+        {k:"C", t:"Use a record-triggered flow to generate renewals"},
+        {k:"D", t:"Add a dashboard alert"}
+      ],
+      correct:["C"],
+      explanation:
+`**Why C is right.** A record-triggered flow watches the Contract (or equivalent) object and fires the instant the Status field changes to "Completed," running a Create Records element to generate the renewal subscription automatically — no human has to notice the status change or remember to act on it. That's precisely "created automatically once a contract is marked as completed": the trigger condition is the record change itself, and the outcome is a new record, both of which are exactly what record-triggered flows are built for.
+
+**Why A is wrong.** A reminder email still depends on an account manager noticing it and manually creating the renewal — that's a notification, not automation. The requirement is for the renewal to be created automatically, and a human-in-the-loop step can't guarantee that.
+
+**Why B is wrong.** A validation rule can only block a save when its condition is met — it has no ability to create a new record. Blocking contract completion also directly contradicts the goal, which assumes contracts *do* get marked completed and something should happen as a result, not that completion should be prevented.
+
+**Why D is wrong.** A dashboard alert is a reporting/visibility feature — it surfaces information to someone looking at a dashboard, but it doesn't create records or run any logic on its own. It suffers from the same "still needs a human to act" gap as option A.`,
+      sources:[
+        {l:"Triggered Flows — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.flow_concepts_trigger.htm&type=5"},
+        {l:"What Is a Record-Triggered Flow? — Salesforce Admins Blog", u:"https://admin.salesforce.com/blog/2023/what-is-a-record-triggered-flow"}
+      ]
     }
   ];
 
