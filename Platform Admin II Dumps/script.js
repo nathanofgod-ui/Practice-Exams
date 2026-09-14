@@ -1164,6 +1164,30 @@
         {l:"Troubleshooting Quote Syncing — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sales.quotes_sync_troubleshooting.htm&language=en_US&type=5"},
         {l:"Sync Quotes and Opportunities — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.quotes_synch.htm&language=en_US&type=5"}
       ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:1,
+      prompt:"At FinServe Inc., Payments are linked to Invoices. The system must automatically update invoice totals whenever payments are created. What should the Administrator implement?",
+      options:[
+        {k:"A", t:"Lookup Relationship with Workflow Updates"},
+        {k:"B", t:"Master-Detail with Roll-up Summary"},
+        {k:"C", t:"Apex Trigger for calculations"},
+        {k:"D", t:"Scheduled Batch Process"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** This is precisely the use case Roll-Up Summary fields were built for: a Master-Detail relationship between Invoice (parent) and Payment (child), with a SUM roll-up on Invoice totaling the Payment amount field. Because roll-ups only work across master-detail, that relationship type is a prerequisite — and once it's in place, Salesforce recalculates the invoice total automatically and immediately every time a payment is created, edited, or deleted, with zero code and zero scheduled jobs to maintain. It's the simplest, most direct, most maintainable tool that produces exactly the described behavior.
+
+**Why A is wrong.** A Lookup relationship gives Payment its own independent existence, but nothing about a plain workflow field update can sum a field *across multiple related child records* — a workflow rule's field update operates on a single record's own fields, not an aggregate calculated from a set of children. You'd need custom logic layered on top just to replicate what a roll-up already does for free.
+
+**Why C is wrong.** An Apex trigger summing payments and writing the total back to Invoice would technically work, but it's more code to write, test, and maintain than necessary when a declarative roll-up summary field solves the identical problem out of the box. Reaching for Apex here is solving an already-solved problem the hard way.
+
+**Why D is wrong.** A scheduled batch process runs on a timer — hourly, nightly, whatever interval is configured — which directly conflicts with "automatically update... whenever payments are created." Invoice totals would sit stale between runs instead of reflecting new payments the moment they're entered.`,
+      sources:[
+        {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"},
+        {l:"Optimize Roll-Up Summary Fields — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/point_click_business_logic/roll_up_summary_fields"}
+      ]
     }
   ];
 
