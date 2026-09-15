@@ -339,6 +339,24 @@
     display:block;
   }
 
+  .q-note{
+    display:inline-flex;
+    align-items:center;
+    gap:5px;
+    font-family:"IBM Plex Mono", monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--accent);
+    border:1px solid var(--line-strong);
+    border-radius:20px;
+    padding:3px 9px 3px 7px;
+    margin:-8px 0 16px;
+    cursor:help;
+    width:fit-content;
+  }
+  .q-note svg{ width:12px; height:12px; flex:0 0 auto; }
+
   .options{
     display:flex;
     flex-direction:column;
