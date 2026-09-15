@@ -1188,6 +1188,374 @@
         {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"},
         {l:"Optimize Roll-Up Summary Fields — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/point_click_business_logic/roll_up_summary_fields"}
       ]
+    },
+    {
+      topic:"Lightning App Builder and Page Customization",
+      select:1,
+      prompt:"At FlexiWork Solutions, a group of floating employees support multiple departments such as Sales and Customer Support depending on workload. Each department has its own customized Lightning record pages tailored to their processes. The Administrator wants these users to automatically see the correct page layout depending on which department they are working in at a given time, without modifying profiles daily. What is the best approach to meet this requirement?",
+      options:[
+        {k:"A", t:"Assign different Profiles daily based on department"},
+        {k:"B", t:"Create separate Apps for each department and assign Record Pages per App"},
+        {k:"C", t:"Use Permission Sets to control Page Layout visibility"},
+        {k:"D", t:"Allow users to manually switch Page Layouts in Settings"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Lightning App Builder lets an admin activate the same object's Lightning Record Page differently depending on context — and "App" is one of the activation dimensions, alongside Record Type and Profile. By building a dedicated Sales app and a dedicated Customer Support app, each with its own custom Record Page assigned in that page's Activation settings, a floating employee sees the Sales-tailored layout the instant they switch into the Sales app (via the App Launcher/App Switcher) and the Support-tailored layout the instant they switch into the Support app — automatically, with no profile change, no manual layout picking, and no daily admin work.
+
+**Why A is wrong.** Swapping a user's Profile every day to change which page layout they see is exactly the manual, unsustainable daily maintenance the requirement explicitly rules out — and Profile changes affect far more than page layout (permissions, record types, field-level security), making this a heavy-handed and risky way to solve a display problem.
+
+**Why C is wrong.** Permission Sets grant additional object, field, and system permissions — they do not control which Lightning Record Page or page layout a user sees. There's no "page layout visibility" setting on a Permission Set, so this option doesn't actually address the requirement at all.
+
+**Why D is wrong.** Salesforce doesn't offer end users a general "Settings" control to manually switch between page layouts on demand, and even if a similar mechanism existed, relying on each floating employee to remember to switch layouts by hand is fragile and defeats the goal of an automatic, context-driven experience.`,
+      sources:[
+        {l:"Assign Lightning Pages to Apps, Record Types, and Profiles — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.lightning_app_builder_customize_lex_pages_activate.htm&language=en_US&type=5"},
+        {l:"Custom Record Pages for Salesforce Lightning Experience — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/lightning_app_builder/lightning_app_builder_recordpage"}
+      ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:1,
+      prompt:"At DataBridge Corp, an Administrator needs to import over 500,000 historical records from an External System into Salesforce. Which tool should be used to efficiently handle this data load?",
+      options:[
+        {k:"A", t:"Data Import Wizard"},
+        {k:"B", t:"Data Loader with Bulk API Enabled"},
+        {k:"C", t:"Salesforce Reports Export/Import"},
+        {k:"D", t:"Manual CSV Upload via UI"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Data Loader can be switched to use the Bulk API, which is purpose-built for moving very large volumes of data — it processes records asynchronously in batches on Salesforce's servers instead of one synchronous call per batch, which is dramatically faster and more reliable at scale. For a one-time load of 500,000+ historical records, this is the standard, supported approach: Data Loader gives you the field-mapping and CSV-handling convenience, and Bulk API gives you the throughput and resilience the volume demands.
+
+**Why A is wrong.** The Data Import Wizard is capped at 50,000 records per import and only supports a limited set of standard/custom objects with a simpler mapping interface. It's the right tool for smaller, ad hoc imports, but it isn't built to handle — and can't handle — a load an order of magnitude past its ceiling.
+
+**Why C is wrong.** Reports in Salesforce are for viewing, summarizing, and exporting existing data for analysis; there's no "report import" mechanism for loading new records into the org at all, let alone half a million of them.
+
+**Why D is wrong.** Manually uploading CSV files through the standard UI (e.g., object list-view import) is meant for small, one-off batches. It has no batching, retry, or asynchronous processing behavior, so at 500,000 records it would be impractically slow and highly prone to timeouts and partial failures.`,
+      sources:[
+        {l:"Data Loader Guide — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.data_loader.htm&language=en_US&type=5"},
+        {l:"Bulk API — Salesforce Developer Documentation", u:"https://developer.salesforce.com/docs/atlas.en-us.api_asynch.meta/api_asynch/asynch_api_intro.htm"}
+      ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:1,
+      prompt:"At TechNova Services, different service plans have varying contract durations, and each plan sold on an Opportunity may have unique start and end dates. These dates must be captured individually per Product sold. What is the best way to ensure accurate data capture?",
+      options:[
+        {k:"A", t:"Add date fields on the Opportunity object"},
+        {k:"B", t:"Create formula fields referencing Opportunity Close date"},
+        {k:"C", t:"Add custom Start Date and End Date fields on Opportunity Product records"},
+        {k:"D", t:"Create a new Price Book for each contract duration"}
+      ],
+      correct:["C"],
+      explanation:
+`**Why C is right.** Each Opportunity can have multiple products, and every one of those Opportunity Product (OpportunityLineItem) records already represents one specific product sold on that deal — the exact granularity the requirement calls for. Adding custom Start Date and End Date fields directly on the Opportunity Product object lets each line item carry its own unique contract dates, independent of every other product on the same Opportunity, with no risk of one plan's dates overwriting or being confused with another's.
+
+**Why A is wrong.** Fields added to the Opportunity object exist exactly once per Opportunity, not once per product. If an Opportunity has three service plans with three different contract windows, a single pair of Opportunity-level date fields can only ever hold one of them — the other two have nowhere to go.
+
+**Why B is wrong.** A formula field can only calculate a value from other existing fields (like Close Date); it can't capture new, independently-entered data. Contract start/end dates are real, distinct facts about each sold plan, not something derivable from when the deal happens to close.
+
+**Why D is wrong.** Price Books group products for pricing and currency purposes — they don't have a mechanism for storing or tracking dates at all, let alone dates specific to an individual sale. Creating one Price Book per contract duration would multiply price book maintenance without solving the actual data-capture problem.`,
+      sources:[
+        {l:"Customize Opportunity Products Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.customize_oppty_prod_addfields.htm&language=en_US&type=5"},
+        {l:"Opportunity Products Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.customize_oppty_prod_fields.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:1,
+      prompt:"At SalesEdge Ltd., management wants a report showing all active deals along with the number of unique clients involved in those deals. Which feature should the Administrator use?",
+      options:[
+        {k:"A", t:"Row count grouped in report"},
+        {k:"B", t:"Unique count on client field"},
+        {k:"C", t:"Cross filter on accounts"},
+        {k:"D", t:"Custom report type"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Salesforce's report builder has a dedicated "Show unique count" option that can be enabled on a grouped column — for example, grouping Opportunities and enabling unique count on the Account Name field. Instead of just counting every row (which would count a client twice if they had two active deals), it counts each distinct client only once, which is exactly what "number of unique clients involved" requires.
+
+**Why A is wrong.** A plain row count grouped in a report just totals how many Opportunity records fall into each group — it doesn't deduplicate by client. A client with three active deals would inflate the row count by three, misrepresenting how many actual unique clients are involved.
+
+**Why C is wrong.** Cross filters let you filter a report's primary object based on the presence or absence of related records (e.g., "Opportunities WITH Accounts"), but they're a filtering mechanism, not a counting or aggregation mechanism — they can't produce a distinct-client count on their own.
+
+**Why D is wrong.** A custom report type determines which objects and fields are available to build a report from in the first place. It's a prerequisite for having Opportunity and Account data together in one report, but it doesn't itself perform any counting or deduplication — that's still done with the unique count feature inside the report.`,
+      sources:[
+        {l:"Count Unique Values in Report Results — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=analytics.reports_count_unique_values.htm&language=en_US&type=5"},
+        {l:"Cross Filters Overview — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.reports_builder_cross_filters_overview.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Process Automation and Logic",
+      select:1,
+      prompt:"At SupportPro Inc., customer complain about long wait times before cases are assigned to the correct agent based on expertise. What should the Administrator implement?",
+      options:[
+        {k:"A", t:"Escalation Rules"},
+        {k:"B", t:"Omni-Channel Routing"},
+        {k:"C", t:"Workflow Rules"},
+        {k:"D", t:"Knowledge Articles"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Omni-Channel is built specifically to route work items — cases, chats, calls, and other channels — to the agent best suited to handle them, in real time, based on configured Routing Configurations that factor in agent skill/expertise, capacity, and availability. That's precisely the "long wait before landing with the right agent" problem described, and it's the purpose-built tool for solving it.
+
+**Why A is wrong.** Escalation Rules act *after* a case has already been sitting unresolved for some time, reassigning or notifying based on age or status thresholds. They address delayed resolution, not the initial, expertise-based assignment of a case the moment it's created — so they don't fix the root cause of the wait.
+
+**Why C is wrong.** Workflow Rules can perform simple field updates, task creation, or email alerts based on record criteria, but they have no concept of real-time agent capacity, skill matching, or presence — they can't dynamically route work to whichever qualified agent happens to be free right now the way Omni-Channel does.
+
+**Why D is wrong.** Knowledge Articles help agents (or self-service customers) find answers and resolve cases faster once a case is in hand, but they play no role in determining which agent a case gets assigned to in the first place.`,
+      sources:[
+        {l:"Omni-Channel — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=service.omnichannel_overview.htm&language=en_US&type=5"},
+        {l:"Set Up Omni-Channel — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=service.omnichannel_setup.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:2,
+      prompt:"At GeoTrack Systems, a user attempts to import Data into a Custom Object but cannot find the object in Data Loader. Which two reasons could explain this issue? (Choose 2)",
+      options:[
+        {k:"A", t:"The Object Label differs from API Name"},
+        {k:"B", t:"The Object is not deployed or visible"},
+        {k:"C", t:"The object has a Lookup Relationship"},
+        {k:"D", t:"The user lacks create Permission"}
+      ],
+      correct:["B","D"],
+      explanation:
+`**Why B is right.** Custom objects carry a Deployment Status of either "In Development" or "Deployed." While an object is "In Development," it's hidden from everyone except System Administrators (or users with the right override), so a regular user attempting to import into it in Data Loader simply won't see it in the object list until an admin marks it deployed.
+
+**Why D is right.** Data Loader populates its object dropdown based on the logged-in user's actual object permissions. To insert/upsert records into an object, the user needs Create (and Read) access to that object via their Profile or a Permission Set — without Create permission, the object won't appear as an available target for an import operation.
+
+**Why A is wrong.** Data Loader always displays objects by their Label with the API Name shown alongside it (e.g., "Asset Tracker (Asset_Tracker__c)") — a differing label and API name is completely normal and expected, not something that would hide an object from the list.
+
+**Why C is wrong.** Having one or more Lookup Relationships on a custom object has no bearing on whether the object itself appears in Data Loader. Lookups affect how related records are referenced during the import (e.g., matching via an external ID), not whether the parent object is visible at all.`,
+      sources:[
+        {l:"Deployment Status for Custom Objects and External Objects — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.deploying_custom_objects.htm&language=en_US&type=5"},
+        {l:"Data Loader Guide — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.data_loader.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Security and Access",
+      select:1,
+      prompt:"At MarketFlow Inc., the VP of Marketing wants to manage Page Layouts for Marketing-Related Custom Objects without having full Admin access. What should the Administrator configure?",
+      options:[
+        {k:"A", t:"Assign Marketing User checkbox"},
+        {k:"B", t:"Create a custom Profile with Admin Permissions"},
+        {k:"C", t:"Set up delegated Administration"},
+        {k:"D", t:"Allow login-as access"}
+      ],
+      correct:["C"],
+      explanation:
+`**Why C is right.** Delegated Administration lets an admin grant a non-admin user the ability to manage specific things — including page layouts, picklist values, and record types — for a defined set of custom objects, without handing over Customize Application or Modify All Data. That's exactly the scoped, least-privilege access the VP of Marketing needs: control over marketing-related custom objects' layouts, and nothing beyond it.
+
+**Why A is wrong.** The "Marketing User" checkbox is a narrow feature flag that enables Campaign-related permissions (like adding/removing campaign members) for a user profile — it has nothing to do with granting page layout management on custom objects.
+
+**Why B is wrong.** Creating a custom Profile with admin-level permissions is the opposite of the requirement: it hands over broad administrative capability that goes far beyond page-layout management on a handful of marketing objects, violating least-privilege and creating unnecessary risk.
+
+**Why D is wrong.** "Login-As" lets an admin (or delegated admin) temporarily assume a user's identity to troubleshoot from their perspective — it's a support/debugging tool, not a mechanism for granting someone ongoing rights to configure page layouts.`,
+      sources:[
+        {l:"Delegate Administrative Duties — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.admin_delegated.htm&language=en_US&type=5"},
+        {l:"Marketing User Field — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.campaigns_enable.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Change Management",
+      select:3,
+      prompt:"At GlobalSales Corp, the Company is considering enabling territory management. Which three considerations should be evaluated? (Choose 3)",
+      note:"Salesforce has since published a supported \"Disable Sales Territories\" process, so option A is technically outdated for current orgs. It's kept as correct here because it's the classic, heavily-tested fact from older documentation and most PDII study guides.",
+      options:[
+        {k:"A", t:"It cannot be disabled once enabled"},
+        {k:"B", t:"It affects Account and Opportunity Sharing"},
+        {k:"C", t:"It restricts Forecasting options"},
+        {k:"D", t:"Users can only belong to one Territory"},
+        {k:"E", t:"It must mirror Role Hierarchy"}
+      ],
+      correct:["A","B","C"],
+      explanation:
+`**Why A is right.** Enabling territory management has long carried the well-known, heavily-documented warning that it's not a decision to make lightly: once turned on, an org can't simply flip it back off the way most features can be toggled. This permanence is one of the first things admins are told to weigh before enabling it — a company should be fully committed to the territory model before turning it on.
+
+**Why B is right.** Territory Management is fundamentally a sharing mechanism. Once enabled, access to Accounts, Opportunities (and related records like Cases) can be granted through territory assignment on top of — or instead of — role-hierarchy-based sharing. Any org considering it needs to map out how this changes who can see and edit what.
+
+**Why C is right.** Enabling territories changes how forecasting behaves: forecasts can shift to a territory-based hierarchy rather than the role hierarchy, and not every forecast type/configuration works the same way once territories are in play. This has real implications for existing forecast setups and needs to be planned for, not discovered after the fact.
+
+**Why D is wrong.** This is backwards — one of Enterprise Territory Management's key advantages over the rigid, one-role-per-user Role Hierarchy is that a single user CAN be assigned to multiple territories at once, reflecting real-world matrixed sales organizations where a rep might cover more than one region or segment.
+
+**Why E is wrong.** The territory hierarchy is deliberately built as its own independent structure, separate from the Role Hierarchy — that's precisely why it exists: to model sales organization needs (regions, segments, verticals) that don't cleanly map onto the management-reporting structure the Role Hierarchy represents. It has no requirement to mirror it.`,
+      sources:[
+        {l:"Sales Territories Concepts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=tm2_territory_mgmt_overview.htm&language=en_US&type=5"},
+        {l:"Territory Management in Salesforce: 10 Things You Need to Know — Salesforce Ben", u:"https://www.salesforceben.com/territory-management-in-salesforce-10-things-you-need-to-know/"}
+      ]
+    },
+    {
+      topic:"Process Automation and Logic",
+      select:1,
+      prompt:"At ClientFirst Solutions, a company wants a field on Account to automatically update when any related deal is marked as won. What is the best solution?",
+      note:"Account and Opportunity are related by a standard Lookup relationship, not Master-Detail — that's the detail that rules out A and limits B, and is exactly what this question is testing.",
+      options:[
+        {k:"A", t:"Roll-Up Summary Field"},
+        {k:"B", t:"Workflow Rule"},
+        {k:"C", t:"Apex Trigger"},
+        {k:"D", t:"Validation Rule"}
+      ],
+      correct:["C"],
+      explanation:
+`**Why C is right.** The standard relationship between Opportunity and Account is a Lookup, not a Master-Detail relationship. An Apex trigger on Opportunity (firing on insert/update when StageName becomes "Closed Won") can query and update any related Account record directly, completely independent of the relationship type — making it the only option here that reliably works for a Lookup-related update like this one.
+
+**Why A is wrong.** Roll-Up Summary fields only exist on the master side of a Master-Detail relationship, rolling up values from the detail/child object. Since Account and Opportunity are connected by a Lookup, not Master-Detail, a Roll-Up Summary field is not even offered as an option to create here.
+
+**Why B is wrong.** A Workflow Rule's field update can only write to the record that triggered it, or — when the object sits on the detail side of a Master-Detail relationship — to its master record. It has no mechanism to reach across a Lookup relationship to update a different, related record like the Opportunity's Account.
+
+**Why D is wrong.** Validation Rules only block or allow a save based on conditions; they have no ability to write or update field values on any record, related or otherwise.`,
+      sources:[
+        {l:"A Deep Dive into Workflow Rule Field Updates — Salesforce Developers Blog", u:"https://developer.salesforce.com/blogs/2014/07/deep-dive-workflow-rule-field-updates"},
+        {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Process Automation and Logic",
+      select:2,
+      prompt:"At DiscountPro Inc., a User receives an error when submitting a deal for Approval. Which two causes are most likely? (Choose 2)",
+      options:[
+        {k:"A", t:"Approval process assigned to inactive approver"},
+        {k:"B", t:"Validation Rule blocking submission"},
+        {k:"C", t:"Approval Process uses queue assignment"},
+        {k:"D", t:"Cross-Object updates are configured"}
+      ],
+      correct:["A","B"],
+      explanation:
+`**Why A is right.** If an approval process's step routes to a specific user (or a specific-user step in the approval history) and that user has since been deactivated, Salesforce can't assign the approval request to anyone and the submission fails. Inactive/deactivated approvers are one of the most common, well-documented causes of approval submission errors.
+
+**Why B is right.** Submitting a record for approval still saves the record, which means any Validation Rule on that object still fires. If the record's current data trips a validation rule's condition, the save is blocked and the approval submission fails right along with it — the user sees a validation error rather than getting the request routed.
+
+**Why C is wrong.** Assigning an approval step to a Queue instead of an individual user is an explicitly supported configuration, not an error condition. Queues let any member of the queue act on the approval request — this is a normal, working setup.
+
+**Why D is wrong.** Cross-object field updates are a standard final-approval-action feature that runs *after* a request is approved, updating related records. They don't run at submission time and have no bearing on whether a submission itself succeeds or fails.`,
+      sources:[
+        {l:"Set Up an Approval Process — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.approvals_creating.htm&language=en_US&type=5"},
+        {l:"Considerations for Managing Approval Processes — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.approvals_managing_considerations.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Process Automation and Logic",
+      select:1,
+      prompt:"At EngagePlus Marketing, the leadership team wants to segment customers based on how many contacts are associated with each account. The administrator needs a solution that automatically calculates and displays the total number of related contacts directly on the Account record, without requiring manual updates or code. Which approach should the administrator implement?",
+      note:"Account and Contact are related by a standard Lookup, not Master-Detail — so the native Roll-Up Summary *field type* isn't available here. (Account and Opportunity are a documented special-case exception where Roll-Up Summary fields DO work despite the Lookup relationship — that exception does not extend to Contact.) A Record-Triggered Flow is Salesforce's modern, declarative, no-code way to close that gap.",
+      options:[
+        {k:"A", t:"Create a Workflow Rule to increment a Counter Field when Contacts are added"},
+        {k:"B", t:"Build an Apex Trigger to count related Contacts"},
+        {k:"C", t:"Use a formula field referencing related Contacts"},
+        {k:"D", t:"Use a Record-Triggered Flow to automatically calculate and update a Contact Count field on Account"}
+      ],
+      correct:["D"],
+      explanation:
+`**Why D is right.** Account and Contact are connected by a Lookup relationship, not Master-Detail, so the native Roll-Up Summary field type isn't available for this pairing (unlike the special-cased Account/Opportunity relationship, which does support it). Salesforce's supported, declarative answer to that gap is a Record-Triggered Flow on Contact: whenever a Contact is created, deleted, or re-parented, the flow counts the related Contacts and updates a Number field on the Account — fully automatic, no manual updates, and no Apex.
+
+**Why A is wrong.** A Workflow Rule has no aggregate or counting capability — it can update a field with a static or formula-derived value on the triggering record, but it can't tally how many related child records exist, and it has no way to decrement the counter when a Contact is deleted or moved to a different Account.
+
+**Why B is wrong.** An Apex Trigger would technically work, but it requires writing and maintaining code — directly against the requirement that the solution work "without requiring manual updates or code."
+
+**Why C is wrong.** A formula field can only pull or calculate values from the current record or its parent chain; it has no mechanism to count or aggregate a set of related child records like Contacts.`,
+      sources:[
+        {l:"4 Ways to Create Roll-Up Summary Fields on Lookup Relationships — Salesforce Ben", u:"https://www.salesforceben.com/4-ways-to-create-roll-up-summary-fields-on-lookup-relationships-in-salesforce/"},
+        {l:"Create Roll-Up Summary Fields Using Salesforce Flow — Salesforce Ben", u:"https://www.salesforceben.com/create-roll-up-summary-fields-using-salesforce-flow/"}
+      ]
+    },
+    {
+      topic:"Change Management",
+      select:1,
+      prompt:"At Field Ops Solutions, new feature licenses have been enabled in production. The development team needs these same licenses available in a sandbox with minimal effort. What should the Administrator do?",
+      note:"Salesforce also offers a lighter, self-service \"Match Production Licenses to Sandbox\" tool (Setup → Company Information, inside the sandbox) that syncs license data without a full refresh. It isn't one of the options here, so of the four given, refreshing the sandbox is the closest documented, self-service mechanism.",
+      options:[
+        {k:"A", t:"Manually configure licenses in Sandbox"},
+        {k:"B", t:"Request Activation from Salesforce Support"},
+        {k:"C", t:"Refresh the Sandbox from Production"},
+        {k:"D", t:"Use metadata deployment tools"}
+      ],
+      correct:["C"],
+      explanation:
+`**Why C is right.** Salesforce documents that refreshing a sandbox from production realigns the sandbox's licensing information with production's — including newly enabled feature licenses. It's a self-service action any admin with sandbox access can trigger directly in Setup, with no case or external dependency, making it the most direct of the four listed ways to get production's current licensing state into the sandbox.
+
+**Why A is wrong.** Feature licenses aren't something an admin can create or toggle by hand on an object or user record — they're provisioned by Salesforce against the org's contract, not manually configurable.
+
+**Why B is wrong.** Contacting Salesforce Support can work for licensing issues, but it means filing a case and waiting on Salesforce's turnaround time — that's more effort and latency than a self-service action the admin can run immediately.
+
+**Why D is wrong.** Feature licenses are not a deployable metadata type — they can't be captured in a Change Set or pushed through the Metadata API, so metadata deployment tooling has no way to move license grants between orgs at all.`,
+      sources:[
+        {l:"Push Updated Licenses to Sandbox Orgs — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.overview_licenses_and_sandbox.htm&language=en_US&type=5"},
+        {l:"Refresh Your Sandbox — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.data_sandbox_refresh.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Change Management",
+      select:1,
+      prompt:"At ProcessFlow Inc., an Administrator is preparing to deploy Approval Process using Change Sets. They want to ensure all related Components function correctly after deployment. What should the Administrator consider?",
+      note:"Field Update / Email Alert / Task actions attached to an approval process (its \"Approval Actions\") deploy fine as long as they're included as dependencies. The real risk is narrower: any step whose approver is set to a specific named User — rather than a Role, Public Group, or Queue — since that exact User may not exist (or may not match) in the target org, requiring the admin to reassign or recreate that piece of the step after deployment.",
+      options:[
+        {k:"A", t:"Approval Actions may need to be recreated in target Org"},
+        {k:"B", t:"Approval Processes cannot be deployed"},
+        {k:"C", t:"Field dependencies must be manually recreated"},
+        {k:"D", t:"Record Types cannot be included"}
+      ],
+      correct:["A"],
+      explanation:
+`**Why A is right.** Approval processes can reference org-specific components — most notably, an approval step's assigned approver can be set to one specific named User. Since Users differ between source and target orgs (different sandboxes and production all have their own user bases), a step configured against a specific user frequently doesn't resolve cleanly after a Change Set deployment, and the admin has to go into the target org and manually reassign or recreate that piece of the process. Salesforce's own guidance around change-set-deployed approval processes similarly flags several manual cleanup steps (re-adding certain custom fields to the change set, resaving post templates with custom fields, and manually re-ordering active approval processes in the target org) — the underlying theme being that "deploy and forget" isn't safe for approval processes; some components need manual attention afterward.
+
+**Why B is wrong.** Approval Processes have been a supported, deployable Change Set component type since 2013 — this isn't a limitation at all, just an outdated assumption.
+
+**Why C is wrong.** Field dependencies (controlling/dependent picklist relationships) are stored as part of the field's own metadata and travel with the field automatically when it's included in a Change Set — they don't require separate manual recreation.
+
+**Why D is wrong.** Record Types are a standard, fully deployable Change Set component. They can — and often must — be included when an approval process's entry criteria or page layout assignments depend on them.`,
+      sources:[
+        {l:"Restrictions for Approval Processes in Change Sets — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.changesets_restrictions_approval_process.htm&type=5"},
+        {l:"Approval Process Deployment — Change Set Support — Salesforce Developers Blog", u:"https://developer.salesforce.com/blogs/2013/05/approval-process-deployment-change-set-support-is-in-the-air"}
+      ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:1,
+      prompt:"At HireTrack Systems, the Admin wants to identify the Job Postings that have not received any Applications. Which reporting solution should be used?",
+      options:[
+        {k:"A", t:"Custom Report showing Applications only"},
+        {k:"B", t:"Standard Report with Grouping"},
+        {k:"C", t:"Cross filter to show records without Related records"},
+        {k:"D", t:"Dashboard Component"}
+      ],
+      correct:["C"],
+      explanation:
+`**Why C is right.** A Cross Filter lets a report on the parent object (Job Postings) include a "WITHOUT" condition against a related child object (Applications) — e.g., "Job Postings WITHOUT Applications." That directly answers "which parent records have zero related child records," which is exactly what's needed here and is the purpose-built tool for this kind of absence-based question.
+
+**Why A is wrong.** A report built on Applications can only ever show records that already exist on that object. A Job Posting with zero Applications has no corresponding Application row at all, so it can never appear in — or be inferred from — a report scoped to the Applications object.
+
+**Why B is wrong.** Grouping a standard report organizes existing rows into buckets, but it still only works with rows that are present. It can show how many Applications each Job Posting received, but a group for "zero" doesn't exist because there's no row to group — grouping can't surface an absence.
+
+**Why D is wrong.** A Dashboard Component visualizes the results of an underlying report — it doesn't have its own independent query logic. Whatever limitation the underlying report has (such as being unable to show absent related records) carries straight through to the dashboard.`,
+      sources:[
+        {l:"Cross Filters Overview — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.reports_builder_cross_filters_overview.htm&language=en_US&type=5"},
+        {l:"Filter Report Data with Cross Filters — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/lex_implementation_reports_dashboards/lex_implementation_reports_dashboards_cross_filters"}
+      ]
+    },
+    {
+      topic:"Data and Analytics Management",
+      select:1,
+      prompt:"At BugTrack Inc., each defect record must always be linked to a Support Case. The System should enforce that a defect cannot exist independently. What relationship type should be used?",
+      options:[
+        {k:"A", t:"Lookup"},
+        {k:"B", t:"Junction"},
+        {k:"C", t:"Hiereachical"},
+        {k:"D", t:"Master-Detail"}
+      ],
+      correct:["D"],
+      explanation:
+`**Why D is right.** Master-Detail is the relationship type built precisely for this "cannot exist independently" requirement: the child (Defect) record must have a parent (Support Case) at creation — the field can't be left blank — and if the parent Case is deleted, its related Defect records are deleted right along with it. That combination of a required parent and cascading delete is exactly how Salesforce enforces that a Defect never exists on its own.
+
+**Why A is wrong.** A Lookup relationship is optional by default — a Defect could be created and saved with no Support Case at all, and deleting a Case wouldn't touch its related Defects. That's the opposite of the required, dependent existence the scenario calls for.
+
+**Why B is wrong.** A Junction object is a pattern (a custom object with two Master-Detail relationships) used to build many-to-many relationships between two objects. This scenario describes a single, one-to-many dependency between Case and Defect, not a many-to-many pairing, so a junction object doesn't fit.
+
+**Why C is wrong.** Hierarchical relationships are a special relationship type available only on the User object, used for self-referencing structures like a manager field. It has nothing to do with linking two different custom/standard objects like Case and Defect.`,
+      sources:[
+        {l:"Relationship Types — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.overview_of_custom_object_relationships.htm&language=en_US&type=5"},
+        {l:"Master-Detail Relationship Considerations — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"}
+      ]
     }
   ];
 
@@ -1353,6 +1721,7 @@
   };
 
   const esc = (s) => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+  const escAttr = (s) => esc(s).replace(/"/g,"&quot;");
 
   const mdToHtml = (md) => md.split(/\n\n+/).map((p) => {
     const withBold = esc(p).replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
@@ -1512,6 +1881,7 @@
       </div>
       <p class="prompt">${esc(q.prompt)}</p>
       <span class="select-hint">${SELECT_WORD[q.select]}${q.select > 1 ? ` (${q.select})` : ""}</span>
+      ${q.note ? `<span class="q-note" tabindex="0" title="${escAttr(q.note)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Note</span>` : ""}
       ${resultBanner}
       <div class="options">${optionsHtml}</div>
       ${actionsHtml}
