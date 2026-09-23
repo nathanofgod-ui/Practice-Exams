@@ -14,6 +14,7 @@
     --bad-bg:#B234341F;
     --line:#D9DCD0;
     --line-strong:#C3C7B8;
+    --ink-soft-border:#1B2420;
     --shadow: 0 1px 2px rgba(27,36,32,0.04), 0 8px 24px -12px rgba(27,36,32,0.16);
     --radius: 10px;
   }
@@ -33,6 +34,7 @@
       --bad-bg:#E064562A;
       --line:#2A3436;
       --line-strong:#3A4548;
+      --ink-soft-border:rgba(231,235,227,0.6);
       --shadow: 0 1px 0 rgba(0,0,0,0.3), 0 12px 28px -14px rgba(0,0,0,0.6);
     }
   }
@@ -51,6 +53,7 @@
     --bad-bg:#E064562A;
     --line:#2A3436;
     --line-strong:#3A4548;
+    --ink-soft-border:rgba(231,235,227,0.6);
     --shadow: 0 1px 0 rgba(0,0,0,0.3), 0 12px 28px -14px rgba(0,0,0,0.6);
   }
 
@@ -125,7 +128,7 @@
     border-radius:7px;
     padding:6px 12px;
     white-space:nowrap;
-    transition:transform 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    transition:transform 0.12s ease, border-color 0.12s ease, color 0.12s ease, background-color 0.12s ease, box-shadow 0.12s ease;
   }
   .exam-guide-link:hover{
     transform:translateY(-1px);
@@ -135,6 +138,52 @@
   .exam-guide-link:focus-visible{
     outline:2px solid var(--accent);
     outline-offset:2px;
+  }
+  /* SLDS button variants, matched to the live buttons on trailheadacademy.salesforce.com
+     (Register Now = variant="primary", Get Exam Guide = variant="secondary"):
+     colors, radius, border width, padding, weight and hover behavior are pulled directly
+     from that page's rendered wes-button component. */
+  .exam-guide-link--brand,
+  .exam-guide-link--brand-outline{
+    --slds-brand:#0176D3;
+    --slds-brand-active:#023248;
+    font-family:"Barlow Semi Condensed", sans-serif;
+    font-size:15px;
+    font-weight:700;
+    letter-spacing:normal;
+    text-transform:none;
+    border-width:2px;
+    border-radius:4px;
+    padding:8px 20px;
+    line-height:1.4;
+  }
+  .exam-guide-link--brand{
+    background:var(--slds-brand);
+    border-color:var(--slds-brand);
+    color:#FFFFFF;
+  }
+  .exam-guide-link--brand:hover{
+    background:var(--slds-brand-active);
+    border-color:var(--slds-brand-active);
+    color:#FFFFFF;
+  }
+  .exam-guide-link--brand:focus-visible{
+    outline:none;
+    box-shadow:0 0 0 3px rgba(1,118,211,0.5);
+  }
+  .exam-guide-link--brand-outline{
+    background:var(--surface);
+    border-color:var(--slds-brand);
+    color:var(--slds-brand);
+  }
+  .exam-guide-link--brand-outline:hover{
+    background:rgba(1,118,211,0.12);
+    border-color:var(--ink-soft-border);
+    color:var(--ink);
+  }
+  .exam-guide-link--brand-outline:focus-visible{
+    outline:none;
+    box-shadow:0 0 0 3px rgba(1,118,211,0.5);
   }
   .masthead h1{
     margin:0;
