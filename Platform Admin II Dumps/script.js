@@ -424,7 +424,7 @@
 
 **Why D is wrong.** An external lookup relationship links a Salesforce object to data sitting in an external system via Salesforce Connect. There's nothing in this scenario suggesting the audit logs live outside Salesforce, so this relationship type doesn't fit the requirement.`,
       sources:[
-        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/HTViewHelpDoc?id=relationships_considerations.htm"},
+        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"},
         {l:"Cascade Delete Does Not Work on Custom Lookup Fields by Default — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000349100&language=en_US&type=1"}
       ]
     },
@@ -494,7 +494,7 @@
 
 **Why D is wrong.** Sharing rules grant record access to a group of users based on criteria or ownership — they have no built-in capability to "trigger emails." Access and notification are two separate concerns, and sharing rules only address the first.`,
       sources:[
-        {l:"Add Email Alerts to the Approval Process — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.ls_add_email_alerts.htm&language=en_US&type=5"},
+        {l:"Create Public Groups — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.ls_create_public_groups.htm&language=en_US&type=5"},
         {l:"How to Send Email to a Public Group in Salesforce — MicroPyramid", u:"https://micropyramid.com/blog/how-to-send-email-to-a-public-group-in-salesforce/"}
       ]
     },
@@ -1065,7 +1065,7 @@
 
 **Why D is wrong.** Role hierarchy grants access based on being above someone else in reporting structure — it has no mechanism for granting a new Client owner access to a Contract just because they now own a related Client record. Reorganizing the hierarchy doesn't touch the dual master-detail intersection rule causing the problem at all.`,
       sources:[
-        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=relationships_considerations.htm&language=en_US&type=5"},
+        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"},
         {l:"Junction Object Access in Salesforce — Medium", u:"https://medium.com/@shashanksingla/junction-object-access-based-on-master-object-access-on-profiles-deab3d09cedd"}
       ]
     },
@@ -1113,7 +1113,7 @@
 
 **Why D is wrong.** Sharing rules extend record visibility beyond the org-wide default — but master-detail child records don't use their own sharing rules at all in the first place, since they inherit access from the master. There's nothing to "disable" here that affects the relationship type, and doing so wouldn't touch the actual obstacle (the master-detail structure itself).`,
       sources:[
-        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=relationships_considerations.htm&language=en_US&type=5"},
+        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"},
         {l:"Interview Questions on Master-Detail Relationship in Salesforce — Medium", u:"https://medium.com/@aleksej.gudkov/interview-questions-on-master-detail-relationship-in-salesforce-829b195eeb20"}
       ]
     },
@@ -1406,7 +1406,7 @@
 
 **Why D is wrong.** Validation Rules only block or allow a save based on conditions; they have no ability to write or update field values on any record, related or otherwise.`,
       sources:[
-        {l:"A Deep Dive into Workflow Rule Field Updates — Salesforce Developers Blog", u:"https://developer.salesforce.com/blogs/2014/07/deep-dive-workflow-rule-field-updates"},
+        {l:"4 Ways to Create Roll-Up Summary Fields on Lookup Relationships — Salesforce Ben", u:"https://www.salesforceben.com/4-ways-to-create-roll-up-summary-fields-on-lookup-relationships-in-salesforce/"},
         {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"}
       ]
     },
@@ -2068,7 +2068,7 @@
 **Why D is wrong.** Multi-Currency reaches far beyond reporting: it adds currency fields to standard and custom objects, changes how amount fields display and store data (with an associated ISO currency code per record), affects roll-up summaries and cross-currency calculations, and changes how tools like Data Loader convert amounts on import/update.`,
       sources:[
         {l:"Considerations for Using Multiple Currencies — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=admin_currency.htm&type=5"},
-        {l:"Salesforce Multicurrency: What You Need to Know — Focus on Force", u:"https://k2u.ai/news/salesforce-multicurrency-what-you-need-to-know/"}
+        {l:"Salesforce Multicurrency: What You Need to Know — K2 University (Focus on Force)", u:"https://k2u.ai/news/salesforce-multicurrency-what-you-need-to-know/"}
       ]
     },
     {
@@ -2735,6 +2735,7 @@
 
 **Why D is wrong.** Relationships between Business Accounts (used for things like parent/subsidiary or partner-company links) only connect two company-level Account records to each other — they have no mechanism for linking an individual person to a company, which is the actual relationship OmniRetail needs to capture.`,
       sources:[
+        {l:"Person Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sales.account_person.htm&language=en_US&type=5"},
         {l:"Contacts to Multiple Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.shared_contacts_overview.htm&language=en_US&type=5"},
         {l:"Considerations for Relating a Contact to Multiple Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sales.shared_contacts_considerations.htm&type=5"}
       ]
@@ -3253,7 +3254,7 @@
 **Why D is wrong.** Manually sharing each Opportunity doesn't scale and isn't automatic — every new opportunity would need to be shared individually as it's created, directly contradicting the requirement for access "without manual sharing."`,
       sources:[
         {l:"How Salesforce Automatically Grants Record Access — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.security_sharing_automatic.htm&language=en_US&type=5"},
-        {l:"Grant Access Using Hierarchies — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.security_owd_edit.htm&language=en_US&type=5"}
+        {l:"Controlling Access Using the Role Hierarchy — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.security_controlling_access_using_hierarchies.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -3547,7 +3548,7 @@
 **Why D is wrong.** Encryption keys are a backend cryptographic component managed by Salesforce (or by the org for Bring Your Own Key scenarios) — refreshing or rotating them has nothing to do with an individual user's ability to view a specific field's decrypted value.`,
       sources:[
         {l:"Classic Encryption for Custom Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.fields_about_encrypted_fields.htm&type=5"},
-        {l:"View Encrypted Data User Permission — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.users_profiles_permissions_field_access.htm&language=en_US&type=5"}
+        {l:"View Encrypted Data Permission (Classic Encryption) — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000382508&language=en_US&type=1"}
       ]
     },
     {
@@ -4267,6 +4268,7 @@
 **Why D is wrong.** This conflates "can view" with "can edit." Public Read Only means every user who can see the Account (and, by inheritance, its Contacts) is capped at Read — that Read Only designation exists specifically to prevent the broader user base from editing, so "all users who can view" describes the opposite of a correctly-scoped edit answer.`,
       sources:[
         {l:"Controlling Access Using the Role Hierarchy — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=platform.security_controlling_access_using_hierarchies.htm&type=5"},
+        {l:"Organization-Wide Default Access Settings — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sharing_model_fields.htm&type=0"},
         {l:"Optimizing Salesforce Role Hierarchies for Data Security — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/data_security/data_security_roles"}
       ]
     },
@@ -4588,7 +4590,7 @@
 
 **Why D is wrong.** Standard Reports are read-only — they display existing data and have no mechanism to write or update field values on records, so they can't be a source of new invalid data at all.`,
       sources:[
-        {l:"Why Is Inactive Validation Rule Firing in Salesforce? — GeeksforGeeks", u:"https://www.geeksforgeeks.org/websites-apps/why-is-inactive-validation-rule-firing-in-salesforce/"},
+        {l:"Activate Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=fields_activating_field_validation_rules.htm&type=5"},
         {l:"Managing Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_managing_field_validation.htm&language=en_US&type=5"}
       ]
     }
