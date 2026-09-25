@@ -424,7 +424,7 @@
 
 **Why D is wrong.** An external lookup relationship links a Salesforce object to data sitting in an external system via Salesforce Connect. There's nothing in this scenario suggesting the audit logs live outside Salesforce, so this relationship type doesn't fit the requirement.`,
       sources:[
-        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/HTViewHelpDoc?id=relationships_considerations.htm"},
+        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"},
         {l:"Cascade Delete Does Not Work on Custom Lookup Fields by Default — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000349100&language=en_US&type=1"}
       ]
     },
@@ -494,7 +494,7 @@
 
 **Why D is wrong.** Sharing rules grant record access to a group of users based on criteria or ownership — they have no built-in capability to "trigger emails." Access and notification are two separate concerns, and sharing rules only address the first.`,
       sources:[
-        {l:"Add Email Alerts to the Approval Process — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.ls_add_email_alerts.htm&language=en_US&type=5"},
+        {l:"Create Public Groups — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.ls_create_public_groups.htm&language=en_US&type=5"},
         {l:"How to Send Email to a Public Group in Salesforce — MicroPyramid", u:"https://micropyramid.com/blog/how-to-send-email-to-a-public-group-in-salesforce/"}
       ]
     },
@@ -1065,7 +1065,7 @@
 
 **Why D is wrong.** Role hierarchy grants access based on being above someone else in reporting structure — it has no mechanism for granting a new Client owner access to a Contract just because they now own a related Client record. Reorganizing the hierarchy doesn't touch the dual master-detail intersection rule causing the problem at all.`,
       sources:[
-        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=relationships_considerations.htm&language=en_US&type=5"},
+        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"},
         {l:"Junction Object Access in Salesforce — Medium", u:"https://medium.com/@shashanksingla/junction-object-access-based-on-master-object-access-on-profiles-deab3d09cedd"}
       ]
     },
@@ -1113,7 +1113,7 @@
 
 **Why D is wrong.** Sharing rules extend record visibility beyond the org-wide default — but master-detail child records don't use their own sharing rules at all in the first place, since they inherit access from the master. There's nothing to "disable" here that affects the relationship type, and doing so wouldn't touch the actual obstacle (the master-detail structure itself).`,
       sources:[
-        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=relationships_considerations.htm&language=en_US&type=5"},
+        {l:"Considerations for Object Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"},
         {l:"Interview Questions on Master-Detail Relationship in Salesforce — Medium", u:"https://medium.com/@aleksej.gudkov/interview-questions-on-master-detail-relationship-in-salesforce-829b195eeb20"}
       ]
     },
@@ -1406,7 +1406,7 @@
 
 **Why D is wrong.** Validation Rules only block or allow a save based on conditions; they have no ability to write or update field values on any record, related or otherwise.`,
       sources:[
-        {l:"A Deep Dive into Workflow Rule Field Updates — Salesforce Developers Blog", u:"https://developer.salesforce.com/blogs/2014/07/deep-dive-workflow-rule-field-updates"},
+        {l:"4 Ways to Create Roll-Up Summary Fields on Lookup Relationships — Salesforce Ben", u:"https://www.salesforceben.com/4-ways-to-create-roll-up-summary-fields-on-lookup-relationships-in-salesforce/"},
         {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"}
       ]
     },
@@ -2068,7 +2068,7 @@
 **Why D is wrong.** Multi-Currency reaches far beyond reporting: it adds currency fields to standard and custom objects, changes how amount fields display and store data (with an associated ISO currency code per record), affects roll-up summaries and cross-currency calculations, and changes how tools like Data Loader convert amounts on import/update.`,
       sources:[
         {l:"Considerations for Using Multiple Currencies — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=admin_currency.htm&type=5"},
-        {l:"Salesforce Multicurrency: What You Need to Know — Focus on Force", u:"https://k2u.ai/news/salesforce-multicurrency-what-you-need-to-know/"}
+        {l:"Salesforce Multicurrency: What You Need to Know — K2 University (Focus on Force)", u:"https://k2u.ai/news/salesforce-multicurrency-what-you-need-to-know/"}
       ]
     },
     {
@@ -2735,6 +2735,7 @@
 
 **Why D is wrong.** Relationships between Business Accounts (used for things like parent/subsidiary or partner-company links) only connect two company-level Account records to each other — they have no mechanism for linking an individual person to a company, which is the actual relationship OmniRetail needs to capture.`,
       sources:[
+        {l:"Person Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sales.account_person.htm&language=en_US&type=5"},
         {l:"Contacts to Multiple Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.shared_contacts_overview.htm&language=en_US&type=5"},
         {l:"Considerations for Relating a Contact to Multiple Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sales.shared_contacts_considerations.htm&type=5"}
       ]
@@ -3253,7 +3254,7 @@
 **Why D is wrong.** Manually sharing each Opportunity doesn't scale and isn't automatic — every new opportunity would need to be shared individually as it's created, directly contradicting the requirement for access "without manual sharing."`,
       sources:[
         {l:"How Salesforce Automatically Grants Record Access — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.security_sharing_automatic.htm&language=en_US&type=5"},
-        {l:"Grant Access Using Hierarchies — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.security_owd_edit.htm&language=en_US&type=5"}
+        {l:"Controlling Access Using the Role Hierarchy — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.security_controlling_access_using_hierarchies.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -3547,7 +3548,7 @@
 **Why D is wrong.** Encryption keys are a backend cryptographic component managed by Salesforce (or by the org for Bring Your Own Key scenarios) — refreshing or rotating them has nothing to do with an individual user's ability to view a specific field's decrypted value.`,
       sources:[
         {l:"Classic Encryption for Custom Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.fields_about_encrypted_fields.htm&type=5"},
-        {l:"View Encrypted Data User Permission — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.users_profiles_permissions_field_access.htm&language=en_US&type=5"}
+        {l:"View Encrypted Data Permission (Classic Encryption) — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000382508&language=en_US&type=1"}
       ]
     },
     {
@@ -4267,6 +4268,7 @@
 **Why D is wrong.** This conflates "can view" with "can edit." Public Read Only means every user who can see the Account (and, by inheritance, its Contacts) is capped at Read — that Read Only designation exists specifically to prevent the broader user base from editing, so "all users who can view" describes the opposite of a correctly-scoped edit answer.`,
       sources:[
         {l:"Controlling Access Using the Role Hierarchy — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=platform.security_controlling_access_using_hierarchies.htm&type=5"},
+        {l:"Organization-Wide Default Access Settings — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sharing_model_fields.htm&type=0"},
         {l:"Optimizing Salesforce Role Hierarchies for Data Security — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/data_security/data_security_roles"}
       ]
     },
@@ -4588,7 +4590,7 @@
 
 **Why D is wrong.** Standard Reports are read-only — they display existing data and have no mechanism to write or update field values on records, so they can't be a source of new invalid data at all.`,
       sources:[
-        {l:"Why Is Inactive Validation Rule Firing in Salesforce? — GeeksforGeeks", u:"https://www.geeksforgeeks.org/websites-apps/why-is-inactive-validation-rule-firing-in-salesforce/"},
+        {l:"Activate Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=fields_activating_field_validation_rules.htm&type=5"},
         {l:"Managing Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_managing_field_validation.htm&language=en_US&type=5"}
       ]
     }
@@ -4624,6 +4626,42 @@
   // the order each topic is first seen — no fixed exam blueprint is assumed,
   // so new topics just slot in as questions are added.
   const SECTION_ORDER = DATA.reduce((acc, q) => (acc.includes(q.topic) ? acc : [...acc, q.topic]), []);
+
+  // The real Salesforce Certified Advanced Administrator exam (Plat-Admn-301 —
+  // "Platform Administrator II") weights its 7 official content categories
+  // unevenly when computing a candidate's overall score. These weights come
+  // from the official exam guide / blueprint (cross-checked against multiple
+  // current third-party study sources, since Salesforce doesn't republish the
+  // guide as a plain webpage): Security and Access 20%, Process Automation
+  // 20%, Objects and Applications 19%, Data and Analytics Management 13%,
+  // Cloud Applications 11%, Auditing and Monitoring 10%, Environment
+  // Management and Deployment 7%. This bank's own topic tags are finer-
+  // grained / differently named than that 7-category blueprint, so
+  // EXAM_CATEGORY_MAP folds each of ours into the one official category it
+  // actually belongs to. There are currently no questions tagged for "Cloud
+  // Applications" (Sales/Service Cloud app config — quotes, price books,
+  // Knowledge, entitlements) — the weighted score below is renormalized
+  // across whichever official categories this bank does cover, and says so.
+  const EXAM_CATEGORY_WEIGHTS = {
+    "Security and Access": 20,
+    "Process Automation": 20,
+    "Objects and Applications": 19,
+    "Data and Analytics Management": 13,
+    "Cloud Applications": 11,
+    "Auditing and Monitoring": 10,
+    "Environment Management and Deployment": 7
+  };
+  const EXAM_CATEGORY_MAP = {
+    "Security and Access": "Security and Access",
+    "Process Automation and Logic": "Process Automation",
+    "Process Automation": "Process Automation",
+    "Data and Analytics Management": "Data and Analytics Management",
+    "Lightning App Builder and Page Customization": "Objects and Applications",
+    "Auditing and Monitoring": "Auditing and Monitoring",
+    "Change Management": "Environment Management and Deployment",
+    "Sandboxes and Environment Management": "Environment Management and Deployment"
+  };
+  const EXAM_PASSING_PCT = 65;
 
   // Ticket indices whose topic matches a given section name, in DATA order.
   const sectionIndices = (name) => DATA.reduce((acc, q, i) => (q.topic === name ? [...acc, i] : acc), []);
@@ -4691,6 +4729,29 @@
 
   const state = loadState();
 
+  // Transient "select N answers" nudge — shown when the Next/Check button is
+  // clicked with some but not enough options picked. Deliberately kept out
+  // of `state`/localStorage: it's a momentary UI toast, not something that
+  // should survive a reload or reappear on its own. `qi` scopes it to the
+  // exact ticket it was raised for, so it can never bleed onto a different
+  // one after navigating away and back.
+  let underSelectNotice = null;
+  let underSelectNoticeTimer = null;
+  const clearUnderSelectNotice = () => {
+    if (underSelectNoticeTimer) { clearTimeout(underSelectNoticeTimer); underSelectNoticeTimer = null; }
+    underSelectNotice = null;
+  };
+  const showUnderSelectNotice = (qi, need, have) => {
+    clearUnderSelectNotice();
+    underSelectNotice = { qi, need, have };
+    underSelectNoticeTimer = setTimeout(() => {
+      underSelectNoticeTimer = null;
+      underSelectNotice = null;
+      renderTicket();
+    }, 3500);
+    renderTicket();
+  };
+
   const saveState = () => {
     try {
       const serializable = {
@@ -4744,6 +4805,7 @@
   // sections never erases progress — only the order/position/finished flag
   // change, exactly like starting a review round.
   const selectSection = (name) => {
+    clearUnderSelectNotice();
     const valid = name === "" || SECTION_ORDER.includes(name);
     state.section = valid ? name : "";
     state.order = buildOrder(state.section ? sectionIndices(state.section) : undefined);
@@ -4766,6 +4828,7 @@
   const toggleSelect = (qi, key) => {
     const a = state.answers[qi];
     if (a.checked) return;
+    clearUnderSelectNotice();
     const q = DATA[qi];
     if (q.select === 1) {
       a.selected = new Set([key]);
@@ -4782,19 +4845,15 @@
     const a = state.answers[qi];
     const q = DATA[qi];
     if (a.selected.size !== q.select) return;
+    clearUnderSelectNotice();
     a.checked = true;
     a.correct = arraysEqualAsSets([...a.selected], q.correct);
     saveState();
     renderAll();
   };
 
-  const resetOne = (qi) => {
-    state.answers[qi] = {selected:new Set(), checked:false, correct:null};
-    saveState();
-    renderAll();
-  };
-
   const goTo = (i) => {
+    clearUnderSelectNotice();
     state.index = Math.max(0, Math.min(state.order.length - 1, i));
     state.finished = false;
     saveState();
@@ -4803,6 +4862,7 @@
   };
 
   const finishQuiz = () => {
+    clearUnderSelectNotice();
     state.finished = true;
     state.index = 0;
     saveState();
@@ -4819,6 +4879,7 @@
   // always the full DATA set) with the updated score.
   const reviewErrors = (wrongOriginalIdx) => {
     if (!wrongOriginalIdx || !wrongOriginalIdx.length) return;
+    clearUnderSelectNotice();
     wrongOriginalIdx.forEach((qi) => {
       state.answers[qi] = {selected:new Set(), checked:false, correct:null};
     });
@@ -4901,9 +4962,39 @@
       return `<div class="resolution"><h3>Resolution notes</h3>${mdToHtml(q.explanation)}<div class="refs"><span class="ref-label">Attached knowledge articles</span>${refsHtml}</div></div>`;
     })();
 
-    const actionsHtml = !a.checked
-      ? `<div class="actions"><button class="btn" id="checkBtn" ${a.selected.size === q.select ? "" : "disabled"}>Check answer</button><span class="count-hint mono">${a.selected.size} of ${q.select} selected</span></div>`
-      : `<div class="actions"><button class="btn ghost" id="tryAgainBtn">Try again</button></div>`;
+    // The ticketnav's single trailing button now covers three jobs at once,
+    // depending on where this ticket stands, instead of a separate "Check
+    // answer" / "Try again" pair above the options:
+    //  - nothing picked yet: "Skip question" — just advances, exactly like
+    //    the plain Next action always has.
+    //  - a selection is in progress (or complete) but not checked yet:
+    //    "Check answer" — evaluates it, staying disabled until exactly
+    //    q.select options are picked (same gate the old Check button used).
+    //  - already checked, right or wrong: "Next"/"Finish" — always just
+    //    advances. There's no retry loop anymore; a wrong answer moves on
+    //    the same as a right one, after the resolution notes are read.
+    const hasSelection = a.selected.size > 0;
+    const hasFullSelection = a.selected.size === q.select;
+    let nextMode, nextLabel;
+    if (!a.checked && !hasSelection) {
+      nextMode = "skip";
+      nextLabel = "Skip question";
+    } else if (!a.checked) {
+      // Left enabled even when under-selected — clicking without enough
+      // options picked doesn't silently do nothing, it raises the toast
+      // below telling the user exactly how many more to pick.
+      nextMode = "check";
+      nextLabel = "Check answer";
+    } else {
+      nextMode = "advance";
+      nextLabel = isLastTicket ? "Finish" : "Next ›";
+    }
+    const countHintHtml = !a.checked
+      ? `<span class="count-hint mono">${a.selected.size} of ${q.select} selected</span>`
+      : "";
+    const underSelectHtml = (underSelectNotice && underSelectNotice.qi === qi)
+      ? `<div class="select-warning" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>${SELECT_WORD[q.select]} (${q.select}) — you've picked ${underSelectNotice.have}. Select ${q.select - underSelectNotice.have} more to check this ticket.</span></div>`
+      : "";
 
     els.ticket.innerHTML = `
       <div class="perf"></div>
@@ -4919,21 +5010,25 @@
       ${q.note ? `<span class="q-note" tabindex="0" aria-label="${escAttr(q.note)}" data-tip="${escAttr(q.note)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Note</span>` : ""}
       ${resultBanner}
       <div class="options">${optionsHtml}</div>
-      ${actionsHtml}
+      ${countHintHtml}
+      ${underSelectHtml}
       <div class="ticketnav">
         <button class="btn ghost" id="prevBtn" ${i === 0 ? "disabled" : ""}>‹ Previous</button>
         <span class="pos mono">${i + 1} / ${state.order.length}</span>
-        <button class="btn ghost" id="nextBtn">${isLastTicket ? "Finish" : "Next ›"}</button>
+        <button class="btn-bs btn-bs-primary" id="nextBtn">${nextLabel}</button>
       </div>
       ${resolutionHtml}`;
 
     els.ticket.querySelectorAll(".opt").forEach((btn) => {
       btn.addEventListener("click", () => toggleSelect(qi, btn.dataset.k));
     });
-    document.getElementById("checkBtn")?.addEventListener("click", () => checkAnswer(qi));
-    document.getElementById("tryAgainBtn")?.addEventListener("click", () => resetOne(qi));
     document.getElementById("prevBtn").addEventListener("click", () => goTo(i - 1));
     document.getElementById("nextBtn").addEventListener("click", () => {
+      if (nextMode === "check") {
+        if (!hasFullSelection) { showUnderSelectNotice(qi, q.select, a.selected.size); return; }
+        checkAnswer(qi);
+        return;
+      }
       if (isLastTicket) { finishQuiz(); } else { goTo(i + 1); }
     });
   };
@@ -4990,6 +5085,59 @@
         </div>`
       : "";
 
+    // Certification-style weighted score: fold this round's per-topic results
+    // into Salesforce's official 7-category blueprint, weight each category's
+    // accuracy by that category's real exam weight, then renormalize across
+    // only the categories this round actually touched. Only worth showing
+    // once more than one official category is in play, for the same reason
+    // the plain by-topic breakdown above is gated the same way.
+    const byOfficialCat = {};
+    orderedCategoryNames.forEach((name) => {
+      const officialCat = EXAM_CATEGORY_MAP[name];
+      if (!officialCat) return;
+      const b = byCategory[name];
+      const bucket = byOfficialCat[officialCat] || (byOfficialCat[officialCat] = { correct: 0, total: 0 });
+      bucket.correct += b.correct;
+      bucket.total += b.total;
+    });
+    const coveredOfficialCats = Object.keys(byOfficialCat)
+      .sort((a, b) => EXAM_CATEGORY_WEIGHTS[b] - EXAM_CATEGORY_WEIGHTS[a]);
+    const coveredWeight = coveredOfficialCats.reduce((sum, c) => sum + EXAM_CATEGORY_WEIGHTS[c], 0);
+    const missingOfficialCats = Object.keys(EXAM_CATEGORY_WEIGHTS).filter((c) => !byOfficialCat[c]);
+
+    const weightedBreakdownHtml = coveredOfficialCats.length > 1
+      ? (() => {
+          const weightedSum = coveredOfficialCats.reduce((sum, c) => {
+            const b = byOfficialCat[c];
+            return sum + (b.correct / b.total) * EXAM_CATEGORY_WEIGHTS[c];
+          }, 0);
+          const weightedPct = coveredWeight ? Math.round((weightedSum / coveredWeight) * 100) : 0;
+          const passed = weightedPct >= EXAM_PASSING_PCT;
+          const rowsHtml = coveredOfficialCats.map((c) => {
+            const b = byOfficialCat[c];
+            const catPct = Math.round((b.correct / b.total) * 100);
+            const barColor = catPct >= 80 ? "var(--good)" : catPct < 50 ? "var(--bad)" : "var(--accent)";
+            return `<div class="cat-row">
+                <span class="cat-name">${esc(c)} <span class="cat-weight mono">${EXAM_CATEGORY_WEIGHTS[c]}%</span></span>
+                <div class="cat-bar"><div class="cat-bar-fill" style="width:${catPct}%; background:${barColor};"></div></div>
+                <span class="cat-score mono">${b.correct}/${b.total} · ${catPct}%</span>
+              </div>`;
+          }).join("");
+          const coverageNote = missingOfficialCats.length
+            ? `Renormalized across the ${coveredOfficialCats.length} of 7 official categories this bank covers so far (weights re-summed to 100%). Not yet covered: ${missingOfficialCats.map((c) => `${esc(c)} (${EXAM_CATEGORY_WEIGHTS[c]}%)`).join(", ")}.`
+            : `All 7 official categories covered — weights used exactly as published.`;
+          return `<div class="exam-weighted">
+              <span class="ref-label" style="display:block;">Certification-weighted score · Plat-Admn-301 blueprint</span>
+              ${rowsHtml}
+              <div class="exam-weighted-total">
+                <span>Weighted score (${coveredWeight}% of exam weight covered)</span>
+                <span class="exam-weighted-pct ${passed ? "pass" : "fail"} mono">${weightedPct}%</span>
+              </div>
+              <p class="exam-weighted-note">${coverageNote} Salesforce's real passing bar for this exam is ${EXAM_PASSING_PCT}% — this is an estimate of how that same math would score this round, not an official result.</p>
+            </div>`;
+        })()
+      : "";
+
     const reviewHtml = wrongOriginalIdx.length
       ? `<div class="review-chips">${wrongOriginalIdx.map((qi) => {
           const pos = state.order.indexOf(qi);
@@ -5012,7 +5160,8 @@
           <div><div class="num">${pct}%</div><div class="lbl">Accuracy</div></div>
         </div>
         ${categoryBreakdownHtml}
-        ${wrongOriginalIdx.length ? `<span class="ref-label" style="margin-bottom:8px;display:block;margin-top:${categoryBreakdownHtml ? "16px" : "0"};">Tickets to review</span>` : ""}
+        ${weightedBreakdownHtml}
+        ${wrongOriginalIdx.length ? `<span class="ref-label" style="margin-bottom:8px;display:block;margin-top:${(categoryBreakdownHtml || weightedBreakdownHtml) ? "16px" : "0"};">Tickets to review</span>` : ""}
         ${reviewHtml}
         ${reviewErrorsBtnHtml}
       </div>`;
@@ -5039,6 +5188,7 @@
   els.sectionSelect?.addEventListener("change", (e) => selectSection(e.target.value));
 
   document.getElementById("resetAll").addEventListener("click", () => {
+    clearUnderSelectNotice();
     state.finished = false;
     state.section = "";
     state.answers = DATA.map(() => ({selected:new Set(), checked:false, correct:null}));

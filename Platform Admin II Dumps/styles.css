@@ -8,6 +8,7 @@
     --faint:#8A9089;
     --accent:#B8631E;
     --accent-ink:#FFFFFF;
+    --accent-bg:#B8631E1F;
     --good:#2E7D5B;
     --good-bg:#2E7D5B1F;
     --bad:#B23434;
@@ -28,6 +29,7 @@
       --faint:#6C7A72;
       --accent:#E2883F;
       --accent-ink:#181000;
+      --accent-bg:#E2883F2A;
       --good:#4FAE86;
       --good-bg:#4FAE862A;
       --bad:#E06456;
@@ -47,6 +49,7 @@
     --faint:#6C7A72;
     --accent:#E2883F;
     --accent-ink:#181000;
+    --accent-bg:#E2883F2A;
     --good:#4FAE86;
     --good-bg:#4FAE862A;
     --bad:#E06456;
@@ -551,10 +554,61 @@
     color:var(--ink);
     border-color:var(--line-strong);
   }
+
+  /* Bootstrap-style primary for the ticket's "Next" action — Bootstrap's own
+     $purple (#6f42c1) rather than its default blue, so it reads as more
+     purple as asked. Scoped to this one button; Previous went back to the
+     site's own ink-themed .btn.ghost, and every other button in the app
+     keeps that same ink theme. */
+  .btn-bs{
+    font-family:"Barlow Semi Condensed", sans-serif;
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.02em;
+    padding:10px 20px;
+    border-radius:6px;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:background-color 0.12s ease, border-color 0.12s ease, transform 0.08s ease;
+  }
+  .btn-bs:hover:not(:disabled){ transform:translateY(-1px); }
+  .btn-bs:active:not(:disabled){ transform:translateY(0); }
+  .btn-bs:disabled{ opacity:0.55; cursor:not-allowed; }
+  .btn-bs:focus-visible{ outline:2px solid #6F42C1; outline-offset:2px; }
+  .btn-bs-primary{
+    background:#6F42C1;
+    border-color:#6F42C1;
+    color:#FFFFFF;
+  }
+  .btn-bs-primary:hover:not(:disabled){ background:#623AAA; border-color:#5D3798; }
+  .btn-bs-primary:active:not(:disabled){ background:#59359A; border-color:#54338F; }
+
   .count-hint{
+    display:block;
+    margin-top:14px;
     font-family:"IBM Plex Mono", monospace;
     font-size:12px;
     color:var(--faint);
+  }
+  .select-warning{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-top:10px;
+    padding:10px 14px;
+    border-radius:8px;
+    background:var(--accent-bg);
+    color:var(--accent);
+    font-family:"Barlow Semi Condensed", sans-serif;
+    font-weight:600;
+    font-size:14px;
+    line-height:1.35;
+    animation:selectWarningPop 0.18s ease;
+  }
+  .select-warning svg{ width:17px; height:17px; flex:0 0 auto; }
+  @keyframes selectWarningPop{
+    from{ transform:translateY(-4px); opacity:0; }
+    to{ transform:translateY(0); opacity:1; }
   }
 
   .result-banner{
@@ -631,7 +685,21 @@
     margin-top:18px;
     gap:10px;
   }
-  .ticketnav .btn{ min-width:110px; text-align:center; }
+  .ticketnav .btn, .ticketnav .btn-bs{ min-width:110px; text-align:center; }
+  /* Previous keeps the site's own ghost button, just with its border recolored
+     to match Next's Bootstrap purple, so the pair reads as a matched set. */
+  .ticketnav .btn.ghost{
+    border-width:2px;
+    padding-top:9px;
+    padding-bottom:9px;
+    border-color:#6F42C1;
+    color:#6F42C1;
+  }
+  .ticketnav .btn.ghost:hover:not(:disabled){
+    background:#6F42C1;
+    border-color:#623AAA;
+    color:var(--ink);
+  }
   .pos{
     font-family:"IBM Plex Mono", monospace;
     font-size:12.5px;
@@ -702,6 +770,45 @@
     color:var(--muted);
     min-width:78px;
     text-align:right;
+  }
+
+  .exam-weighted{
+    margin-top:18px;
+    padding-top:14px;
+    border-top:1px dashed var(--line-strong);
+  }
+  .cat-weight{
+    font-size:10.5px;
+    color:var(--muted);
+    font-weight:500;
+  }
+  .exam-weighted-total{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-top:10px;
+    padding:10px 14px;
+    background:var(--surface-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    font-family:"Barlow Semi Condensed", sans-serif;
+    font-weight:600;
+    font-size:13.5px;
+  }
+  .exam-weighted-pct{
+    font-size:17px;
+    font-weight:700;
+    padding:2px 10px;
+    border-radius:6px;
+  }
+  .exam-weighted-pct.pass{ color:var(--good); background:var(--good-bg); }
+  .exam-weighted-pct.fail{ color:var(--bad); background:var(--bad-bg); }
+  .exam-weighted-note{
+    margin:8px 0 0;
+    font-size:12px;
+    line-height:1.5;
+    color:var(--muted);
   }
 
   footer{
