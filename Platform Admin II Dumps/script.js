@@ -4627,6 +4627,42 @@
   // so new topics just slot in as questions are added.
   const SECTION_ORDER = DATA.reduce((acc, q) => (acc.includes(q.topic) ? acc : [...acc, q.topic]), []);
 
+  // The real Salesforce Certified Advanced Administrator exam (Plat-Admn-301 —
+  // "Platform Administrator II") weights its 7 official content categories
+  // unevenly when computing a candidate's overall score. These weights come
+  // from the official exam guide / blueprint (cross-checked against multiple
+  // current third-party study sources, since Salesforce doesn't republish the
+  // guide as a plain webpage): Security and Access 20%, Process Automation
+  // 20%, Objects and Applications 19%, Data and Analytics Management 13%,
+  // Cloud Applications 11%, Auditing and Monitoring 10%, Environment
+  // Management and Deployment 7%. This bank's own topic tags are finer-
+  // grained / differently named than that 7-category blueprint, so
+  // EXAM_CATEGORY_MAP folds each of ours into the one official category it
+  // actually belongs to. There are currently no questions tagged for "Cloud
+  // Applications" (Sales/Service Cloud app config — quotes, price books,
+  // Knowledge, entitlements) — the weighted score below is renormalized
+  // across whichever official categories this bank does cover, and says so.
+  const EXAM_CATEGORY_WEIGHTS = {
+    "Security and Access": 20,
+    "Process Automation": 20,
+    "Objects and Applications": 19,
+    "Data and Analytics Management": 13,
+    "Cloud Applications": 11,
+    "Auditing and Monitoring": 10,
+    "Environment Management and Deployment": 7
+  };
+  const EXAM_CATEGORY_MAP = {
+    "Security and Access": "Security and Access",
+    "Process Automation and Logic": "Process Automation",
+    "Process Automation": "Process Automation",
+    "Data and Analytics Management": "Data and Analytics Management",
+    "Lightning App Builder and Page Customization": "Objects and Applications",
+    "Auditing and Monitoring": "Auditing and Monitoring",
+    "Change Management": "Environment Management and Deployment",
+    "Sandboxes and Environment Management": "Environment Management and Deployment"
+  };
+  const EXAM_PASSING_PCT = 65;
+
   // Ticket indices whose topic matches a given section name, in DATA order.
   const sectionIndices = (name) => DATA.reduce((acc, q, i) => (q.topic === name ? [...acc, i] : acc), []);
 
@@ -4693,6 +4729,29 @@
 
   const state = loadState();
 
+  // Transient "select N answers" nudge — shown when the Next/Check button is
+  // clicked with some but not enough options picked. Deliberately kept out
+  // of `state`/localStorage: it's a momentary UI toast, not something that
+  // should survive a reload or reappear on its own. `qi` scopes it to the
+  // exact ticket it was raised for, so it can never bleed onto a different
+  // one after navigating away and back.
+  let underSelectNotice = null;
+  let underSelectNoticeTimer = null;
+  const clearUnderSelectNotice = () => {
+    if (underSelectNoticeTimer) { clearTimeout(underSelectNoticeTimer); underSelectNoticeTimer = null; }
+    underSelectNotice = null;
+  };
+  const showUnderSelectNotice = (qi, need, have) => {
+    clearUnderSelectNotice();
+    underSelectNotice = { qi, need, have };
+    underSelectNoticeTimer = setTimeout(() => {
+      underSelectNoticeTimer = null;
+      underSelectNotice = null;
+      renderTicket();
+    }, 3500);
+    renderTicket();
+  };
+
   const saveState = () => {
     try {
       const serializable = {
@@ -4746,6 +4805,7 @@
   // sections never erases progress — only the order/position/finished flag
   // change, exactly like starting a review round.
   const selectSection = (name) => {
+    clearUnderSelectNotice();
     const valid = name === "" || SECTION_ORDER.includes(name);
     state.section = valid ? name : "";
     state.order = buildOrder(state.section ? sectionIndices(state.section) : undefined);
@@ -4768,6 +4828,7 @@
   const toggleSelect = (qi, key) => {
     const a = state.answers[qi];
     if (a.checked) return;
+    clearUnderSelectNotice();
     const q = DATA[qi];
     if (q.select === 1) {
       a.selected = new Set([key]);
@@ -4784,19 +4845,15 @@
     const a = state.answers[qi];
     const q = DATA[qi];
     if (a.selected.size !== q.select) return;
+    clearUnderSelectNotice();
     a.checked = true;
     a.correct = arraysEqualAsSets([...a.selected], q.correct);
     saveState();
     renderAll();
   };
 
-  const resetOne = (qi) => {
-    state.answers[qi] = {selected:new Set(), checked:false, correct:null};
-    saveState();
-    renderAll();
-  };
-
   const goTo = (i) => {
+    clearUnderSelectNotice();
     state.index = Math.max(0, Math.min(state.order.length - 1, i));
     state.finished = false;
     saveState();
@@ -4805,6 +4862,7 @@
   };
 
   const finishQuiz = () => {
+    clearUnderSelectNotice();
     state.finished = true;
     state.index = 0;
     saveState();
@@ -4821,6 +4879,7 @@
   // always the full DATA set) with the updated score.
   const reviewErrors = (wrongOriginalIdx) => {
     if (!wrongOriginalIdx || !wrongOriginalIdx.length) return;
+    clearUnderSelectNotice();
     wrongOriginalIdx.forEach((qi) => {
       state.answers[qi] = {selected:new Set(), checked:false, correct:null};
     });
@@ -4903,9 +4962,39 @@
       return `<div class="resolution"><h3>Resolution notes</h3>${mdToHtml(q.explanation)}<div class="refs"><span class="ref-label">Attached knowledge articles</span>${refsHtml}</div></div>`;
     })();
 
-    const actionsHtml = !a.checked
-      ? `<div class="actions"><button class="btn" id="checkBtn" ${a.selected.size === q.select ? "" : "disabled"}>Check answer</button><span class="count-hint mono">${a.selected.size} of ${q.select} selected</span></div>`
-      : `<div class="actions"><button class="btn ghost" id="tryAgainBtn">Try again</button></div>`;
+    // The ticketnav's single trailing button now covers three jobs at once,
+    // depending on where this ticket stands, instead of a separate "Check
+    // answer" / "Try again" pair above the options:
+    //  - nothing picked yet: "Skip question" — just advances, exactly like
+    //    the plain Next action always has.
+    //  - a selection is in progress (or complete) but not checked yet:
+    //    "Check answer" — evaluates it, staying disabled until exactly
+    //    q.select options are picked (same gate the old Check button used).
+    //  - already checked, right or wrong: "Next"/"Finish" — always just
+    //    advances. There's no retry loop anymore; a wrong answer moves on
+    //    the same as a right one, after the resolution notes are read.
+    const hasSelection = a.selected.size > 0;
+    const hasFullSelection = a.selected.size === q.select;
+    let nextMode, nextLabel;
+    if (!a.checked && !hasSelection) {
+      nextMode = "skip";
+      nextLabel = "Skip question";
+    } else if (!a.checked) {
+      // Left enabled even when under-selected — clicking without enough
+      // options picked doesn't silently do nothing, it raises the toast
+      // below telling the user exactly how many more to pick.
+      nextMode = "check";
+      nextLabel = "Check answer";
+    } else {
+      nextMode = "advance";
+      nextLabel = isLastTicket ? "Finish" : "Next ›";
+    }
+    const countHintHtml = !a.checked
+      ? `<span class="count-hint mono">${a.selected.size} of ${q.select} selected</span>`
+      : "";
+    const underSelectHtml = (underSelectNotice && underSelectNotice.qi === qi)
+      ? `<div class="select-warning" role="status"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>${SELECT_WORD[q.select]} (${q.select}) — you've picked ${underSelectNotice.have}. Select ${q.select - underSelectNotice.have} more to check this ticket.</span></div>`
+      : "";
 
     els.ticket.innerHTML = `
       <div class="perf"></div>
@@ -4921,21 +5010,25 @@
       ${q.note ? `<span class="q-note" tabindex="0" aria-label="${escAttr(q.note)}" data-tip="${escAttr(q.note)}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>Note</span>` : ""}
       ${resultBanner}
       <div class="options">${optionsHtml}</div>
-      ${actionsHtml}
+      ${countHintHtml}
+      ${underSelectHtml}
       <div class="ticketnav">
         <button class="btn ghost" id="prevBtn" ${i === 0 ? "disabled" : ""}>‹ Previous</button>
         <span class="pos mono">${i + 1} / ${state.order.length}</span>
-        <button class="btn ghost" id="nextBtn">${isLastTicket ? "Finish" : "Next ›"}</button>
+        <button class="btn-bs btn-bs-primary" id="nextBtn">${nextLabel}</button>
       </div>
       ${resolutionHtml}`;
 
     els.ticket.querySelectorAll(".opt").forEach((btn) => {
       btn.addEventListener("click", () => toggleSelect(qi, btn.dataset.k));
     });
-    document.getElementById("checkBtn")?.addEventListener("click", () => checkAnswer(qi));
-    document.getElementById("tryAgainBtn")?.addEventListener("click", () => resetOne(qi));
     document.getElementById("prevBtn").addEventListener("click", () => goTo(i - 1));
     document.getElementById("nextBtn").addEventListener("click", () => {
+      if (nextMode === "check") {
+        if (!hasFullSelection) { showUnderSelectNotice(qi, q.select, a.selected.size); return; }
+        checkAnswer(qi);
+        return;
+      }
       if (isLastTicket) { finishQuiz(); } else { goTo(i + 1); }
     });
   };
@@ -4992,6 +5085,59 @@
         </div>`
       : "";
 
+    // Certification-style weighted score: fold this round's per-topic results
+    // into Salesforce's official 7-category blueprint, weight each category's
+    // accuracy by that category's real exam weight, then renormalize across
+    // only the categories this round actually touched. Only worth showing
+    // once more than one official category is in play, for the same reason
+    // the plain by-topic breakdown above is gated the same way.
+    const byOfficialCat = {};
+    orderedCategoryNames.forEach((name) => {
+      const officialCat = EXAM_CATEGORY_MAP[name];
+      if (!officialCat) return;
+      const b = byCategory[name];
+      const bucket = byOfficialCat[officialCat] || (byOfficialCat[officialCat] = { correct: 0, total: 0 });
+      bucket.correct += b.correct;
+      bucket.total += b.total;
+    });
+    const coveredOfficialCats = Object.keys(byOfficialCat)
+      .sort((a, b) => EXAM_CATEGORY_WEIGHTS[b] - EXAM_CATEGORY_WEIGHTS[a]);
+    const coveredWeight = coveredOfficialCats.reduce((sum, c) => sum + EXAM_CATEGORY_WEIGHTS[c], 0);
+    const missingOfficialCats = Object.keys(EXAM_CATEGORY_WEIGHTS).filter((c) => !byOfficialCat[c]);
+
+    const weightedBreakdownHtml = coveredOfficialCats.length > 1
+      ? (() => {
+          const weightedSum = coveredOfficialCats.reduce((sum, c) => {
+            const b = byOfficialCat[c];
+            return sum + (b.correct / b.total) * EXAM_CATEGORY_WEIGHTS[c];
+          }, 0);
+          const weightedPct = coveredWeight ? Math.round((weightedSum / coveredWeight) * 100) : 0;
+          const passed = weightedPct >= EXAM_PASSING_PCT;
+          const rowsHtml = coveredOfficialCats.map((c) => {
+            const b = byOfficialCat[c];
+            const catPct = Math.round((b.correct / b.total) * 100);
+            const barColor = catPct >= 80 ? "var(--good)" : catPct < 50 ? "var(--bad)" : "var(--accent)";
+            return `<div class="cat-row">
+                <span class="cat-name">${esc(c)} <span class="cat-weight mono">${EXAM_CATEGORY_WEIGHTS[c]}%</span></span>
+                <div class="cat-bar"><div class="cat-bar-fill" style="width:${catPct}%; background:${barColor};"></div></div>
+                <span class="cat-score mono">${b.correct}/${b.total} · ${catPct}%</span>
+              </div>`;
+          }).join("");
+          const coverageNote = missingOfficialCats.length
+            ? `Renormalized across the ${coveredOfficialCats.length} of 7 official categories this bank covers so far (weights re-summed to 100%). Not yet covered: ${missingOfficialCats.map((c) => `${esc(c)} (${EXAM_CATEGORY_WEIGHTS[c]}%)`).join(", ")}.`
+            : `All 7 official categories covered — weights used exactly as published.`;
+          return `<div class="exam-weighted">
+              <span class="ref-label" style="display:block;">Certification-weighted score · Plat-Admn-301 blueprint</span>
+              ${rowsHtml}
+              <div class="exam-weighted-total">
+                <span>Weighted score (${coveredWeight}% of exam weight covered)</span>
+                <span class="exam-weighted-pct ${passed ? "pass" : "fail"} mono">${weightedPct}%</span>
+              </div>
+              <p class="exam-weighted-note">${coverageNote} Salesforce's real passing bar for this exam is ${EXAM_PASSING_PCT}% — this is an estimate of how that same math would score this round, not an official result.</p>
+            </div>`;
+        })()
+      : "";
+
     const reviewHtml = wrongOriginalIdx.length
       ? `<div class="review-chips">${wrongOriginalIdx.map((qi) => {
           const pos = state.order.indexOf(qi);
@@ -5014,7 +5160,8 @@
           <div><div class="num">${pct}%</div><div class="lbl">Accuracy</div></div>
         </div>
         ${categoryBreakdownHtml}
-        ${wrongOriginalIdx.length ? `<span class="ref-label" style="margin-bottom:8px;display:block;margin-top:${categoryBreakdownHtml ? "16px" : "0"};">Tickets to review</span>` : ""}
+        ${weightedBreakdownHtml}
+        ${wrongOriginalIdx.length ? `<span class="ref-label" style="margin-bottom:8px;display:block;margin-top:${(categoryBreakdownHtml || weightedBreakdownHtml) ? "16px" : "0"};">Tickets to review</span>` : ""}
         ${reviewHtml}
         ${reviewErrorsBtnHtml}
       </div>`;
@@ -5041,6 +5188,7 @@
   els.sectionSelect?.addEventListener("change", (e) => selectSection(e.target.value));
 
   document.getElementById("resetAll").addEventListener("click", () => {
+    clearUnderSelectNotice();
     state.finished = false;
     state.section = "";
     state.answers = DATA.map(() => ({selected:new Set(), checked:false, correct:null}));
