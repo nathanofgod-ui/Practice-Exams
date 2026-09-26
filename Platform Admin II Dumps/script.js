@@ -2,7 +2,7 @@
 
   const DATA = [
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"A logistics company, Nova Freight, assigns incoming shipment requests to specialized regional teams depending on the origin country. However, shipments coming from Japan require additional customs documentation before processing. The Administrator must both automate assignment and enforce required data for specific regions. Which two solutions should be implemented? Choose 2 answers",
       options:[
@@ -27,7 +27,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"A real estate company wants to dynamically display action buttons (e.g., \"Schedule Inspection\") only when a property is marked as \"Available\". Where should the admin configure this behavior?",
       options:[
@@ -51,7 +51,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"An admin created multiple record-triggered flows that run before saving on the same object. What must be considered regarding execution order?",
       options:[
@@ -75,7 +75,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"A company notices that its Lightning record pages load slowly due to many components. What should the admin use to analyze performance?",
       options:[
@@ -99,7 +99,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"A screen flow used for onboarding resets to the first screen after completion, confusing users. What is the best fix?",
       options:[
@@ -123,7 +123,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"A SaaS company wants renewal subscriptions to be created automatically once a contract is marked as completed. What is the best approach?",
       options:[
@@ -171,7 +171,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"A Company deploys metadata in two packages: one with objects, and another with automation and permissions. What must be considered?",
       options:[
@@ -195,7 +195,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"A Company wants to anonymize sensitive financial data in Sandbox environments used for testing. What should be implemented?",
       options:[
@@ -219,7 +219,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"A company wants to schedule tasks on whichever of two date fields is later. Which combination should be used? Choose 2 answers",
       options:[
@@ -265,7 +265,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"A User encounters an error when executing a flow, while others with identical roles and permissions do not experience any issue. What is the best way to troubleshoot?",
       options:[
@@ -289,7 +289,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"A System Admin receives alerts indicating that scheduled automation jobs are exceeding system limits related to delayed execution. Which two areas should be reviewed? Choose 2 answers",
       options:[
@@ -381,7 +381,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"A Company wants to send an immediate alert when a deal is approved and also send a reminder one week before the expected closing date. What is the best solution?",
       options:[
@@ -499,7 +499,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Cloud Applications",
       select:1,
       prompt:"A company wants to ensure customers receive the correct level of support based on their subscription agreements. What feature should be implemented?",
       options:[
@@ -523,7 +523,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"A global company wants to highlight accounts from a specific country due to temporary operational issues. What is the best approach?",
       options:[
@@ -663,7 +663,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:3,
       prompt:"Which three considerations apply when deploying metadata using change sets? Choose 3 answers",
       options:[
@@ -734,7 +734,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At BlueWave Consulting, employees submit leave requests through a custom Approval Process that routes requests to their direct manager. Recently, an employee reported that their request could not be submitted for approval, while others are able to submit successfully. What should the Administrator verify first to troubleshoot the issue?",
       options:[
@@ -758,7 +758,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At NextGen Support, Email-to-Case is configured to automatically create support tickets. A new Record Type was recently introduced for premium customers, but incoming emails are still creating cases with the default Record Type. What is the most likely cause?",
       options:[
@@ -830,7 +830,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At Oceanic Logistics, an Admin must update three fields on a Shipment record in a precise sequence due to dependencies in existing automations. What is the best way to ensure the updates occur in the correct order?",
       options:[
@@ -902,7 +902,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At BrightSales Inc., management requires Sales Reps to enter a business justification before moving deals to the \"Qualified\" stage. Reports show that many records still lack this information. What should the Administrator implement?",
       options:[
@@ -926,7 +926,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At KnowledgeHub Services, the Support Team wants to organize a large volume of documentation and ensure users only see relevant content based on region and product. What should the Administrator configure?",
       options:[
@@ -974,7 +974,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:2,
       prompt:"At Vertex Electronics, a new accessory product has been created and activated. However, Sales representatives report that they cannot add this product to opportunities during deal creation. The Administrator confirms that the product exists and is active. Which two checks should the Administrator perform to resolve this issue? Choose 2 answers",
       options:[
@@ -998,7 +998,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:1,
       prompt:"UrbanFit Gear is expanding into wholesale sales and wants to track those deals separately from direct-to-consumer sales. They plan to use Opportunities for wholesale deals with different pricing structures. What should the Administrator implement to ensure pricing accuracy?",
       options:[
@@ -1070,7 +1070,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At SolarEdge Solutions, Sales Reps provide multiple configurations of a system to customers before closing deals. Management wants accurate forecasting while keeping all options visible. What should reps do?",
       options:[
@@ -1094,7 +1094,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At Marathon Tracker, a master-detail relationship exists between Event and Participant. The Administrator wants to remove the relationship but keep participant data. What must be done first?",
       options:[
@@ -1190,7 +1190,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At FlexiWork Solutions, a group of floating employees support multiple departments such as Sales and Customer Support depending on workload. Each department has its own customized Lightning record pages tailored to their processes. The Administrator wants these users to automatically see the correct page layout depending on which department they are working in at a given time, without modifying profiles daily. What is the best approach to meet this requirement?",
       options:[
@@ -1238,7 +1238,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At TechNova Services, different service plans have varying contract durations, and each plan sold on an Opportunity may have unique start and end dates. These dates must be captured individually per Product sold. What is the best way to ensure accurate data capture?",
       options:[
@@ -1286,7 +1286,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At SupportPro Inc., customer complain about long wait times before cases are assigned to the correct agent based on expertise. What should the Administrator implement?",
       options:[
@@ -1358,7 +1358,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Security and Access",
       select:3,
       prompt:"At GlobalSales Corp, the Company is considering enabling territory management. Which three considerations should be evaluated? (Choose 3)",
       note:"Salesforce has since published a supported \"Disable Sales Territories\" process, so option A is technically outdated for current orgs. It's kept as correct here because it's the classic, heavily-tested fact from older documentation and most PDII study guides.",
@@ -1386,7 +1386,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At ClientFirst Solutions, a company wants a field on Account to automatically update when any related deal is marked as won. What is the best solution?",
       note:"Account and Opportunity are related by a standard Lookup relationship, not Master-Detail — that's the detail that rules out A and limits B, and is exactly what this question is testing.",
@@ -1411,7 +1411,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"At DiscountPro Inc., a User receives an error when submitting a deal for Approval. Which two causes are most likely? (Choose 2)",
       options:[
@@ -1435,7 +1435,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At EngagePlus Marketing, the leadership team wants to segment customers based on how many contacts are associated with each account. The administrator needs a solution that automatically calculates and displays the total number of related contacts directly on the Account record, without requiring manual updates or code. Which approach should the administrator implement?",
       note:"Account and Contact are related by a standard Lookup, not Master-Detail — so the native Roll-Up Summary *field type* isn't available here. (Account and Opportunity are a documented special-case exception where Roll-Up Summary fields DO work despite the Lookup relationship — that exception does not extend to Contact.) A Record-Triggered Flow is Salesforce's modern, declarative, no-code way to close that gap.",
@@ -1460,7 +1460,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At Field Ops Solutions, new feature licenses have been enabled in production. The development team needs these same licenses available in a sandbox with minimal effort. What should the Administrator do?",
       note:"Salesforce also offers a lighter, self-service \"Match Production Licenses to Sandbox\" tool (Setup → Company Information, inside the sandbox) that syncs license data without a full refresh. It isn't one of the options here, so of the four given, refreshing the sandbox is the closest documented, self-service mechanism.",
@@ -1485,7 +1485,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At ProcessFlow Inc., an Administrator is preparing to deploy Approval Process using Change Sets. They want to ensure all related Components function correctly after deployment. What should the Administrator consider?",
       note:"Field Update / Email Alert / Task actions attached to an approval process (its \"Approval Actions\") deploy fine as long as they're included as dependencies. The real risk is narrower: any step whose approver is set to a specific named User — rather than a Role, Public Group, or Queue — since that exact User may not exist (or may not match) in the target org, requiring the admin to reassign or recreate that piece of the step after deployment.",
@@ -1582,7 +1582,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At UIEnhance Corp, a typo was found a Lightning Web Component used across multiple pages. The Admin needs to correct the text. Which tool should be used?",
       note:"Developer Console can create and edit Apex classes, Visualforce pages, and Aura components, but it does not support Lightning Web Components at all — LWC source files can only be edited in a real code editor and deployed with Salesforce CLI/Metadata tooling, which is exactly what Visual Studio Code with the Salesforce Extension Pack provides.",
@@ -1607,7 +1607,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At LogiChain Systems, changes to object relationships were tested in a Sandbox and need to be deployed to production. What is the recommended approach?",
       options:[
@@ -1631,7 +1631,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At QAWorks Inc., the QA team needs a sandbox for user acceptance testing that includes a realistic — but not complete — subset of production records, with the ability to control exactly which records come over using a sandbox template. Which sandbox type should the Administrator provision?",
       options:[
@@ -1655,7 +1655,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At QAWorks Inc., a Full Sandbox was last refreshed 10 days ago. New metadata has just been deployed to production, and the Administrator wants to refresh the Full Sandbox immediately to bring it in. What should the Administrator expect?",
       options:[
@@ -1679,7 +1679,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At DealTrack Inc., a Sales rep selected the wrong Price Book on an Opportunity but has not yet added Products. How can this be corrected?",
       options:[
@@ -1728,7 +1728,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At DataSync Solutions, a developer implemented a before-trigger that sends a copy of records to an external archival system. Recently, users reported that updates are successful in Salesforce, but the external system is not receiving data, while a before-save flow on the same object continues to work correctly. What is the most likely cause of this issue?",
       note:"Salesforce's official Order of Execution actually runs before-save record-triggered Flows BEFORE \"before\" Apex triggers in the same transaction — the opposite of what option A claims. That ordering fact isn't the cause of the callout failure here either way; it just makes A doubly wrong.",
@@ -1753,7 +1753,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At SecureFinance Corp, an Admin removed Field-Level access for a sensitive field across multiple Profiles in a Sandbox. The Admin now wants to deploy this change to production efficiently. What should the Administrator do?",
       options:[
@@ -1825,7 +1825,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At CaseFlow Systems, Workflow Rules were replaced by a before-save Flow. After deployment, case assignment behaves differently. What is the most likely cause?",
       note:"Salesforce's Order of Execution puts before-save Flows very early — before the record is even first saved — while Assignment Rules run afterward, and old-style Workflow Rules run later still, after Assignment Rules. So the same logic fires at a genuinely different point in the save relative to assignment depending on which automation type carries it.",
@@ -1951,7 +1951,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:2,
       prompt:"At NovaCloud Services, an Administrator is preparing a deployment from Sandbox to Production using Change Sets. During testing, the Admin realizes that some required components were missing after the Change Set had already been uploaded. Additionally, the Admin wants to minimize deployment failures by validating changes before applying them to Production. Which two best practices should the Administrator follow to ensure a successful deployment? (Choose 2)",
       options:[
@@ -2023,7 +2023,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At MembershipPro, different teams need to view different sets of fields on the same custom object page. Marketing users should see all fields, while Support users should only see a subset. However, both teams must still be able to report on all fields. What is the best solution?",
       options:[
@@ -2047,7 +2047,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Objects and Applications",
       select:2,
       prompt:"At Global Trade Corp, the Company plans to enable Multi-Currency due to international expansion. The Admin wants to understand key System limitations enabling this feature. Which two considerations should be taken into account? (Choose 2)",
       options:[
@@ -2097,7 +2097,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Cloud Applications",
       select:3,
       prompt:"At SupportLive Corp, agents use live chat to assist customers. The admin wants to ensure agents can access helpful tools during chat sessions. Which three capabilities are supported? (Choose 3)",
       options:[
@@ -2198,7 +2198,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:2,
       prompt:"At ForecastPro Inc., sales leadership uses Collaborative Forecasts to monitor team performance. Managers want to view aggregated forecast values from their team members, including both weighted projections and total deal values. Which two values are rolled up to managers in Collaborative Forecasts? (Choose 2)",
       options:[
@@ -2247,7 +2247,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At DealSecure Ltd., the business requires that once an opportunity is marked as closed, users must not be able to modify it further. However, users must still be able to perform the action of closing the opportunity. What should the administrator configure?",
       options:[
@@ -2271,7 +2271,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:3,
       prompt:"At DeployPro Systems, an administrator uses an IDE-based deployment approach to move configuration changes between environments. Which three elements must be specified for a successful deployment? (Choose 3)",
       options:[
@@ -2298,7 +2298,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:2,
       prompt:"At CloudBridge Inc., an administrator is unable to deploy changes from sandbox to production using change sets. The system indicates that connections are not properly configured. Which two prerequisites must be satisfied? (Choose 2)",
       options:[
@@ -2396,7 +2396,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At ExecContacts Corp, the company requires that when a contact has the title \"CEO\", the phone number must always be provided. Which Validation Rule condition should be used?",
       options:[
@@ -2494,7 +2494,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"At OpportunityFlow Corp, the business wants to automatically update an Account field when a related Opportunity is marked as Closed Won. Which two solutions can achieve this requirement? (Choose 2)",
       options:[
@@ -2543,7 +2543,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At LeadRouting Inc., leads must be assigned to the correct team, approved before transfer to partners, and notifications must be sent after assignment. Which combination of tools should be used?",
       options:[
@@ -2591,7 +2591,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At DealCompliance Inc., certain fields must be completed before opportunities can move to \"Negotiation\" or \"Closed Won\" stages. Which validation logic should be implemented?",
       options:[
@@ -2640,7 +2640,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:2,
       prompt:"At QuoteMaster Inc., the sales team wants to create quotes for opportunities. The admin needs to ensure correct setup and behavior. Which two considerations are correct? (Choose 2)",
       options:[
@@ -2664,7 +2664,7 @@
       ]
     },
     {
-      topic:"Sandboxes and Environment Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At EnviroDev Corp, the company needs to create multiple identical environments with the same configuration and data as an existing sandbox. What is the best approach?",
       options:[
@@ -2715,7 +2715,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Security and Access",
       select:2,
       prompt:"At OmniRetail Group, the company serves both individual consumers and corporate clients. Some individual customers also work for companies that are clients, and the business wants to maintain both relationships. Which two features should be used to properly model this scenario? (Choose 2)",
       options:[
@@ -2741,7 +2741,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At CloudDeploy Inc., a new administrator reports that they cannot initiate outbound deployments using change sets from a sandbox. Which permission is most likely missing?",
       options:[
@@ -2766,7 +2766,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At SalesView Analytics, a company wants to display a chart on the Account page showing closed revenue. However, only users in a specific managerial role should see this chart. How should the administrator configure this?",
       options:[
@@ -2840,7 +2840,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At DataModel Pro, an administrator uses Schema Builder to design objects and fields but realizes some configurations are missing. Which configuration must be completed outside Schema Builder?",
       options:[
@@ -2988,7 +2988,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:1,
       prompt:"At ReleaseTrack Inc., a deployment fails because the source environment is on a newer platform version than the destination environment. What action should the administrator take to resolve this issue?",
       options:[
@@ -3037,7 +3037,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At DataQuality Systems, users must enter postal codes in a strict format (e.g., 12345 or 12345-6789). What should the administrator implement?",
       options:[
@@ -3061,7 +3061,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"At FlowAutomation Corp, an administrator builds a flow to assign records dynamically based on field values. Which two best practices should be followed? (Choose 2)",
       options:[
@@ -3085,7 +3085,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At AutomationDebug Inc., an administrator is troubleshooting a Process Builder and reviewing system logs. Which type of log entries should be analyzed?",
       options:[
@@ -3135,7 +3135,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:3,
       prompt:"At ReleaseOps Corp, an administrator is planning deployments using change sets and wants to minimize failures. Which three best practices should be followed? (Choose 3)",
       options:[
@@ -3186,7 +3186,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At FastData Corp, an administrator wants to replace an existing automation that updates records after they are saved. The goal is to improve performance and reduce execution time when updating simple field values during record creation. Which automation should the administrator use?",
       options:[
@@ -3210,7 +3210,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:3,
       prompt:"At GlobalForecast Inc., leadership wants sales forecasts to be analyzed both by organizational structure and by geographic territories. Users should also be able to switch between these views easily. Which three configurations should be implemented? (Choose 3)",
       options:[
@@ -3307,7 +3307,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:2,
       prompt:"At CaseFlow Inc., a flow works correctly in a sandbox but fails in production when creating records. What are two effective troubleshooting steps? (Choose 2)",
       options:[
@@ -3379,7 +3379,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At CaseNotify Corp, when specific fields on a case are updated, the case owner should automatically receive an email notification. Which automation should be used?",
       options:[
@@ -3403,7 +3403,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:3,
       prompt:"At DeployFlow Corp, an administrator deploys a flow using a change set and wants to understand how deployment behaves. Which three statements are correct? (Choose 3)",
       options:[
@@ -3430,7 +3430,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At SupportPro Solutions, customer service agents frequently work with multiple records such as accounts, opportunities, and cases at the same time. Currently, agents are opening multiple browser tabs to manage their workload, which has led to confusion, inefficiency, and difficulty tracking active records. Management wants to improve agent productivity by allowing users to view and navigate multiple related records within a single interface without switching browser tabs. What should the administrator recommend to meet this requirement?",
       options:[
@@ -3454,7 +3454,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At RealEstateSync Corp, the company uses an external listing platform that supports receiving updates through an API endpoint. When a property price is approved internally, the system should automatically send an update to the external platform. The solution must be scalable and event-driven, without requiring synchronous processing. What should the administrator implement?",
       options:[
@@ -3478,7 +3478,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At ProductSales Corp, an administrator is preparing to enable product schedules. Before doing so, they want to understand how product schedules behave in relation to products and pricing. Which key consideration should the administrator keep in mind?",
       options:[
@@ -3552,7 +3552,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:3,
       prompt:"At AutomationFix Corp, a newly deployed automation is causing errors and preventing users from saving records. What three steps should the administrator take to resolve the issue? (Choose 3)",
       options:[
@@ -3579,7 +3579,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:3,
       prompt:"At LightningUX Corp, users report slow page load times on record pages. Which three actions should the administrator take to improve performance? (Choose 3)",
       options:[
@@ -3607,7 +3607,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:2,
       prompt:"At PerformanceInsight Corp, the administrator wants to analyze the performance of Lightning record pages. Which two tools can be used? (Choose 2)",
       options:[
@@ -3707,7 +3707,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At CloudStep Inc., users are encountering an error message indicating that system processing time limits are being exceeded when updating records. The administrator needs to determine which part of the automation or code is causing excessive processing time. What is the most effective way to identify the root cause of this issue?",
       options:[
@@ -3731,7 +3731,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At SolarView Systems, a custom object contains a checkbox field that determines whether additional technical details should be displayed to users. The requirement is to dynamically show or hide specific fields on the record page based on whether this checkbox is selected. Which Lightning feature should the administrator use to meet this requirement?",
       options:[
@@ -3805,7 +3805,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Cloud Applications",
       select:1,
       prompt:"At TechSoft Corp, the company sells products that include bundled support services. Management wants to ensure that when a product is sold, a support agreement is automatically assigned to the customer without manual intervention. What is the most appropriate solution?",
       options:[
@@ -3830,7 +3830,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At FlowTest Corp, an administrator is testing a flow that includes a step to delete records. During testing, the admin is concerned about the impact of running the flow in debug mode. What should the administrator be aware of when debugging this flow?",
       options:[
@@ -3854,7 +3854,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Environment Management and Deployment",
       select:3,
       prompt:"At DeploySmart Corp, an administrator is planning a deployment strategy using change sets across environments. Which three best practices should be followed? (Choose 3)",
       options:[
@@ -3882,7 +3882,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At ProcessFlow Corp, a process automation should trigger when a field is updated by an approval process. However, the automation only triggers when users manually update the field. What should the administrator modify to resolve this issue?",
       options:[
@@ -3930,7 +3930,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At ProcessControl Corp, the development team has implemented an Apex trigger to automate a business process. However, the administrator wants to control which users are impacted by this logic without modifying the code each time. The requirement is to enable or disable the trigger's behavior for specific users dynamically through configuration. What should the administrator request to achieve this requirement?",
       options:[
@@ -4051,7 +4051,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At ActionVisibility Corp, users from different departments use the same object but require different action buttons depending on their role. Currently, all users see all actions, leading to confusion. What is the best solution?",
       options:[
@@ -4125,7 +4125,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Cloud Applications",
       select:2,
       prompt:"At KnowledgeSearch Corp, users report difficulty finding relevant knowledge articles even though categories are already defined. The administrator wants to improve search accuracy. Which two enhancements should be implemented? (Choose 2)",
       options:[
@@ -4149,7 +4149,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:2,
       prompt:"At EscalationFlow Corp, the company wants to display an escalation action on account records only when there are more than five open high-value deals associated with the account. Which two configurations should be implemented? (Choose 2)",
       options:[
@@ -4223,7 +4223,7 @@
       ]
     },
     {
-      topic:"Lightning App Builder and Page Customization",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At Cloud Kicks, the sales team relies heavily on a dashboard to track daily performance metrics. However, users must navigate through multiple steps to access it, which reduces adoption. What should the administrator recommend to improve accessibility?",
       options:[
@@ -4273,7 +4273,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Auditing and Monitoring",
       select:1,
       prompt:"At Cloud Kicks, updates were made to picklist values used in a web-to-lead form. Leads are being created successfully, but sales reps encounter errors when attempting to update or process these leads. Which tool should the administrator use to identify the root cause of these errors?",
       options:[
@@ -4347,7 +4347,7 @@
       ]
     },
     {
-      topic:"Change Management",
+      topic:"Auditing and Monitoring",
       select:1,
       prompt:"At AW Computing, a deployment that previously succeeded in a sandbox is now failing in production. The sandbox was refreshed two weeks ago, and the administrator suspects changes have been made in production since then. Where should the administrator look to identify recent configuration changes?",
       options:[
@@ -4372,7 +4372,7 @@
       ]
     },
     {
-      topic:"Data and Analytics Management",
+      topic:"Objects and Applications",
       select:1,
       prompt:"At DreamHouse Realty, the business is expanding from selling only single-family homes to also handling condominium properties. Certain fields, such as HOA fees and shared amenities, apply only to condos, while others apply only to single-family homes. The administrator needs to ensure that users only see fields relevant to the type of property they are working with, while maintaining a clean and user-friendly interface. What is the best approach to meet this requirement?",
       options:[
@@ -4520,7 +4520,7 @@
       ]
     },
     {
-      topic:"Process Automation and Logic",
+      topic:"Process Automation",
       select:1,
       prompt:"At AutomationInsight Corp, an administrator needs to troubleshoot a process automation that is failing during execution. Which tool should be used to analyze detailed execution steps and identify errors?",
       options:[
@@ -4622,46 +4622,68 @@
   // single-section queue); omit it for the full deck.
   const buildOrder = (indices) => shuffleArray(indices || DATA.map((_, i) => i));
 
-  // Section list is derived from whatever topics actually appear in DATA, in
-  // the order each topic is first seen — no fixed exam blueprint is assumed,
-  // so new topics just slot in as questions are added.
-  const SECTION_ORDER = DATA.reduce((acc, q) => (acc.includes(q.topic) ? acc : [...acc, q.topic]), []);
+  // Topics as they first appear in DATA — just the raw discovery order,
+  // reordered below into the exam guide's own section order.
+  const FIRST_SEEN_ORDER = DATA.reduce((acc, q) => (acc.includes(q.topic) ? acc : [...acc, q.topic]), []);
 
   // The real Salesforce Certified Advanced Administrator exam (Plat-Admn-301 —
   // "Platform Administrator II") weights its 7 official content categories
-  // unevenly when computing a candidate's overall score. These weights come
-  // from the official exam guide / blueprint (cross-checked against multiple
-  // current third-party study sources, since Salesforce doesn't republish the
-  // guide as a plain webpage): Security and Access 20%, Process Automation
-  // 20%, Objects and Applications 19%, Data and Analytics Management 13%,
-  // Cloud Applications 11%, Auditing and Monitoring 10%, Environment
-  // Management and Deployment 7%. This bank's own topic tags are finer-
-  // grained / differently named than that 7-category blueprint, so
-  // EXAM_CATEGORY_MAP folds each of ours into the one official category it
-  // actually belongs to. There are currently no questions tagged for "Cloud
-  // Applications" (Sales/Service Cloud app config — quotes, price books,
-  // Knowledge, entitlements) — the weighted score below is renormalized
-  // across whichever official categories this bank does cover, and says so.
+  // unevenly when computing a candidate's overall score. These weights and
+  // this exact section order come straight from Salesforce's own published
+  // exam guide's "Exam Outline" section
+  // (https://help.salesforce.com/s/articleView?id=005298969&type=1&language=en_US):
+  // Security and Access 20%, Objects and Applications 19%, Auditing and
+  // Monitoring 10%, Cloud Applications 11%, Data and Analytics Management
+  // 13%, Environment Management and Deployment 7%, Process Automation 20%.
+  // Every question's own topic tag is now one of these exact 7 official
+  // category names (previously the bank used its own finer-grained, oddly-
+  // named tags — "Lightning App Builder and Page Customization", "Process
+  // Automation and Logic", and two separate tags, "Change Management" and
+  // "Sandboxes and Environment Management", both of which the guide actually
+  // treats as one single "Environment Management and Deployment" category —
+  // which meant the section picker showed 8 "sections" the real exam doesn't
+  // recognize, 4 of them under names the guide never uses. EXAM_CATEGORY_MAP
+  // is now an identity map, kept only so the scoring code below still has one
+  // place to translate a topic to its official category if that ever changes
+  // again.
   const EXAM_CATEGORY_WEIGHTS = {
     "Security and Access": 20,
-    "Process Automation": 20,
     "Objects and Applications": 19,
-    "Data and Analytics Management": 13,
-    "Cloud Applications": 11,
     "Auditing and Monitoring": 10,
-    "Environment Management and Deployment": 7
+    "Cloud Applications": 11,
+    "Data and Analytics Management": 13,
+    "Environment Management and Deployment": 7,
+    "Process Automation": 20
   };
   const EXAM_CATEGORY_MAP = {
     "Security and Access": "Security and Access",
-    "Process Automation and Logic": "Process Automation",
-    "Process Automation": "Process Automation",
-    "Data and Analytics Management": "Data and Analytics Management",
-    "Lightning App Builder and Page Customization": "Objects and Applications",
+    "Objects and Applications": "Objects and Applications",
     "Auditing and Monitoring": "Auditing and Monitoring",
-    "Change Management": "Environment Management and Deployment",
-    "Sandboxes and Environment Management": "Environment Management and Deployment"
+    "Cloud Applications": "Cloud Applications",
+    "Data and Analytics Management": "Data and Analytics Management",
+    "Environment Management and Deployment": "Environment Management and Deployment",
+    "Process Automation": "Process Automation"
   };
   const EXAM_PASSING_PCT = 65;
+
+  // The exam guide's own top-to-bottom section order (the insertion order of
+  // EXAM_CATEGORY_WEIGHTS above, which is written out in that exact order).
+  // Every internal topic is re-sorted by the position of the official
+  // category it maps to, so the section picker and both breakdowns below
+  // read in the same order the published guide lists its sections in —
+  // rather than whatever order questions happen to appear in the bank.
+  // Ties (two internal topics folding into the same official category, e.g.
+  // Change Management and Sandboxes and Environment Management, both under
+  // "Environment Management and Deployment") keep their original first-seen
+  // relative order, since Array#sort is stable. A topic with no mapping
+  // (shouldn't happen, but a safety net) sorts to the end instead of the
+  // front.
+  const EXAM_BLUEPRINT_ORDER = Object.keys(EXAM_CATEGORY_WEIGHTS);
+  const blueprintRank = (topicName) => {
+    const idx = EXAM_BLUEPRINT_ORDER.indexOf(EXAM_CATEGORY_MAP[topicName]);
+    return idx === -1 ? Infinity : idx;
+  };
+  const SECTION_ORDER = FIRST_SEEN_ORDER.slice().sort((a, b) => blueprintRank(a) - blueprintRank(b));
 
   // Ticket indices whose topic matches a given section name, in DATA order.
   const sectionIndices = (name) => DATA.reduce((acc, q, i) => (q.topic === name ? [...acc, i] : acc), []);
@@ -5101,7 +5123,7 @@
       bucket.total += b.total;
     });
     const coveredOfficialCats = Object.keys(byOfficialCat)
-      .sort((a, b) => EXAM_CATEGORY_WEIGHTS[b] - EXAM_CATEGORY_WEIGHTS[a]);
+      .sort((a, b) => EXAM_BLUEPRINT_ORDER.indexOf(a) - EXAM_BLUEPRINT_ORDER.indexOf(b));
     const coveredWeight = coveredOfficialCats.reduce((sum, c) => sum + EXAM_CATEGORY_WEIGHTS[c], 0);
     const missingOfficialCats = Object.keys(EXAM_CATEGORY_WEIGHTS).filter((c) => !byOfficialCat[c]);
 
