@@ -1389,7 +1389,6 @@
       topic:"Process Automation",
       select:1,
       prompt:"At ClientFirst Solutions, a company wants a field on Account to automatically update when any related deal is marked as won. What is the best solution?",
-      note:"Account and Opportunity are related by a standard Lookup relationship, not Master-Detail — that's the detail that rules out A and limits B, and is exactly what this question is testing.",
       options:[
         {k:"A", t:"Roll-Up Summary Field"},
         {k:"B", t:"Workflow Rule"},
@@ -1398,16 +1397,17 @@
       ],
       correct:["C"],
       explanation:
-`**Why C is right.** The standard relationship between Opportunity and Account is a Lookup, not a Master-Detail relationship. An Apex trigger on Opportunity (firing on insert/update when StageName becomes "Closed Won") can query and update any related Account record directly, completely independent of the relationship type — making it the only option here that reliably works for a Lookup-related update like this one.
+`**Why C is right.** An Apex Trigger on Opportunity (firing on insert/update when StageName becomes "Closed Won") can query and update any related Account record directly. It's general-purpose, works regardless of relationship type, and isn't affected by the retirement of any declarative tool — which matters here, since the other two automation options on this list are no longer viable ways to build this today.
 
-**Why A is wrong.** Roll-Up Summary fields only exist on the master side of a Master-Detail relationship, rolling up values from the detail/child object. Since Account and Opportunity are connected by a Lookup, not Master-Detail, a Roll-Up Summary field is not even offered as an option to create here.
+**Why A is wrong.** Roll-Up Summary fields are limited to aggregate calculations — COUNT, SUM, MIN, or MAX of a single child field — recalculated automatically whenever a related record changes. (Account/Opportunity is actually a documented exception to the "master-detail only" rule: Salesforce does support native Roll-Up Summary fields for this specific standard pairing, despite it technically being a Lookup relationship.) But "automatically update a field when a deal is won" calls for logic beyond a plain COUNT/SUM/MIN/MAX, which a Roll-Up Summary simply can't express, exception or not.
 
-**Why B is wrong.** A Workflow Rule's field update can only write to the record that triggered it, or — when the object sits on the detail side of a Master-Detail relationship — to its master record. It has no mechanism to reach across a Lookup relationship to update a different, related record like the Opportunity's Account.
+**Why B is wrong.** Salesforce disabled the ability to create new Workflow Rules before Workflow Rules and Process Builder reached end of support on December 31, 2025. Existing Workflow Rules keep running, but an admin can't build a new one today — so it isn't an available tool for a fresh piece of automation like this one, regardless of what it could technically reach in the past.
 
 **Why D is wrong.** Validation Rules only block or allow a save based on conditions; they have no ability to write or update field values on any record, related or otherwise.`,
       sources:[
-        {l:"4 Ways to Create Roll-Up Summary Fields on Lookup Relationships — Salesforce Ben", u:"https://www.salesforceben.com/4-ways-to-create-roll-up-summary-fields-on-lookup-relationships-in-salesforce/"},
-        {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"}
+        {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"},
+        {l:"Salesforce Cross-Object Formulas vs. Roll-Up Summary Fields — Salesforce Ben", u:"https://www.salesforceben.com/salesforce-cross-object-formulas-vs-roll-up-summary-fields/"},
+        {l:"Workflow Rules & Process Builder End of Support — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=001096524&language=en_US&type=1"}
       ]
     },
     {
@@ -2455,7 +2455,6 @@
         {k:"D", t:"View All"}
       ],
       correct:["A"],
-      note:"Corrected after user follow-up: this question originally marked 'View All' as correct based on a Trailblazer Community forum answer, but Salesforce's own official 'Merge Duplicate Leads in Salesforce Classic' Help article — which the Find Duplicates button's own Help page explicitly cites as the authoritative source for its permission requirements — states plainly under \"User Permissions Needed\": \"To view leads: Read on leads. To merge leads: Delete on leads.\" There's no mention of View All anywhere in that official documentation. Delete is also the well-known 'gotcha' fact behind a real Salesforce IdeaExchange request titled \"Find Duplicates Button without 'Delete Leads' permission,\" which only makes sense if Delete is indeed the current, counterintuitive requirement admins are asking Salesforce to remove.",
       explanation:
 `**Why A is right.** Salesforce's official documentation on merging duplicate leads is explicit: viewing leads only requires Read, but the button that starts the Find Duplicates/merge workflow requires Delete on Leads — because the whole point of finding duplicates is to eventually merge them, and merging permanently deletes the losing record(s). Salesforce gates the button on Delete specifically so it isn't shown to users who couldn't complete that follow-on action anyway. It's a widely-cited "gotcha" for admins, since Delete feels like an unrelated permission for what looks like a read-only search.
 
@@ -3662,7 +3661,7 @@
       prompt:"At AccountVisibility Corp, accounts are private, but managers need access to all records across teams. What should the administrator implement?",
       options:[
         {k:"A", t:"Change Sharing Settings to Public"},
-        {k:"B", t:"Move Users higher in archy"},
+        {k:"B", t:"Move Users higher in the Role Hierarchy"},
         {k:"C", t:"Grant a Permission that overrides Sharing"},
         {k:"D", t:"Create Manual Sharing for each Account"}
       ],
@@ -4593,6 +4592,299 @@
         {l:"Activate Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=fields_activating_field_validation_rules.htm&type=5"},
         {l:"Managing Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_managing_field_validation.htm&language=en_US&type=5"}
       ]
+    },
+    {
+      topic:"Process Automation",
+      select:2,
+      prompt:"Cloud Kicks wants to force its users to set a value for a custom field called Tier by answering a series of questions. What two functions should the administrator use to ensure that users cannot bypass answering these questions in order to determine their Tier value. Choose 2 answers",
+      options:[
+        {k:"A", t:"Set up a ListView for the list of questions"},
+        {k:"B", t:"Set up a restriction rule on the Field"},
+        {k:"C", t:"Use a Screen Flow to ask the questions"},
+        {k:"D", t:"Make the field Read-Only on the Page Layout"}
+      ],
+      correct:["C","D"],
+      explanation:
+`**Why C is right.** A Screen Flow is purpose-built for walking a user through a guided series of questions, and it can carry logic (decision elements, formulas) that derives a value — here, Tier — from the answers before writing it to the record. Pairing it with D forces every Tier update to go through that guided path instead of a free-form field edit.
+
+**Why D is right.** Making Tier Read-Only on the Page Layout removes the user's ability to type directly into the field from the record detail or edit page. Since a Screen Flow updates the field through its own Update Records element rather than through the page layout, it isn't blocked by that read-only setting — so the field can still only be populated by actually completing the flow's questions, not by bypassing them with a manual edit.
+
+**Why A is wrong.** A list view only changes how a set of records or list-type data is displayed and filtered. It has no mechanism to require completion of anything before a value is saved, so it does nothing to stop someone from setting Tier directly.
+
+**Why B is wrong.** Restriction rules control which records a user can see in list views and related lists — row-level visibility filtering on standard and custom objects. They have no bearing on whether a field can be edited, so they can't be used to lock down or gate entry into the Tier field.`,
+      sources:[
+        {l:"Getting Started with Screen Flows — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.automate_flow_build_get_started_screen_flows.htm&language=en_US&type=5"},
+        {l:"Page Layouts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.customize_layout.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Security and Access",
+      select:1,
+      prompt:"An administrator created two record types on the Account object: Internal Customers and External Customers. A custom profile called Sales has the External Customers record type assigned. The sharing rules for Accounts are set to Public Read Only. On occasion, Sales users notice that an Account record has the wrong record type assigned. The administrator has created a screen flow that will change the record type on the user's behalf. What will happen to the Sales user's record access after running this flow?",
+      options:[
+        {k:"A", t:"A new record owner will be assigned"},
+        {k:"B", t:"Read Access will be lost to the record"},
+        {k:"C", t:"Record Access remains the same"},
+        {k:"D", t:"Edit access will be lost to the record"}
+      ],
+      correct:["C"],
+      note:"Record type and record access are two unrelated systems in Salesforce, and this question tests that distinction directly. Which record types a profile has assigned only controls which record type a user can pick when creating or changing a record's type through the UI — it has no bearing on who can already read or edit that record, which is governed entirely by org-wide defaults, role hierarchy, and sharing rules.",
+      explanation:
+`**Why C is right.** Record access in Salesforce comes from the org-wide default, role hierarchy, sharing rules, and manual/Apex sharing — never from record type. The screen flow here only updates the record's RecordTypeId field; it doesn't touch OwnerId or trigger any sharing recalculation, so nothing about who can read or edit that Account changes. With Accounts set to Public Read Only org-wide, every user, including the Sales user, already has read access to every Account regardless of its record type, and edit access is driven by ownership/sharing rather than by which record types happen to be assigned to a profile.
+
+**Why A is wrong.** Nothing in the scenario has the flow reassign the record's owner — it only changes the record type. OwnerId is a completely separate field, and updating RecordTypeId has no side effect on it.
+
+**Why B is wrong.** Public Read Only org-wide defaults already grant every user read access to every Account record. A record type change doesn't reduce that baseline, since record type isn't a factor in the read-access calculation at all.
+
+**Why D is wrong.** A profile's assigned record types only restrict which record type a user can select when creating or editing that field through the UI — they don't retroactively strip edit rights the user already had (or didn't have) via sharing. Edit access is unaffected by which record type ends up on the record.`,
+      sources:[
+        {l:"Considerations for Creating and Updating Record Types and Picklists — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.customize_recordtype_considerations.htm&language=en_US&type=5"},
+        {l:"Organization-Wide Sharing Defaults — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.security_sharing_owd_about.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Cloud Applications",
+      select:1,
+      prompt:"A sales rep at Ursa Major Solar was assigned to a role under their manager and is the record owner of several opportunities; however, the sales rep is missing from the manager's forecast. What should the administrator review to solve this issue?",
+      options:[
+        {k:"A", t:"Enable manager adjustments"},
+        {k:"B", t:"Allow Forecasting"},
+        {k:"C", t:"Enable owner adjustment"},
+        {k:"D", t:"Allow Override Forecasts"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Being included in a manager's Collaborative Forecast takes three things lining up: the user's role sits under the manager in the forecast hierarchy, the user owns opportunities that roll up into a forecast, and the "Allow Forecasting" checkbox is selected on that user's own record (Setup → Users → edit the user, under General Information). The scenario already confirms the first two are in place, which points straight at the third — an unchecked "Allow Forecasting" box excludes a user from the forecast hierarchy entirely, no matter where their role sits or what they own.
+
+**Why A is wrong.** "Enable Manager Adjustments" is an org-level Forecasts Settings option that controls whether a manager can manually override the rolled-up forecast amounts of the people below them. It has no effect on whether a given user is included as a forecast participant in the first place.
+
+**Why C is wrong.** "Enable Owner Adjustments" is the companion org-level setting that lets the record owner adjust their own forecast amount. Like manager adjustments, it governs the ability to override a number that's already being forecast — it doesn't determine whether the rep shows up in the hierarchy at all.
+
+**Why D is wrong.** "Override Forecasts" is a profile-level user permission tied to manually overriding forecast amounts, not to forecast hierarchy membership. A user can have or lack this permission and still be fully included in — or excluded from — the forecast independent of it.`,
+      sources:[
+        {l:"Give Users Access to Forecasts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sales.forecasts3_users_access_parent.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Objects and Applications",
+      select:1,
+      prompt:"On the Planet custom object, Ursa Major Solar's sales director wants only certain action buttons to appear depending on if a given planet is defined as gaseous. Which Lightning component should the administrator define dynamic action buttons?",
+      options:[
+        {k:"A", t:"Related Lists"},
+        {k:"B", t:"Highlights Panel"},
+        {k:"C", t:"Activities"},
+        {k:"D", t:"Record Detail"}
+      ],
+      correct:["B"],
+      note:"This bank already has a question testing the exact same fact — Dynamic Actions with a field-based visibility filter, configured on the Highlights Panel — using a real estate/property \"Available\" scenario instead of Ursa Major Solar's \"gaseous\" planets. Kept as a second pass at recognizing the same underlying feature under different option wording and a different narrative.",
+      explanation:
+`**Why B is right.** Dynamic Actions — quick action buttons that only render when a filter condition on the record is met — are configured on the Highlights Panel in Lightning App Builder. The admin selects the Highlights Panel on the Planet record page, enables Dynamic Actions, adds the relevant action, and attaches a filter such as Gaseous equals True, so that action only appears on gaseous planets.
+
+**Why A is wrong.** Related Lists display child/related records for the current record. It's a data-display component with no mechanism to host or filter quick action buttons.
+
+**Why C is wrong.** Activities shows the task/event feed (logged calls, upcoming meetings, emails) for a record. It has no concept of quick actions or field-based visibility filters.
+
+**Why D is wrong.** Record Detail renders the record's own fields (and, through Dynamic Forms, can conditionally show or hide individual fields). Conditionally showing action buttons is the Highlights Panel's job, not Record Detail's — mixing up Dynamic Forms (fields) with Dynamic Actions (buttons) is a common but incorrect substitution.`,
+      sources:[
+        {l:"Create Dynamic Actions in Lightning App Builder — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=platform.lightning_app_builder_create_dynamic_action.htm&type=5"},
+        {l:"Salesforce Dynamic Actions — Overview & Deep Dive Tutorial — Salesforce Ben", u:"https://www.salesforceben.com/salesforce-dynamic-actions-overview/"}
+      ]
+    },
+    {
+      topic:"Security and Access",
+      select:1,
+      prompt:"A user accidentally created a duplicate opportunity and is unable to delete the duplicate record. What should an administrator do to troubleshoot this issue?",
+      options:[
+        {k:"A", t:"Check the user profile permissions on the Opportunity object to see if they have permission to delete"},
+        {k:"B", t:"Advise the user to mark the duplicate opportunity Closed Lost and keep it in the system"},
+        {k:"C", t:"Run a report of all opportunities to identify other possible duplicates"},
+        {k:"D", t:"Change the user's profile to System Administrator so they have full permissions to delete object records"}
+      ],
+      correct:["A"],
+      explanation:
+`**Why A is right.** Delete is its own distinct object-level permission, separate from Create, Read, and Edit — a user can fully own a record and still lack the ability to delete it if that permission isn't granted on their profile or a permission set. Checking Opportunity object permissions is the direct, root-cause diagnostic step for a user who can't delete a specific record type.
+
+**Why B is wrong.** Marking the record Closed Lost sidesteps the actual problem instead of solving it. It doesn't address why the user can't delete, and it leaves an unwanted duplicate sitting in the system rather than actually resolving the data-quality issue.
+
+**Why C is wrong.** Auditing for other duplicates org-wide is a reasonable general practice, but it's a different question entirely — it does nothing to explain or fix why this one user can't delete this one record.
+
+**Why D is wrong.** Granting System Administrator to fix a single missing object permission is a wildly disproportionate workaround that violates least-privilege access. It isn't a troubleshooting step — it's overprovisioning access to mask the real, narrower gap.`,
+      sources:[
+        {l:"Object Permissions — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.users_profiles_object_perms.htm&type=5"}
+      ]
+    },
+    {
+      topic:"Security and Access",
+      select:1,
+      prompt:"DreamHouse Realty (DR) wants to ensure that its data is protected. There have been several recent attempts to phish employees. What should DR do to help ensure that the user that is logged in is the right user when the running user is trying to view reports and dashboards?",
+      options:[
+        {k:"A", t:"Require a high assurance session when exporting or printing reports and dashboards"},
+        {k:"B", t:"Require MFA when users need to view and export dashboards and reports"},
+        {k:"C", t:"Require a Username, Password, and Security Token when logging in"},
+        {k:"D", t:"Set up an authentication provider for reports and dashboards"}
+      ],
+      correct:["A"],
+      note:"Session Security Level Policies include a dedicated Reports and Dashboards setting — \"raise session to high assurance when exporting or printing\" — which is a distinct feature from the general login-time MFA requirement tested elsewhere in this bank. This question is about re-verifying identity mid-session at the moment of a sensitive action, not about the initial login challenge.",
+      explanation:
+`**Why A is right.** Setup's Identity Verification settings include a Session Security Level Policy specifically for Reports and Dashboards, with an option to raise the session to High Assurance when exporting or printing. That forces the user to re-verify their identity at the exact moment they try to pull data out of the system — precisely the moment a hijacked or phished session would be most valuable to an attacker, and precisely what DR is asking to guard against.
+
+**Why B is wrong.** MFA is enforced at login for every direct UI session, but it isn't something an admin selectively requires only for the "view/export dashboards" action inside an already-authenticated session. That per-action step-up challenge is exactly what High Assurance session security is for; MFA itself is typically the method used to satisfy that step-up, not a separate control layered onto specific in-app actions.
+
+**Why C is wrong.** Username, password, and a security token is the legacy authentication model used mainly for API/non-browser access when a login isn't coming from a trusted IP range. It has nothing to do with re-verifying identity mid-session for a specific in-app action like viewing or exporting a report.
+
+**Why D is wrong.** An authentication provider configures how a session is established in the first place — for example, letting users log in via an external identity provider (SSO into Salesforce). It doesn't govern whether an already-logged-in user gets re-challenged before a sensitive action.`,
+      sources:[
+        {l:"Require High-Assurance Session Security for Sensitive Operations — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=xcloud.security_auth_require_ha_session.htm&language=en_US&type=5"},
+        {l:"Modify Session Security Settings — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=xcloud.admin_sessions.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Security and Access",
+      select:1,
+      prompt:"AW Computers has enabled the feature for Contact to multiple Accounts. A rep is trying to remove the primary Account from a Contact but is unable to do so. The administrator has already updated the page layout to no longer require an Account. What could be the issue?",
+      options:[
+        {k:"A", t:"A primary Account relationship is required on a Contact regardless of the page layout settings"},
+        {k:"B", t:"Private Contacts need to be enabled in Setup"},
+        {k:"C", t:"The Account Contact Relationship record needs to be deleted first in order to disassociate the Contact from the Account"},
+        {k:"D", t:"The Contact has indirect relationships to other Accounts"}
+      ],
+      correct:["D"],
+      explanation:
+`**Why D is right.** Salesforce's own documentation on Contacts to Multiple Accounts is explicit: when a contact has indirect relationships to other accounts, that contact must have a primary account — it can't become a private (accountless) contact. So even after the page layout no longer requires Account, the underlying data model still blocks blanking it out as long as Account Contact Relationship records still tie this Contact to other Accounts. The primary Account has to stay in place to anchor those indirect relationships.
+
+**Why A is wrong.** A primary Account isn't unconditionally required — Salesforce fully supports accountless "private contacts" once the page layout no longer requires Account, which is exactly what the admin already configured here. The requirement only kicks back in specifically because indirect relationships exist, not as a blanket rule that ignores layout settings entirely.
+
+**Why B is wrong.** Per Salesforce's own help documentation, enabling the ability to create private contacts is achieved by adjusting the contact page layout so Account isn't required — which the admin has already done. There's no separate "Private Contacts" toggle elsewhere in Setup still missing here.
+
+**Why C is wrong.** This gets the relationship backwards. The indirect Account Contact Relationship records are what require a primary Account to exist in the first place — deleting them isn't a prerequisite step the platform expects before blanking the primary Account; rather, their continued existence is the reason the primary Account can't be removed yet.`,
+      sources:[
+        {l:"Considerations for Relating a Contact to Multiple Accounts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sales.shared_contacts_considerations.htm&type=5"},
+        {l:"Allow Users to Create Private Contacts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.contacts_private.htm&type=5"}
+      ]
+    },
+    {
+      topic:"Process Automation",
+      select:2,
+      prompt:"AW Computing wants to create a process to assign accounts to different salespeople based on the annual revenue of the company. The administrator has decided to create a flow. Which two considerations should the administrator make sure to remember when creating the flow? Choose 2 answers",
+      options:[
+        {k:"A", t:"Use a Get Record component instead of hard coding record IDs"},
+        {k:"B", t:"Update Record elements should be placed inside the flow loop"},
+        {k:"C", t:"Update record elements should be placed outside the flow loop"},
+        {k:"D", t:"The running user of a flow is the user that last saved the flow"}
+      ],
+      correct:["A","C"],
+      note:"This bank already has a question testing the same two underlying facts — avoid hardcoded IDs, and bulkify by moving DML outside the loop — through a generic \"FlowAutomation Corp\" scenario with more abstract option wording. Kept as a second pass using the exact Salesforce UI terms (\"Get Record component,\" \"Update Record elements\") and a real, specific business scenario.",
+      explanation:
+`**Why A is right.** Hardcoding a record ID (a specific salesperson's User ID, a queue ID, etc.) ties the flow to that exact org and that exact record. It breaks the moment the flow is deployed to a sandbox or another org where that ID doesn't exist, or if the referenced record is ever deleted. A Get Records element looks the record up dynamically — by name, developer name, or another stable identifier — so the flow keeps working across environments and as data changes.
+
+**Why C is right.** This flow will loop over a set of Account records and update each one's owner. Salesforce's own Flow guidance is explicit that Get/Create/Update/Delete Records elements shouldn't sit inside a loop — instead, collect what needs to change in a collection variable while looping, then run a single Update Records element on that whole collection after the loop finishes. That single-pass pattern is what keeps a bulk update like this one from burning through DML governor limits.
+
+**Why B is wrong.** This is the reverse of the correct practice. Placing Update Records inside the loop means one DML operation per iteration — exactly the anti-pattern that risks hitting governor limits once the Account list is more than a handful of records.
+
+**Why D is wrong.** This is a well-known Flow misconception. The running user is determined by how and where the flow is invoked — the interacting user for a screen flow, the triggering user's context (or the Automated Process/Default Workflow user) for various autolaunched and scheduled flows — never simply "whoever last saved the flow." Assuming that would lead an admin to badly misjudge what access and sharing rules actually apply when the flow runs.`,
+      sources:[
+        {l:"Why You Should Avoid Hard Coding and Three Alternative Solutions — Salesforce Admins Blog", u:"https://admin.salesforce.com/blog/2021/why-you-should-avoid-hard-coding-and-three-alternative-solutions"},
+        {l:"Optimize Salesforce Flow Limits & Best Practices — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/flow-implementation-1/avoid-flow-limits"},
+        {l:"Understanding Running User for Scheduled Flows — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=002471425&language=en_US&type=1"}
+      ]
+    },
+    {
+      topic:"Security and Access",
+      select:1,
+      prompt:"The finance director at Cloud Kicks asks the administrator for an exception report that shows all B2C accounts that are missing the credit card number. The credit card number is a classic encrypted field. What action should the administrator take to meet this requirement?",
+      options:[
+        {k:"A", t:"Add 'View Encrypted Fields' to a permission set assigned to Finance and system administrators and a summary report filtered by credit card number"},
+        {k:"B", t:"Create a summary report that includes a cross-filter to the Account object with a sub-filter for credit card number equal to null"},
+        {k:"C", t:"Build a custom checkbox called 'Has Credit Card' that Finance checks when a credit card is recorded and a tabular report filtered on the checkbox equal to false"},
+        {k:"D", t:"Unmask the encrypted credit card number field to make it available and add a custom filter to a report where credit card number is blank"}
+      ],
+      correct:["C"],
+      note:"This bank already has a nearly identical question testing the exact same fact — a SecureBank Corp scenario with the same finance-report-on-a-missing-encrypted-credit-card-number setup and the same correct answer (a manually-maintained helper checkbox). Kept as a close repeat since it's a real, separately-worded exam question the user encountered, with different option phrasing (permission set language, cross-filter sub-filter framing, and an 'unmask the field' distractor) worth recognizing on its own terms.",
+      explanation:
+`**Why C is right.** Classic encrypted fields carry a hard platform restriction: Salesforce's own documentation states they "aren't available for use in filters such as list views, reports, roll-up summary fields, and rule filters." That's absolute — no permission, filter type, or "unmasking" step lifts it, because the field's ciphertext simply can't be evaluated in filter logic, including a plain blank/null check. The documented workaround is to keep a separate, ordinary (unencrypted) field alongside the real one that simply flags whether it's populated. A manually-checked "Has Credit Card" checkbox is fully reportable like any other field, so filtering a tabular report on that checkbox equal to false gives Finance exactly the exception report they asked for, without ever needing to filter on the protected field itself.
+
+**Why A is wrong.** "View Encrypted Data" (not literally "View Encrypted Fields") only controls whether an authorized user sees the decrypted plain-text value instead of asterisks — it has no effect on the field's underlying filter restriction. An encrypted field stays completely unusable in report filters regardless of what permission set it's paired with.
+
+**Why B is wrong.** A cross-filter only ever relates two *different* objects through a parent-child relationship (like "Accounts with/without Opportunities" or "Accounts with/without Cases"), and a sub-filter on it only ever applies to a field on that related child object — Salesforce's own documentation is explicit that sub-filter fields "are determined by the child object in the cross filter." Since the credit card number lives on the very same Account record the report is already listing, there's no second, related object here for a cross-filter to reach into — "a cross-filter to the Account object" while already reporting on Accounts isn't a coherent configuration. And even setting that structural problem aside, a sub-filter is still a report filter mechanism, so it doesn't get a special exemption from the same encryption restriction: an encrypted field stays unusable in it regardless.
+
+**Why D is wrong.** There's no "unmask" action that makes a classic encrypted field filterable — that's not how the feature works. Even with the field's decrypted value visible to a user, the filter restriction on encrypted fields still applies uniformly to everyone, so a custom filter directly on the credit card number field remains impossible regardless of visibility settings.`,
+      sources:[
+        {l:"Classic Encryption for Custom Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.fields_about_encrypted_fields.htm&type=5"},
+        {l:"View Encrypted Data Permission (Classic Encryption) — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000382508&language=en_US&type=1"}
+      ]
+    },
+    {
+      topic:"Objects and Applications",
+      select:1,
+      prompt:"At Cloud Kicks, the Sales team uses a specific dashboard to see how they are doing daily. The team has asked the administrator for an easier way to see this dashboard. What should the administrator recommend?",
+      options:[
+        {k:"A", t:"Email the dashboard to the Sales Team every morning"},
+        {k:"B", t:"Create a custom app with a dashboard"},
+        {k:"C", t:"Update the Sales team's app with a new dashboard"},
+        {k:"D", t:"Add the dashboard to the Sales team's home page"}
+      ],
+      correct:["D"],
+      note:"This bank already has a nearly identical question testing the same fact — embedding a dashboard on the Lightning Home page to remove access friction — using a more elaborate 'multiple steps reduces adoption' framing and different option wording. Kept as a second, more concise pass at the same real exam question.",
+      explanation:
+`**Why D is right.** Lightning App Builder lets an admin embed a Dashboard component directly on a custom Home page and assign that page to the Sales profile or app. Once that's active, the dashboard is simply there the moment a Sales rep logs in or clicks Home — fully interactive (refreshable, filterable, drillable), with zero navigation required. That's exactly "an easier way to see this dashboard daily."
+
+**Why A is wrong.** Emailing the dashboard only delivers a static, point-in-time snapshot image at send time. It isn't interactive, can't be filtered or drilled into, and depends on checking email rather than just landing on the live dashboard whenever the rep wants to look.
+
+**Why B is wrong.** Building an entirely separate custom app just to house this one dashboard is a disproportionate amount of setup — apps exist to organize whole sets of tabs and objects around a business function, not as a lightweight way to expose a single existing dashboard the team already knows how to find.
+
+**Why C is wrong.** This misreads the ask. The team already has this dashboard and already knows how to navigate to it — the request is about making it easier to *see*, not about adding a new or different dashboard to the app.`,
+      sources:[
+        {l:"Embed Dashboards on the Home Tab and in Lightning Apps — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.dashboards_embed.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Objects and Applications",
+      select:1,
+      prompt:"Users at Northern Trail Outfitters have a lot of fields on their new account records because they track their accounts and competitors on the Account object. For accounts created for customers, they need access to different fields than the accounts used to track competitors. For partner accounts, they need different values in the Industry field. What should the administrator use to resolve the issues?",
+      options:[
+        {k:"A", t:"Required Fields"},
+        {k:"B", t:"Record Types"},
+        {k:"C", t:"Flow Builder"},
+        {k:"D", t:"Business Processes"}
+      ],
+      correct:["B"],
+      explanation:
+`**Why B is right.** Record Types are built for exactly this pairing of needs. Assigning a different page layout per record type lets Customer accounts show one set of fields and Competitor accounts show another, even though they're all still Account records. A record type also controls which picklist values are available for a given field, so a Partner record type can be restricted to a different subset of Industry values than the Customer or Competitor record types see, all on that same standard Industry picklist.
+
+**Why A is wrong.** Required Fields only toggles whether a field must be filled in before saving — it has no ability to show or hide different fields per account category, and no ability to restrict which picklist values are available to a given group of records.
+
+**Why C is wrong.** Flow Builder is an automation tool for building processes and logic that run in response to triggers or user interaction. It doesn't govern page layout composition or which picklist values are exposed on a field — that's a metadata/configuration concern Record Types handle directly.
+
+**Why D is wrong.** Business Processes are a real, narrower feature that define which values are available for a small, specific set of picklists (Lead Status, Opportunity Stage, and Case/Solution Status). Industry isn't one of those picklists, and Business Processes aren't a general mechanism for varying an arbitrary field's values or a page's fields — they're typically paired with Record Types rather than used in place of them.`,
+      sources:[
+        {l:"Record Types — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.customize_recordtype_overview.htm&language=en_US&type=5"},
+        {l:"Considerations for Creating and Updating Record Types and Picklists — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.customize_recordtype_considerations.htm&language=en_US&type=5"}
+      ]
+    },
+    {
+      topic:"Cloud Applications",
+      select:1,
+      prompt:"Ursa Major Solar (UMS) receives hundreds of cases every week from both consumers and retail partners. UMS wants to ensure it's meeting all service-level agreements to maintain high levels of customer satisfaction. What should the administrator do to help meet this goal?",
+      options:[
+        {k:"A", t:"Expose the Service Contracts object in the Service Console for an agent to view when working a case"},
+        {k:"B", t:"Set up and configure Entitlement Process to design timelines and track issue resolution"},
+        {k:"C", t:"Design a Net Promoter Score survey using Surveys that is automatically sent when a case is closed"},
+        {k:"D", t:"Configure the Milestones object on Service Contracts to sequential milestones for common case issues"}
+      ],
+      correct:["B"],
+      note:"Distinct from an earlier question in this bank about auto-generating the Service Contract record itself when a product is sold — this one is about the SLA-timeline mechanism (Entitlement Process + Milestones) used to actually track and enforce those agreements once cases start coming in.",
+      explanation:
+`**Why B is right.** Milestones — the SLA steps like "first response within three hours" or "resolution within two business days" — always live inside an Entitlement Process. The process is the container that defines those timelines, the business hours they run against, and the Success/Warning/Violation actions that fire as a milestone approaches or breaches. An Entitlement (tied to an account, asset, or service contract) activates a process for a given case, starting the countdown. That's exactly the mechanism built for designing SLA timelines and tracking issue resolution across hundreds of weekly cases.
+
+**Why A is wrong.** Exposing the Service Contracts object in the Console only makes the contract's terms visible to an agent working a case. Visibility alone doesn't create or track any SLA timeline — it just shows what the agreement says, without enforcing or measuring anything against it.
+
+**Why C is wrong.** An NPS survey sent after a case closes measures customer sentiment retroactively, after the fact. It says nothing about whether the case was actually resolved within the SLA window, which is the actual goal UMS is asking about.
+
+**Why D is wrong.** This garbles the real architecture. Milestones aren't a separate object configured directly on Service Contracts — they're built inside an Entitlement Process, and a Service Contract is just one of the record types an Entitlement can reference to activate that process on a case.`,
+      sources:[
+        {l:"Entitlement Management — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=service.entitlements_overview.htm&language=en_US&type=5"},
+        {l:"Complete Guide to Salesforce Entitlements and Milestones in Service Cloud — Salesforce Ben", u:"https://www.salesforceben.com/complete-guide-to-salesforce-entitlements-and-milestones-in-service-cloud/"}
+      ]
     }
   ];
 
@@ -4701,9 +4993,29 @@
       const raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return freshState();
       const saved = JSON.parse(raw);
-      if (!saved || !Array.isArray(saved.answers) || saved.answers.length !== DATA.length) {
+      if (!saved || !Array.isArray(saved.answers)) {
         return freshState();
       }
+
+      // The bank grows over time as tickets are added. Previously this meant
+      // ANY change to DATA.length wiped a saved session outright — even a
+      // pure addition — so adding one question reset every user back to
+      // ticket 1 with no memory of where they actually were. As long as
+      // tickets are only ever appended (never removed, reordered, or
+      // replaced — the pattern this bank follows), every previously-saved
+      // index still points at the exact same ticket it always did, so the
+      // fix is to pad the saved answers out with fresh, unanswered entries
+      // for the newly-added tickets instead of discarding the whole session.
+      if (saved.answers.length < DATA.length) {
+        const padding = Array.from({length: DATA.length - saved.answers.length}, () => ({selected:[], checked:false, correct:null}));
+        saved.answers = [...saved.answers, ...padding];
+      } else if (saved.answers.length > DATA.length) {
+        // The bank shrank or was restructured — old indices can no longer be
+        // trusted to mean the same ticket, so fall back to a clean slate
+        // rather than risk showing the wrong ticket's saved history.
+        return freshState();
+      }
+
       const answers = saved.answers.map((a) => ({
         selected: new Set(Array.isArray(a.selected) ? a.selected : []),
         checked: !!a.checked,
@@ -4940,6 +5252,15 @@
     els.queue.querySelectorAll(".chip").forEach((btn) => {
       btn.addEventListener("click", () => goTo(parseInt(btn.dataset.i, 10)));
     });
+    // The strip scrolls horizontally (see .queue in styles.css) and can hold
+    // up to 188 chips, so the current ticket's chip can easily sit off-screen
+    // to either side. Keep it in view — centered when possible — every time
+    // the queue re-renders, so the visible range always follows the user's
+    // actual position instead of staying wherever it was last scrolled to.
+    const currentChip = els.queue.querySelector(".chip.current");
+    if (currentChip) {
+      currentChip.scrollIntoView({behavior:"smooth", block:"nearest", inline:"center"});
+    }
   };
 
   const renderTicket = () => {
