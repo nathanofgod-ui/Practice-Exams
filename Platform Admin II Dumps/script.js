@@ -1389,7 +1389,6 @@
       topic:"Process Automation",
       select:1,
       prompt:"At ClientFirst Solutions, a company wants a field on Account to automatically update when any related deal is marked as won. What is the best solution?",
-      note:"Account and Opportunity are related by a standard Lookup relationship, not Master-Detail — that's the detail that rules out A and limits B, and is exactly what this question is testing.",
       options:[
         {k:"A", t:"Roll-Up Summary Field"},
         {k:"B", t:"Workflow Rule"},
@@ -1398,16 +1397,17 @@
       ],
       correct:["C"],
       explanation:
-`**Why C is right.** The standard relationship between Opportunity and Account is a Lookup, not a Master-Detail relationship. An Apex trigger on Opportunity (firing on insert/update when StageName becomes "Closed Won") can query and update any related Account record directly, completely independent of the relationship type — making it the only option here that reliably works for a Lookup-related update like this one.
+`**Why C is right.** An Apex Trigger on Opportunity (firing on insert/update when StageName becomes "Closed Won") can query and update any related Account record directly. It's general-purpose, works regardless of relationship type, and isn't affected by the retirement of any declarative tool — which matters here, since the other two automation options on this list are no longer viable ways to build this today.
 
-**Why A is wrong.** Roll-Up Summary fields only exist on the master side of a Master-Detail relationship, rolling up values from the detail/child object. Since Account and Opportunity are connected by a Lookup, not Master-Detail, a Roll-Up Summary field is not even offered as an option to create here.
+**Why A is wrong.** Roll-Up Summary fields are limited to aggregate calculations — COUNT, SUM, MIN, or MAX of a single child field — recalculated automatically whenever a related record changes. (Account/Opportunity is actually a documented exception to the "master-detail only" rule: Salesforce does support native Roll-Up Summary fields for this specific standard pairing, despite it technically being a Lookup relationship.) But "automatically update a field when a deal is won" calls for logic beyond a plain COUNT/SUM/MIN/MAX, which a Roll-Up Summary simply can't express, exception or not.
 
-**Why B is wrong.** A Workflow Rule's field update can only write to the record that triggered it, or — when the object sits on the detail side of a Master-Detail relationship — to its master record. It has no mechanism to reach across a Lookup relationship to update a different, related record like the Opportunity's Account.
+**Why B is wrong.** Salesforce disabled the ability to create new Workflow Rules before Workflow Rules and Process Builder reached end of support on December 31, 2025. Existing Workflow Rules keep running, but an admin can't build a new one today — so it isn't an available tool for a fresh piece of automation like this one, regardless of what it could technically reach in the past.
 
 **Why D is wrong.** Validation Rules only block or allow a save based on conditions; they have no ability to write or update field values on any record, related or otherwise.`,
       sources:[
-        {l:"4 Ways to Create Roll-Up Summary Fields on Lookup Relationships — Salesforce Ben", u:"https://www.salesforceben.com/4-ways-to-create-roll-up-summary-fields-on-lookup-relationships-in-salesforce/"},
-        {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"}
+        {l:"Roll-Up Summary Fields — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_about_roll_up_summary_fields.htm&language=en_US&type=5"},
+        {l:"Salesforce Cross-Object Formulas vs. Roll-Up Summary Fields — Salesforce Ben", u:"https://www.salesforceben.com/salesforce-cross-object-formulas-vs-roll-up-summary-fields/"},
+        {l:"Workflow Rules & Process Builder End of Support — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=001096524&language=en_US&type=1"}
       ]
     },
     {
@@ -2455,7 +2455,6 @@
         {k:"D", t:"View All"}
       ],
       correct:["A"],
-      note:"Corrected after user follow-up: this question originally marked 'View All' as correct based on a Trailblazer Community forum answer, but Salesforce's own official 'Merge Duplicate Leads in Salesforce Classic' Help article — which the Find Duplicates button's own Help page explicitly cites as the authoritative source for its permission requirements — states plainly under \"User Permissions Needed\": \"To view leads: Read on leads. To merge leads: Delete on leads.\" There's no mention of View All anywhere in that official documentation. Delete is also the well-known 'gotcha' fact behind a real Salesforce IdeaExchange request titled \"Find Duplicates Button without 'Delete Leads' permission,\" which only makes sense if Delete is indeed the current, counterintuitive requirement admins are asking Salesforce to remove.",
       explanation:
 `**Why A is right.** Salesforce's official documentation on merging duplicate leads is explicit: viewing leads only requires Read, but the button that starts the Find Duplicates/merge workflow requires Delete on Leads — because the whole point of finding duplicates is to eventually merge them, and merging permanently deletes the losing record(s). Salesforce gates the button on Delete specifically so it isn't shown to users who couldn't complete that follow-on action anyway. It's a widely-cited "gotcha" for admins, since Delete feels like an unrelated permission for what looks like a read-only search.
 
@@ -3662,7 +3661,7 @@
       prompt:"At AccountVisibility Corp, accounts are private, but managers need access to all records across teams. What should the administrator implement?",
       options:[
         {k:"A", t:"Change Sharing Settings to Public"},
-        {k:"B", t:"Move Users higher in archy"},
+        {k:"B", t:"Move Users higher in the Role Hierarchy"},
         {k:"C", t:"Grant a Permission that overrides Sharing"},
         {k:"D", t:"Create Manual Sharing for each Account"}
       ],
@@ -4940,6 +4939,15 @@
     els.queue.querySelectorAll(".chip").forEach((btn) => {
       btn.addEventListener("click", () => goTo(parseInt(btn.dataset.i, 10)));
     });
+    // The strip scrolls horizontally (see .queue in styles.css) and can hold
+    // up to 188 chips, so the current ticket's chip can easily sit off-screen
+    // to either side. Keep it in view — centered when possible — every time
+    // the queue re-renders, so the visible range always follows the user's
+    // actual position instead of staying wherever it was last scrolled to.
+    const currentChip = els.queue.querySelector(".chip.current");
+    if (currentChip) {
+      currentChip.scrollIntoView({behavior:"smooth", block:"nearest", inline:"center"});
+    }
   };
 
   const renderTicket = () => {
