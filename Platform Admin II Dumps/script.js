@@ -316,22 +316,21 @@
       prompt:"A financial organization wants to restrict large-scale data exports especially for records containing confidential information. Which feature should be configured?",
       options:[
         {k:"A", t:"Encryption policies"},
-        {k:"B", t:"Export data filters and permissions"},
+        {k:"B", t:"Export settings and permissions"},
         {k:"C", t:"Field-Level Security"},
         {k:"D", t:"API Access restrictions"}
       ],
-      correct:["D"],
+      correct:["B"],
       explanation:
-`**Why D is right.** Large-scale, bulk extraction of records — the scenario this question is actually worried about — happens through the API (Data Loader, Bulk API, integrations, custom scripts), not through someone clicking through the UI one record at a time. "API Enabled" is what lets a user's credentials be used that way at all, and it's a documented risk multiplier: object permissions, field-level security, and sharing still bound *what* a token can see, but API Enabled removes the human pace that would otherwise limit *how fast* it's extracted — an API-enabled account with broad access can pull everything it can see, in bulk, in minutes. Restricting API access — removing "API Enabled" from broad profiles, granting it only through narrow permission sets for dedicated integration users, and layering on IP ranges/login-hour restrictions — is the control that specifically targets that bulk-extraction channel.
+`**Why B is right.** Export settings and permissions are the admin controls that decide who is allowed to export data at all. "Export Reports" (which allows Export Details and Printable View on reports) and "Weekly Data Export" (which allows running the Data Export Service) are profile and permission-set settings, so an administrator can withhold them from everyone except the roles that genuinely need to pull data out. That covers every export path, not just one, which is exactly what restricting large-scale exports of confidential records calls for. These permissions are on/off rather than volume-based; a Transaction Security Policy is the control for capping row counts, but it isn't offered here.
 
-**Why A is wrong.** Encryption protects the confidentiality of data at rest and in transit, but it doesn't limit who can pull how much of it. A user or integration with legitimate decrypt/view rights can still export the same encrypted-at-rest records in bulk — encryption doesn't touch export volume or throughput at all.
+**Why A is wrong.** Encryption protects the confidentiality of data at rest and in transit, but it doesn't limit who can pull how much of it. A user with legitimate view rights can still export the same records in bulk — encryption doesn't touch the ability to export.
 
-**Why B is wrong.** There's no dedicated Salesforce feature called "export data filters and permissions" that governs bulk export scale — it's a plausible-sounding but generic distractor, not a concrete configurable control the way API access restrictions are.
+**Why C is wrong.** Field-level security hides specific fields from users who shouldn't see them, which is valuable, but it doesn't restrict export behavior. A user who legitimately has access to a confidential field can still export every record containing it.
 
-**Why C is wrong.** Field-level security hides specific fields from users who shouldn't see them, which is valuable, but it doesn't address scale. A user who does have legitimate access to a confidential field can still export every record containing it in one large API pull — FLS decides *what's visible*, not *how much can be extracted at once*.`,
+**Why D is wrong.** API access restrictions govern programmatic access (Data Loader, Bulk API, integrations), but they don't touch UI-based exports. A user with no API access can still export a large report through Export Details, so this closes only one of the export paths.`,
       sources:[
-        {l:"API Enabled Permission in Salesforce: Risks & Controls — Flosum", u:"https://www.flosum.com/blog/unlocking-the-power-of-api-enabled-permission-salesforce"},
-        {l:"Secure API Access with the New Least-Privilege User Profile — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=release-notes.rn_api_new_user_profile.htm&language=en_US&release=248&type=5"}
+        {l:"User Profile Permission Descriptions (Export Reports, Weekly Data Export) — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000386319&language=en_US&type=1"}
       ]
     },
     {
@@ -438,16 +437,19 @@
         {k:"C", t:"The user must be higher in the role hierarchy"},
         {k:"D", t:"The user must own the related account"}
       ],
-      correct:["A","B"],
+      correct:["B","C"],
+      note:"Salesforce's rule is two-part: the user needs Edit on the opportunity AND must be either the opportunity owner or above the owner in the role hierarchy. Owning the deal (A) and sitting higher in the hierarchy (C) are alternatives to each other, so ownership isn't strictly required — a manager above the owner qualifies without owning the record.",
       explanation:
-`**Why A and B are right.** Adding members to an Opportunity Team ("deal team") is, by default, a privilege tied to the record owner: Salesforce's standard behavior is that the person who owns the opportunity is the one who sees the "Add" action on the Opportunity Team related list, and using it requires that they also have Edit access on that opportunity (which an owner has by default, but which can be affected by field-level restrictions or a more locked-down sharing model). Both conditions together — being the owner, and holding edit rights on the record — are what the standard opportunity team feature checks before letting someone manage the team; without a specific admin-configured exception, a rep who's neither can't add team members even with view access to the deal.
+`**Why B is right.** Adding, editing, or removing opportunity team members requires Edit access on the opportunity, along with Read on users. A user who can't edit the opportunity can't manage its team, no matter how they relate to the deal otherwise.
 
-**Why C is wrong.** Sitting higher in the role hierarchy can grant a manager visibility and edit access to a subordinate's opportunities through hierarchy-based sharing, but that's a *consequence* that can produce edit access — it isn't itself a stated requirement for managing team members. Plenty of users with edit access via other means (a sharing rule, a manual share) hold no special role-hierarchy position at all.
+**Why C is right.** Salesforce's documentation says the user must be the opportunity owner or above the owner in the role hierarchy. A manager higher in the hierarchy than the owner therefore qualifies without owning the deal, which is why record ownership is not a strict requirement for managing team members.
 
-**Why D is wrong.** Owning the related Account doesn't carry any special rights over the Opportunity's team membership. Account ownership and Opportunity ownership are tracked independently, and Salesforce's opportunity team feature checks access on the Opportunity record itself, not on whatever Account it's related to.`,
+**Why A is wrong.** Owning the deal is one way to satisfy the ownership-or-hierarchy condition, but it isn't a requirement on its own, because a user above the owner in the role hierarchy can also add team members. A condition that isn't mandatory can't be one of the two that "must be met."
+
+**Why D is wrong.** Owning the related Account carries no rights over the Opportunity's team membership. Account ownership and Opportunity ownership are tracked independently, and the opportunity team feature checks access on the Opportunity record itself.`,
       sources:[
-        {l:"Who Can Add Opportunity Team Members in Salesforce — Bardeen", u:"https://www.bardeen.ai/answers/who-can-add-opportunity-team-members-in-salesforce"},
-        {l:"Maintain Your Users' Opportunity Teams — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.opportunity_team_members_adding.htm&language=en_US"}
+        {l:"Add Teams to Your Opportunities — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=salesteam_add.htm&type=5"},
+        {l:"Considerations and Guidelines for Using Opportunity Teams — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=salesteam_def.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -841,16 +843,17 @@
       ],
       correct:["D"],
       explanation:
-`**Why D is right.** It's true — and worth being precise about — that flow execution order is *not* guaranteed by default: if you never touch the setting, Salesforce falls back to running flows in the order they were created, which isn't something you designed or should rely on. But "multiple Flows triggered sequentially" describes deliberately configuring that order, not hoping for the best. Record-triggered Flows expose an explicit, admin-set "Trigger Order" field (1–2,000) in the flow's version properties, and once you assign values there, Salesforce documents and enforces that ascending sequence for every flow sharing the same object and the same trigger moment (before-save or after-save). That's the one option here backed by an actual, current, admin-controlled ordering mechanism — the caveat is just that it only governs flows against other flows in that same trigger context; it doesn't reach across into Apex triggers or reorder before-save relative to after-save. It's also the only option built on Flow, Salesforce's current automation tool, rather than the two retired ones below.
+`**Why D is right.** It's worth being precise: flow execution order is *not* guaranteed by default. If you never set it, Salesforce doesn't run record-triggered flows in an order you designed or should rely on. But "multiple Flows triggered sequentially" describes deliberately configuring that order, not hoping for the best. Record-triggered flows have an admin-set Trigger Order (1–2,000) in the flow's properties, and once you assign values, Salesforce runs the flows on the same object and trigger moment (before-save or after-save) in ascending order. That is the one option here backed by a documented, admin-controlled ordering mechanism. The caveat is that it only orders flows against other flows in the same trigger context; it doesn't reach into Apex triggers or reorder before-save relative to after-save. It's also the only option built on Flow, Salesforce's current automation tool, rather than the two retired ones.
 
-**Why A is wrong.** Salesforce doesn't guarantee the relative execution order of separate Workflow Rules firing off the same object and event — there's no admin-facing setting that lets you pin down "this rule runs before that one." Splitting the three field updates across three different rules is exactly the setup where order becomes unpredictable, which is the opposite of what this scenario needs.
+**Why A is wrong.** Salesforce doesn't guarantee the relative execution order of separate Workflow Rules firing off the same object and event, and there's no admin-facing setting to pin down "this rule runs before that one." Splitting the three field updates across three rules is exactly the setup where order becomes unpredictable.
 
-**Why B is wrong.** Process Builder's criteria nodes do execute top-to-bottom within a single process, so ordering isn't impossible here — but Process Builder has been retired by Salesforce (no new processes should be built with it; Flow is the direct replacement), and relying on it for new dependency-sensitive automation runs against current best practice, not just style preference.
+**Why B is wrong.** Process Builder's criteria nodes do run top to bottom, so ordering isn't impossible there, but Process Builder has been retired in favour of Flow, and relying on it for new dependency-sensitive automation goes against current best practice.
 
-**Why C is wrong.** A single Workflow Rule can carry multiple immediate field updates, but Salesforce doesn't expose any way to sequence them — they're applied together as part of the same save, with no "run this one first" control. There's no such feature as "ordered field updates" inside one workflow rule, which makes this option describe a capability that doesn't actually exist.`,
+**Why C is wrong.** A single Workflow Rule can hold several field updates, but Salesforce documents no setting to put them in a chosen sequence. The only fixed ordering is that field updates run before email alerts, tasks and outbound messages. Time triggers can stagger actions, but they work only in days and hours, and Salesforce says it doesn't necessarily run them in the order shown on the rule page, so that isn't a reliable way to enforce a precise sequence. Workflow Rules have also reached end of support.`,
       sources:[
         {l:"Define the Trigger Order of Record-Triggered Flows — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=release-notes.rn_automate_flow_builder_trigger_order.htm&language=en_US&type=5"},
-        {l:"Considerations for Migrating Workflow Rules and Process Builder to Flow — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.flow_considerations_migrate.htm&language=en_US&type=5"}
+        {l:"Considerations for Field Update Actions — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=workflow_field_update_considerations.htm&language=en_US&type=5"},
+        {l:"Considerations for Time-Dependent Actions and Time Triggers — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=workflow_time_action_considerations.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -2641,7 +2644,7 @@
     {
       topic:"Cloud Applications",
       select:2,
-      prompt:"At QuoteMaster Inc., the sales team wants to create quotes for opportunities. The admin needs to ensure correct setup and behavior. Which two considerations are correct? (Choose 2)",
+      prompt:"At QuoteMaster Inc., the Sales team wants to create Quotes for Opportunities. The admin needs to ensure correct setup and behavior. Which two considerations are correct? (Choose 2)",
       options:[
         {k:"A", t:"Multiple quotes can be synced simultaneously"},
         {k:"B", t:"Price Book must be selected before creating Quotes"},
