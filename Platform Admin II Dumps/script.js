@@ -62,16 +62,15 @@
       ],
       correct:["C"],
       explanation:
-`**Why C is right.** Salesforce only guarantees run order between multiple record-triggered flows on the same object and trigger context when the admin explicitly sets a Trigger Order value on each flow (a number from 1–2,000). Leave that field blank on any of them, and Salesforce's own documentation says those flows just run "next, in the order of their activation dates" — not something an admin declared or can rely on. Worse, Salesforce explicitly warns that "activating, deactivating, or changing the order for one flow can cause the order for other flows to automatically update," so even that fallback ordering can silently shift over time. Without deliberately assigning Trigger Order to every flow that matters, the sequence is effectively out of the admin's control — which is exactly why the standard guidance is to either consolidate logic into a single flow per object/trigger-context or explicitly set Trigger Order wherever more than one flow must run in a specific sequence.
+`**Why C is right.** This is the best of the four options rather than a literal statement from the docs. Salesforce does document a run order for record-triggered flows on the same object: flows with Trigger Order values from 1 to 1,000 run first in ascending order, then values from 1,001 to 2,000, and flows with the same value run "in alphabetical order based on the flows' API names." Flows without a Trigger Order value "run next and in the order of their activation dates," and Salesforce warns that "activating, deactivating, or changing the order for one flow can cause the order for other flows to automatically update." So unless the admin deliberately sets a Trigger Order on each flow, the sequence isn't something the admin controls or can rely on, which is what option C captures.
 
-**Why A is wrong.** A flow's API version affects which runtime features and behaviors are available to it — it has no bearing on the sequence in which multiple flows fire on the same object.
+**Why A is wrong.** A flow's API version controls which runtime features and behaviors it gets. It plays no part in the documented run order.
 
-**Why B is wrong.** It's tempting, but the actual fallback Salesforce documents is activation date, not creation date — and even that only applies until an admin sets an explicit Trigger Order, so "creation timestamp" isn't the mechanism at play here either way.
+**Why B is wrong.** The documented fallback for flows without a Trigger Order is activation date, not creation date, and it only applies to flows with no Trigger Order set.
 
-**Why D is wrong.** Flow labels are just a display name for admins; Salesforce's execution engine doesn't sort or evaluate them alphabetically (or otherwise) to decide run order.`,
+**Why D is wrong.** The only alphabetical sorting Salesforce documents is a tie-breaker by API name for flows that share the same Trigger Order value. The flow label is not used.`,
       sources:[
-        {l:"Define the Run Order of Record-Triggered Flows for an Object — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.flow_task_trigger_run_order.htm&language=en_US&type=5"},
-        {l:"Set Trigger Order on Flows — Apex Hours", u:"https://www.apexhours.com/set-trigger-order-on-flows/"}
+        {l:"Define the Run Order of Record-Triggered Flows for an Object \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.flow_task_trigger_run_order.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -1364,7 +1363,7 @@
       topic:"Security and Access",
       select:3,
       prompt:"At GlobalSales Corp, the Company is considering enabling territory management. Which three considerations should be evaluated? (Choose 3)",
-      note:"Salesforce has since published a supported \"Disable Sales Territories\" process, so option A is technically outdated for current orgs. It's kept as correct here because it's the classic, heavily-tested fact from older documentation and most PDII study guides.",
+      note:"Salesforce now publishes a supported \"Disable Sales Territories\" process, so option A is outdated for current orgs. It's kept as correct because it's the classic exam point and the only valid third choice, since D and E are false.",
       options:[
         {k:"A", t:"It cannot be disabled once enabled"},
         {k:"B", t:"It affects Account and Opportunity Sharing"},
@@ -1374,18 +1373,18 @@
       ],
       correct:["A","B","C"],
       explanation:
-`**Why A is right.** Enabling territory management has long carried the well-known, heavily-documented warning that it's not a decision to make lightly: once turned on, an org can't simply flip it back off the way most features can be toggled. This permanence is one of the first things admins are told to weigh before enabling it — a company should be fully committed to the territory model before turning it on.
+`**Why A is right.** This is the right pick by elimination rather than a current fact. For years, enabling territory management was treated as a one-way decision, and that warning is still a common exam point. Salesforce now publishes a "Disable Sales Territories" procedure, so the statement is no longer strictly true for current orgs. It stays in the answer because D and E are clearly false, so A, B and C is the only valid set of three, and the underlying lesson still holds: enabling territories is a significant decision to plan carefully before turning on.
 
-**Why B is right.** Territory Management is fundamentally a sharing mechanism. Once enabled, access to Accounts, Opportunities (and related records like Cases) can be granted through territory assignment on top of — or instead of — role-hierarchy-based sharing. Any org considering it needs to map out how this changes who can see and edit what.
+**Why B is right.** Territory management is a sharing mechanism. Once enabled, access to Accounts, Opportunities and related records can be granted through territory assignment in addition to role-hierarchy sharing, so an org needs to map out how this changes who can see and edit what.
 
-**Why C is right.** Enabling territories changes how forecasting behaves: forecasts can shift to a territory-based hierarchy rather than the role hierarchy, and not every forecast type/configuration works the same way once territories are in play. This has real implications for existing forecast setups and needs to be planned for, not discovered after the fact.
+**Why C is right.** Enabling territories changes how forecasting can work: forecasts can roll up through the territory hierarchy instead of the role hierarchy, which affects existing forecast setups and needs to be planned for.
 
-**Why D is wrong.** This is backwards — one of Enterprise Territory Management's key advantages over the rigid, one-role-per-user Role Hierarchy is that a single user CAN be assigned to multiple territories at once, reflecting real-world matrixed sales organizations where a rep might cover more than one region or segment.
+**Why D is wrong.** A single user can be assigned to multiple territories at once, which is one of territory management's advantages over the one-role-per-user role hierarchy.
 
-**Why E is wrong.** The territory hierarchy is deliberately built as its own independent structure, separate from the Role Hierarchy — that's precisely why it exists: to model sales organization needs (regions, segments, verticals) that don't cleanly map onto the management-reporting structure the Role Hierarchy represents. It has no requirement to mirror it.`,
+**Why E is wrong.** The territory hierarchy is its own structure, separate from the role hierarchy, built to model sales coverage (regions, segments, verticals) that doesn't match the reporting structure. It doesn't have to mirror the role hierarchy.`,
       sources:[
-        {l:"Sales Territories Concepts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=tm2_territory_mgmt_overview.htm&language=en_US&type=5"},
-        {l:"Territory Management in Salesforce: 10 Things You Need to Know — Salesforce Ben", u:"https://www.salesforceben.com/territory-management-in-salesforce-10-things-you-need-to-know/"}
+        {l:"Sales Territories Concepts \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=tm2_territory_mgmt_overview.htm&language=en_US&type=5"},
+        {l:"Disable Sales Territories \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.tm2_disable.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -1491,7 +1490,6 @@
       topic:"Environment Management and Deployment",
       select:1,
       prompt:"At ProcessFlow Inc., an Administrator is preparing to deploy Approval Process using Change Sets. They want to ensure all related Components function correctly after deployment. What should the Administrator consider?",
-      note:"Field Update / Email Alert / Task actions attached to an approval process (its \"Approval Actions\") deploy fine as long as they're included as dependencies. The real risk is narrower: any step whose approver is set to a specific named User — rather than a Role, Public Group, or Queue — since that exact User may not exist (or may not match) in the target org, requiring the admin to reassign or recreate that piece of the step after deployment.",
       options:[
         {k:"A", t:"Approval Actions may need to be recreated in target Org"},
         {k:"B", t:"Approval Processes cannot be deployed"},
@@ -1500,16 +1498,16 @@
       ],
       correct:["A"],
       explanation:
-`**Why A is right.** Approval processes can reference org-specific components — most notably, an approval step's assigned approver can be set to one specific named User. Since Users differ between source and target orgs (different sandboxes and production all have their own user bases), a step configured against a specific user frequently doesn't resolve cleanly after a Change Set deployment, and the admin has to go into the target org and manually reassign or recreate that piece of the process. Salesforce's own guidance around change-set-deployed approval processes similarly flags several manual cleanup steps (re-adding certain custom fields to the change set, resaving post templates with custom fields, and manually re-ordering active approval processes in the target org) — the underlying theme being that "deploy and forget" isn't safe for approval processes; some components need manual attention afterward.
+`**Why A is right.** This is the best of the four options rather than a statement taken directly from the docs. Salesforce's list of change-set restrictions for approval processes is about manual follow-up work, such as adding custom fields on standard objects to the change set manually, resaving post templates, and reordering active approval processes in the target org, because the process order isn't kept. None of those restrictions says approval actions must be recreated, but the common thread is the same as option A: an approval process isn't "deploy and forget," and some pieces may need manual attention in the target org afterward. Since B, C and D are all clearly false, A is the only defensible choice.
 
-**Why B is wrong.** Approval Processes have been a supported, deployable Change Set component type since 2013 — this isn't a limitation at all, just an outdated assumption.
+**Why B is wrong.** Approval processes are a supported, deployable change set component.
 
-**Why C is wrong.** Field dependencies (controlling/dependent picklist relationships) are stored as part of the field's own metadata and travel with the field automatically when it's included in a Change Set — they don't require separate manual recreation.
+**Why C is wrong.** Field dependencies (controlling and dependent picklists) are stored in the field's own metadata and travel with the field when it's included in the change set. They don't need to be recreated manually.
 
-**Why D is wrong.** Record Types are a standard, fully deployable Change Set component. They can — and often must — be included when an approval process's entry criteria or page layout assignments depend on them.`,
+**Why D is wrong.** Record types are a standard, deployable change set component, and they often need to be included when an approval process depends on them.`,
       sources:[
-        {l:"Restrictions for Approval Processes in Change Sets — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.changesets_restrictions_approval_process.htm&type=5"},
-        {l:"Approval Process Deployment — Change Set Support — Salesforce Developers Blog", u:"https://developer.salesforce.com/blogs/2013/05/approval-process-deployment-change-set-support-is-in-the-air"}
+        {l:"Restrictions for Approval Processes in Change Sets \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.changesets_restrictions_approval_process.htm&type=5"},
+        {l:"Special Behavior in Deployments \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.deploy_special_behavior.htm&type=5"}
       ]
     },
     {
@@ -1709,25 +1707,23 @@
       topic:"Data and Analytics Management",
       select:1,
       prompt:"At ReviewHub Corp, a junction Object connects Customers and Products. Both parent records were deleted accidentally along with related junction records. What is required to restore the junction records?",
-      note:"This follows the same \"both, not either\" logic as a junction object's sharing behavior: just as visibility to a junction record requires access to both master parents, a master-detail child record can't exist in a valid state unless every one of its master fields still points to a real, non-deleted record — so with two master-detail relationships, both parents have to come back before the junction row can.",
       options:[
         {k:"A", t:"Restore one parent record"},
         {k:"B", t:"Restore both parent records"},
         {k:"C", t:"Restore junction records directly"},
         {k:"D", t:"Records cannot be restored"}
       ],
-      correct:["B"],
+      correct:["D"],
       explanation:
-`**Why B is right.** Restoring a parent record from the Recycle Bin automatically brings back the child records that were cascade-deleted along with it — but a junction object with two Master-Detail relationships has two required parent fields, and Salesforce won't leave a Master-Detail child pointing at a still-deleted master. Since the junction row here depends on both Customer and Product simultaneously, both parent records need to be restored before the junction record can be validly restored as well.
+`**Why D is right.** Salesforce documents this case directly: "If both associated master records are deleted, the junction object record is deleted permanently and can't be restored." Because both the Customer and the Product parent records were deleted here, the junction records were permanently deleted rather than sent to the Recycle Bin, so there is nothing left to restore.
 
-**Why A is wrong.** Restoring only one of the two parents leaves the junction record's other Master-Detail field still referencing a deleted record, which a Master-Detail relationship doesn't allow — that parent alone isn't enough to bring the junction row back to a valid state.
+**Why A is wrong.** Restoring one parent can't bring back junction records that were permanently deleted. Restoring a parent only helps when the junction records are still in the Recycle Bin, which happens when just one of the two masters was deleted ("Junction object records are deleted when either associated master record is deleted and placed in the Recycle Bin").
 
-**Why C is wrong.** A Master-Detail child record can't be restored independently while either of its required parent records remains deleted — the relationship's core rule (the detail record must always have a valid master) blocks that, so the junction rows can't simply be undeleted on their own first.
+**Why B is wrong.** Restoring both parents brings back the Customer and Product records themselves, but not the junction records. Once both masters were deleted, the junction records were deleted permanently and aren't in the Recycle Bin to come back with them.
 
-**Why D is wrong.** The records aren't permanently lost — they're recoverable, just not in a single, order-independent step. As long as the parents and junction records are still sitting in the Recycle Bin (within retention limits) and haven't been purged, restoring both parents restores the related junction records right along with them.`,
+**Why C is wrong.** Permanently deleted junction records aren't in the Recycle Bin, so they can't be restored directly either.`,
       sources:[
-        {l:"Considerations for Deleting and Restoring Records — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.data_recyclebin_undelete_considerations.htm&language=en_US&type=5"},
-        {l:"Master-Detail Relationship Considerations — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.relationships_considerations.htm&language=en_US&type=5"}
+        {l:"Considerations for Relationships — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.relationships_considerations.htm&type=5"}
       ]
     },
     {
@@ -2210,19 +2206,19 @@
         {k:"C", t:"Individual quota targets"},
         {k:"D", t:"Opportunity Amount Totals"}
       ],
-      correct:["A","D"],
-      note:"Collaborative Forecasts can also roll up a custom currency or number field if an admin defines a custom Forecast Type, but Revenue (Opportunity Amount) and Quantity are the two standard, out-of-the-box measures every org starts with.",
+      correct:["B","D"],
+      note:"Quantity is also a documented forecast measure, but it is a unit count, so it does not match the scenario's \"weighted projections and total deal values.\" Collaborative Forecasts can additionally roll up a custom currency or number field if an admin defines a custom forecast type.",
       explanation:
-`**Why D is right.** The default and most common Forecast Type in Collaborative Forecasts is based on the Opportunity's Amount field — each rep's open pipeline, grouped into forecast categories (Pipeline, Best Case, Commit, Closed), is summed and rolled up through the role hierarchy so a manager sees the total dollar value their whole team is forecasting.
+`**Why D is right.** The default and most common forecast type in Collaborative Forecasts is based on the Opportunity Amount field. Each rep's pipeline, grouped into forecast categories (Pipeline, Best Case, Commit, Closed), is summed and rolled up through the role hierarchy, so a manager sees the total deal value their whole team is forecasting. That is the "total deal values" in the scenario.
 
-**Why A is right.** Salesforce also supports a Quantity-based Forecast Type, which rolls up the Quantity field on Opportunity Products instead of dollar Amount — useful for orgs that care about unit volume (e.g., number of licenses or devices) as much as, or instead of, revenue. An org can enable both an Amount-based and a Quantity-based forecast type side by side, which covers the "weighted projections and total deal values" framing in the scenario.
+**Why B is right.** Salesforce documents Expected Revenue as a measure a revenue forecast can use ("Expected Revenue can be forecast for revenue only, not quantity"). Expected Revenue is Amount × Probability, so it is the weighted projection the managers are asking for, alongside the unweighted Amount total. Together, B and D match the scenario's "both weighted projections and total deal values."
 
-**Why B is wrong.** Expected Revenue (Amount × Probability) is a standard Opportunity field used in classic reporting, but it isn't one of the measures Collaborative Forecasts rolls up — forecast categories, not probability-weighting, are what drive Collaborative Forecasts' math.
+**Why A is wrong.** Quantity is a valid forecast measure (it rolls up units on Opportunity Products), but it is a count of units, not a weighted projection or a deal value. It doesn't answer what the managers asked for in this scenario.
 
-**Why C is wrong.** Quotas are targets assigned to individual users (manually or via Data Loader/API) for comparison against their forecast — they aren't summed bottom-up from opportunity data the way Amount or Quantity forecasts are, so they aren't a "rolled-up" forecast value in the same sense.`,
+**Why C is wrong.** Quotas are targets assigned to individual users to compare against their forecast. Salesforce documents that the quota rollup is done manually by users and managers, so quotas are not summed up automatically from opportunity data the way Amount-based and Expected Revenue forecasts are.`,
       sources:[
-        {l:"Complete Guide to Salesforce Pipeline Forecasting — Salesforce Ben", u:"https://www.salesforceben.com/complete-guide-to-salesforce-forecasting/"},
-        {l:"Salesforce Forecast Types — A Quick Breakdown — Medium", u:"https://medium.com/@shirley_peng/salesforce-forecast-types-a-quick-breakdown-849442f10b58"}
+        {l:"Pipeline Forecast Types — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.forecasts3_forecast_types_overview.htm&language=en_US&type=5"},
+        {l:"Review Pipeline Forecasts Against Forecast Quotas — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.forecasts3_quotas_intro.htm&type=5"}
       ]
     },
     {
@@ -2459,16 +2455,16 @@
       ],
       correct:["A"],
       explanation:
-`**Why A is right.** Salesforce's official documentation on merging duplicate leads is explicit: viewing leads only requires Read, but the button that starts the Find Duplicates/merge workflow requires Delete on Leads — because the whole point of finding duplicates is to eventually merge them, and merging permanently deletes the losing record(s). Salesforce gates the button on Delete specifically so it isn't shown to users who couldn't complete that follow-on action anyway. It's a widely-cited "gotcha" for admins, since Delete feels like an unrelated permission for what looks like a read-only search.
+`**Why A is right.** Finding duplicate leads exists to lead into merging them, and Salesforce's documentation lists Delete on Leads as the permission required to merge leads ("To merge leads: Delete on leads"), because merging removes the losing record. Delete is the only object-level permission tied to that workflow, so it is the one to grant users who can't see the Find Duplicates button. Read alone is enough to view leads, but it doesn't unlock the merge step. The Help articles I checked state the Delete requirement for merging, not for the button's visibility, so the link between the two is the logical dependency rather than an explicit statement in the docs.
 
-**Why B is wrong.** Read and Edit let a user view and modify records they already have access to, but neither permission has anything to do with deleting a record — and since a successful duplicate resolution ends in deleting the losing record, Read and Edit alone don't unlock the button.
+**Why B is wrong.** Read and Edit let a user view and modify the leads they can already access, but the documented requirement for merging leads is Delete, not Edit. Giving these two permissions doesn't cover the step that finding duplicates leads into.
 
-**Why C is wrong.** "Merge" isn't a real, separate object-level permission in Salesforce's permission model — the actual permission governing the ability to consolidate (and thereby delete) a losing duplicate record is Delete itself, not a distinct "Merge" permission.
+**Why C is wrong.** "Merge" isn't a separate object-level permission in Salesforce. The object permissions are Read, Create, Edit, Delete, View All and Modify All, and the permission that governs merging leads is Delete itself.
 
-**Why D is wrong.** View All grants org-wide read visibility bypassing sharing rules, but it has no bearing on deletion rights. A user could have View All and still lack Delete, in which case the Find Duplicates button would remain unavailable to them.`,
+**Why D is wrong.** View All gives read visibility to all records regardless of sharing, but it doesn't include the right to delete, which is what merging leads requires. A user with View All but no Delete would still be unable to merge.`,
       sources:[
-        {l:"Merge Duplicate Leads in Salesforce Classic — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sales.leads_merge_classic.htm&language=en_US&type=5"},
-        {l:"How the 'Find Duplicates' Button Works on Lead Records — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=000385021&language=en_US&type=1"}
+        {l:"Merge Duplicate Leads in Lightning Experience — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sales.leads_merge_lex.htm&type=5"},
+        {l:"How the 'Find Duplicates' Button Works on Lead Records in Salesforce Classic — Salesforce Help", u:"https://help.salesforce.com/HTViewSolution?id=000004349"}
       ]
     },
     {
@@ -2556,16 +2552,17 @@
       ],
       correct:["C"],
       explanation:
-`**Why C is right.** This scenario actually bundles three distinct requirements, each needing its own purpose-built tool: routing leads to the correct team based on criteria is exactly what Assignment Rules do; requiring sign-off before a lead transfers to a partner needs a formal, multi-step Approval Process (submit, approve/reject, route to the next approver); and sending a notification once assignment happens is a Workflow Rule's classic job (criteria-based email alert). No single tool covers all three jobs, so all three have to work together.
+`**Why C is right.** This is the classic exam answer, which treats each requirement as needing its own tool: Assignment Rules route the lead to the correct team, an Approval Process provides the formal sign-off before the lead is transferred to a partner, and a Workflow Rule email alert sends the notification after assignment. Two caveats from the documentation: assignment rules can already notify the new owner themselves (each rule entry has an Email Template field that "specifies the email template to use for the notification email that is automatically sent to the new owner"), and Workflow Rules reached end of support on December 31, 2025, so in a current org a record-triggered Flow would replace the Workflow Rule. C remains the intended answer because it is the only option that names a dedicated tool for every requirement.
 
-**Why A is wrong.** Assignment Rules and Workflow Rules alone cover the routing and the notification, but neither one provides an actual approval step — there's no mechanism in either to require a person's sign-off before letting the lead move to a partner.
+**Why A is wrong.** Assignment Rules and Workflow Rules cover the routing and the notification, but neither provides an approval step, so there's no way to require someone's sign-off before the lead moves to a partner.
 
-**Why B is wrong.** Assignment Rules and Approval Processes cover the routing and the sign-off, but neither of them is built to send a standalone notification purely because an assignment happened — that's specifically what a Workflow Rule's email alert is for.
+**Why B is wrong.** Assignment Rules and Approval Processes cover the routing and the sign-off, and an assignment rule's email template can notify the new owner. B is not the intended answer because the question treats the post-assignment notification as a separate automation requirement, which the classic answer assigns to a Workflow Rule email alert.
 
-**Why D is wrong.** Auto-response Rules exist to send an automatic reply to the *person who submitted* a Lead or Case (like a "thanks for your inquiry" email) — they don't route leads to internal teams and have nothing to do with an approval step, so this pairing misses the routing and approval requirements entirely.`,
+**Why D is wrong.** Auto-response Rules send an automatic reply to the person who submitted the lead or case. They don't route leads to internal teams and have nothing to do with approval, so this pairing misses both the routing and the approval requirements.`,
       sources:[
-        {l:"Set Up Assignment Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.customize_leadrules.htm&language=en_US&type=5"},
-        {l:"Approval Processes — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.approvals_defining.htm&language=en_US&type=5"}
+        {l:"Set Up Assignment Rules \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=service.creating_assignment_rules.htm&language=en_US&type=5"},
+        {l:"Approval Processes \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.approvals_defining.htm&language=en_US&type=5"},
+        {l:"Workflow Rules & Process Builder End of Support \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=001096524&type=1"}
       ]
     },
     {
@@ -3467,16 +3464,16 @@
       ],
       correct:["C"],
       explanation:
-`**Why C is right.** Platform Events are Salesforce's purpose-built pub/sub messaging architecture for exactly this scenario: when an internal event occurs (a property price approval), Salesforce publishes an event message that any number of external subscribers can pick up asynchronously via the Pub/Sub API, without Salesforce needing to know who's listening or wait for a response. This is inherently scalable — many subscribers, no tight coupling — and fully asynchronous, since the publishing transaction completes immediately without waiting on the external system.
+`**Why C is right.** This is the best fit for "scalable and event-driven" among the four options. Platform Events are Salesforce's publish-subscribe messaging: when the price is approved, Salesforce publishes an event message, and subscribers receive it asynchronously without Salesforce waiting on them or needing to know who is listening. One caveat: the scenario says the external platform receives updates at an API endpoint, so in practice a subscriber (for example middleware or an integration that listens to the event) would forward the update to that endpoint. Even so, publishing an event is the only option that is decoupled, asynchronous and built to scale.
 
-**Why A is wrong.** Outbound Messages (built on the legacy Workflow Rules engine) can send data asynchronously, but only to one specific configured SOAP endpoint — a point-to-point mechanism, not a scalable pub/sub model that multiple external systems could subscribe to. Workflow Rules are also a legacy automation tool Salesforce no longer recommends building new automation on.
+**Why A is wrong.** Outbound messages send data asynchronously, but only to one configured SOAP endpoint, so it's a point-to-point link rather than an event that many systems can subscribe to. It also relies on Workflow Rules, which reached end of support on December 31, 2025.
 
-**Why B is wrong.** Having automation call an external API directly typically performs a synchronous HTTP callout as part of the triggering transaction — the opposite of the "without requiring synchronous processing" requirement — and it tightly couples the internal process to that specific external endpoint being available and responsive at that moment.
+**Why B is wrong.** The issue isn't that the call would be synchronous: Salesforce prevents callouts to external services while a record is saving, so a record-triggered flow has to make the callout on an asynchronous path. The weakness is that a direct callout ties the internal process to one specific endpoint being available and responsive, which is a point-to-point integration rather than the event-driven, decoupled design the scenario asks for.
 
-**Why D is wrong.** Email isn't an API integration mechanism at all — it can't deliver structured, machine-readable updates to an external platform's API endpoint the way the scenario requires.`,
+**Why D is wrong.** Email isn't an API integration mechanism. It can't deliver structured, machine-readable updates to an external platform's API endpoint.`,
       sources:[
-        {l:"Platform Events Developer Guide — Salesforce Developers", u:"https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_intro.htm"},
-        {l:"Salesforce Platform Events: Explained — Salesforce Ben", u:"https://www.salesforceben.com/salesforce-platform-events/"}
+        {l:"Platform Events Developer Guide \u2014 Salesforce Developers", u:"https://developer.salesforce.com/docs/atlas.en-us.platform_events.meta/platform_events/platform_events_intro.htm"},
+        {l:"Record-Triggered Flow Considerations \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.flow_considerations_trigger_record.htm&type=5"}
       ]
     },
     {
@@ -3816,19 +3813,19 @@
         {k:"C", t:"Automate the creation of Support Agreements using Flows"},
         {k:"D", t:"Attach a predefined Support Template to the Product"}
       ],
-      correct:["C"],
-      note:"Distinct from an earlier question in this bank about which overall framework (Entitlement Management) governs support levels — this one is about how the underlying Service Contract record itself gets generated automatically when a sale happens.",
+      correct:["D"],
       explanation:
-`**Why C is right.** Salesforce has no built-in mechanism that automatically generates a Service Contract (the "support agreement") the moment a product is sold — this has to be built. The standard, documented pattern is a record-triggered Flow (for example, firing when an Opportunity reaches Closed Won or an Order is Activated) that creates the Service Contract record with the appropriate terms, removing the need for any manual intervention.
+`**Why D is right.** Salesforce Entitlement Management has a native feature for exactly this: an Entitlement Template, a predefined set of support terms (term length, business hours, support type) that users add to a product through the product's Entitlement Templates related list. Because the support terms travel with the product, any customer who buys a product that bundles support gets the right coverage without someone rebuilding the terms by hand each time. The option calls it a "predefined Support Template," which is the generic name for the Entitlement Template. One caveat from the documentation: the entitlement is created from the template when an asset is created and linked to that product, so the product-level template is what removes the manual, per-customer setup of the support terms.
 
-**Why A is wrong.** Service Milestones are steps within an Entitlement Process used to track SLA compliance on Cases (like first-response or resolution time) — they're not the support agreement itself, and automating milestone creation doesn't produce the customer-facing agreement record management wants generated.
+**Why A is wrong.** Service Milestones are steps within an Entitlement Process used to track SLA compliance on Cases (such as first response or resolution time). They are not the support agreement itself, so automating milestones doesn't give the customer a support agreement.
 
-**Why B is wrong.** Milestones aren't something that gets "assigned directly to a Product." They belong to an Entitlement Process, which is applied to Cases (optionally scoped by an Entitlement or Service Contract) — there's no native configuration path that attaches a Milestone straight to a Product record.
+**Why B is wrong.** Milestones aren't assigned directly to a Product. They belong to an Entitlement Process, which is applied to Cases, optionally scoped by an Entitlement or Service Contract. There is no native way to attach a Milestone straight to a Product record.
 
-**Why D is wrong.** There's no Salesforce feature called a "Support Template" that can be attached to a Product to auto-generate an agreement. This isn't a real, native configuration option, so it doesn't solve the stated automation requirement.`,
+**Why C is wrong.** A Flow that creates a Service Contract when an Opportunity closes or an Order is activated could be built, but Salesforce does not document a built-in step that creates one on sale, so it's a custom build. When the support comes bundled with the product, the native, product-level answer is the Entitlement Template, which is why a custom Flow is not the most appropriate choice here.`,
       sources:[
-        {l:"Auto Create and Activate a Contract — Automation Champion", u:"https://automationchampion.com/2022/02/07/auto-create-and-activate-a-contract/"},
-        {l:"Service Contracts — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=service.entitlements_service_contracts_parent.htm&type=5"}
+        {l:"Set Up an Entitlement Template — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=sf.entitlements_setting_up_templates.htm&language=en_US&type=5"},
+        {l:"ProductEntitlementTemplate — Salesforce Object Reference", u:"https://developer.salesforce.com/docs/atlas.en-us.object_reference.meta/object_reference/sforce_api_objects_productentitlementtemplate.htm"},
+        {l:"Entitlements: Terms to Know — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=service.entitlements_terms.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -3869,18 +3866,17 @@
       correct:["A","B","C"],
       note:"Heavy overlap with an earlier ReleaseOps Corp question in this bank — both test the same core change-set best practices (dependencies, naming conventions, and rejecting arbitrary size limits / after-the-fact testing). The one genuinely new angle here is option A: scheduling deployments around maintenance/release windows, which ReleaseOps Corp tested as 'validate before execution' instead.",
       explanation:
-`**Why B is right.** Change Sets require every component a deployed piece of metadata depends on to either travel along with it or already exist in the target org. Missing a dependency is one of the most common causes of deployment failure, so confirming every referenced field, record type, permission set, Flow, Apex class, and related component is included heads off a whole category of errors.
+`**Why A is right.** Salesforce's Change Sets Best Practices page includes "Plan deployments around maintenance schedule," advising admins to "plan your deployment activities around the maintenance schedule for both your production and sandbox orgs." The reason it gives is locking: the source org is locked while an outbound change set is validated, and "the target org is locked while deploying an inbound change set," which blocks setup changes during that time.
 
-**Why C is right.** Keeping naming conventions for objects, fields, and other components consistent across sandbox and production environments reduces the risk of mismatched references or confusion when comparing what exists where, lowering the chance of deployment errors caused by inconsistent setup.
+**Why B is right.** "Deploy all dependent components" is listed on the same page. Every component a deployed item depends on must travel with it or already exist in the target org, and a missing dependency is one of the most common causes of deployment failure.
 
-**Why A is right.** Salesforce's own deployment guidance recommends choosing a release window based on factors like user activity, integration traffic, and support coverage — and part of that planning is checking the org's own Maintenance Calendar so a change-set deployment doesn't collide with a scheduled Salesforce platform upgrade or maintenance window, which could otherwise interact unpredictably with an in-flight deployment.
+**Why C is right.** This is right by elimination rather than word for word. The best-practices page doesn't have a general "consistent naming conventions" item; the closest one is "Use distinct names for global publisher layouts and Outlook publisher layouts," so components can be told apart in a change set. Consistent, distinct naming across environments still reduces mismatched references, and since D and E are clearly poor practices, A, B and C is the only valid set of three.
 
-**Why D is wrong.** Limiting deployment size *artificially* — without a deliberate, dependency-aware rationale — risks splitting components that need to deploy together into separate change sets, which is a common way to accidentally cause the exact dependency failures this scenario is trying to avoid.
+**Why D is wrong.** The page does mention a real limit ("Change sets are limited to 10,000 files"), but limiting size *artificially*, with no dependency-aware reason, risks splitting components that must deploy together and causing the dependency failures this scenario is trying to avoid.
 
-**Why E is wrong.** Delaying testing until after deployment defeats the entire purpose of pre-deployment validation. The point of testing and validating changes is to catch problems before they reach production, not to discover them afterward when the deployment has already taken effect.`,
+**Why E is wrong.** Delaying testing until after deployment defeats the purpose of validating first. The page recommends validating change sets before deployment and planning for tests to run in the target org.`,
       sources:[
-        {l:"Change Sets Best Practices — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.changesets_best_practices.htm&language=en_US&type=5"},
-        {l:"Preferred Salesforce Maintenance Schedule — Salesforce Help", u:"https://help.salesforce.com/HTViewSolution?id=000176208"}
+        {l:"Change Sets Best Practices \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.changesets_best_practices.htm&language=en_US&type=5"}
       ]
     },
     {
@@ -4259,19 +4255,18 @@
         {k:"D", t:"All Users who can view the Account"}
       ],
       correct:["B"],
-      note:"This bank's SalesHierarchy Corp question also tests role-hierarchy access, but for a different fact: automatic View access flowing to directors above subordinate-owned records under a Private model. This question instead tests the edit boundary under a Public Read Only baseline — Read Only caps general access at View, leaving Edit to the Owner and Admins only.",
       explanation:
-`**Why B is right.** Public Read Only on Accounts (inherited by Contacts via "Controlled by Parent") gives every user Read access to the record, but the "Read Only" half of that setting explicitly caps the general user population at View — it does not extend Edit rights to them. Edit stays limited to the record Owner (the sales manager who created it) and to System Administrators, whose "Modify All Data" permission bypasses the sharing model and org-wide defaults entirely and always grants full Edit access.
+`**Why B is right.** This is the best of the four options, though not a complete list of everyone who can edit. With Accounts set to Public Read Only and Contacts controlled by parent, the general user population can view the contact but not edit it. The record owner (the sales manager who created it) can edit it, and administrators with "Modify All Data" can edit any record regardless of sharing. B is incomplete in two ways: users above the owner in the role hierarchy also get the owner's access, including Edit, and because Contacts are controlled by the parent, users with Edit access on the parent Account (such as the Account owner) can also edit the contact. Even so, B is the only option that includes the owner and isn't wrong, so it's the best answer.
 
-**Why A is wrong.** This describes a real Salesforce mechanic — Grant Access Using Hierarchies does let users positioned above the Owner inherit the Owner's access level, including Edit — but the word "Only" makes the option incomplete here, since it excludes the Owner, who plainly retains the ability to edit their own record regardless of anyone's hierarchy position.
+**Why A is wrong.** Users above the owner in the role hierarchy can edit the record, but the word "Only" excludes the owner, who can always edit their own record.
 
-**Why C is wrong.** Role hierarchy access flows upward only. A manager automatically inherits access to records owned by subordinates beneath them, never the reverse — a user positioned below the Owner gains nothing extra from the hierarchy and remains capped at the Read Only org-wide default.
+**Why C is wrong.** Role hierarchy access flows upward only. Users below the owner gain nothing from the hierarchy and stay at the Read Only default.
 
-**Why D is wrong.** This conflates "can view" with "can edit." Public Read Only means every user who can see the Account (and, by inheritance, its Contacts) is capped at Read — that Read Only designation exists specifically to prevent the broader user base from editing, so "all users who can view" describes the opposite of a correctly-scoped edit answer.`,
+**Why D is wrong.** Public Read Only lets users who can see the Account view its contacts, but it caps them at Read. Being able to view the Account doesn't give Edit access to the contact.`,
       sources:[
-        {l:"Controlling Access Using the Role Hierarchy — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=platform.security_controlling_access_using_hierarchies.htm&type=5"},
-        {l:"Organization-Wide Default Access Settings — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sharing_model_fields.htm&type=0"},
-        {l:"Optimizing Salesforce Role Hierarchies for Data Security — Trailhead", u:"https://trailhead.salesforce.com/content/learn/modules/data_security/data_security_roles"}
+        {l:"Controlling Access Using the Role Hierarchy \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=platform.security_controlling_access_using_hierarchies.htm&type=5"},
+        {l:"Sharing Across Objects (Controlled by Parent) \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sf.sharing_across_objects.htm&type=5"},
+        {l:"Organization-Wide Default Access Settings \u2014 Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=sharing_model_fields.htm&type=0"}
       ]
     },
     {
@@ -4581,19 +4576,18 @@
         {k:"C", t:"Validation Rules are not active"},
         {k:"D", t:"Records are being updated through Reports"}
       ],
-      correct:["C"],
-      note:"This bank's SupportOps Corp question tests a related but different fact — an automated field update's resave skipping re-validation. Option A here echoes that mechanism but only explains invalid data arriving through that one automation pathway; it doesn't account for invalid data appearing through any channel the way a simply-deactivated rule does, which is why this more generic scenario points to C instead.",
+      correct:["A"],
       explanation:
-`**Why C is right.** If a validation rule's Active checkbox is unchecked, the rule doesn't fire at all — not on user saves, not on API updates, not on anything — regardless of how the record is saved. That's the single most direct, complete explanation for invalid data appearing despite a validation rule "being in place": the rule exists as configured metadata, but isn't currently enforcing anything.
+`**Why A is right.** Salesforce documents that some automated updates don't trigger validation rules: "updates to records based on workflow rules and also on process scheduled actions don't trigger validation rules," and the results of a field update "can't trigger additional rules such as validation." So a validation rule can be active and correctly written, and an automated update made after validation can still write a value the rule would block if a user typed it. That is the documented reason invalid data appears even though validation rules are in place.
 
-**Why A is wrong.** This describes a narrower mechanism (an automated process's field update slipping past re-validation on a resave) that only explains invalid values arriving through that one specific automation pathway. It doesn't account for invalid data appearing through ordinary user saves or any other channel, and unlike a deactivated rule, it doesn't uniformly explain every instance of the problem.
+**Why B is wrong.** Catching data-entry mistakes is exactly what a validation rule is for. If the rule is active and correctly written, a user's incorrect entry is rejected on save, so user error alone doesn't explain invalid data getting through.
 
-**Why B is wrong.** This gets it backwards. A validation rule's entire purpose is to catch and block exactly this kind of data-entry mistake — if the rule is active and correctly written, user error alone can't produce invalid data, because the save would simply be rejected.
+**Why C is wrong.** An inactive rule doesn't enforce anything, but the scenario says the validation rules are in place, which points to rules that exist and are working. The documented gap, automated updates that skip validation, explains the problem without assuming the rule was switched off.
 
-**Why D is wrong.** Standard Reports are read-only — they display existing data and have no mechanism to write or update field values on records, so they can't be a source of new invalid data at all.`,
+**Why D is wrong.** Standard reports are read-only. They display existing data and have no way to write or update field values on records, so they can't be a source of invalid data.`,
       sources:[
-        {l:"Activate Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=fields_activating_field_validation_rules.htm&type=5"},
-        {l:"Managing Validation Rules — Salesforce Help", u:"https://help.salesforce.com/s/articleView?id=platform.fields_managing_field_validation.htm&language=en_US&type=5"}
+        {l:"Validation Rule Considerations — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=fields_validation_considerations.htm&type=0"},
+        {l:"Considerations for Field Update Actions — Salesforce Help", u:"https://help.salesforce.com/s/articleView?language=en_US&id=workflow_field_update_considerations.htm&type=5"}
       ]
     },
     {
@@ -4915,7 +4909,16 @@
   // A shuffled permutation of DATA's indices — the order tickets are displayed
   // in. Pass a subset of indices to shuffle just that subset (used to build a
   // single-section queue); omit it for the full deck.
-  const buildOrder = (indices) => shuffleArray(indices || DATA.map((_, i) => i));
+  // Shuffle mode. On deals tickets in a random order; off keeps them in the
+  // bank's own order (question 1, 2, 3, ...), so a ticket's position matches
+  // its question number in the full deck. It always starts On when the page
+  // loads and is deliberately NOT saved to localStorage.
+  let shuffleOn = true;
+
+  const buildOrder = (indices) => {
+    const base = indices || DATA.map((_, i) => i);
+    return shuffleOn ? shuffleArray(base) : [...base].sort((a, b) => a - b);
+  };
 
   // Topics as they first appear in DATA — just the raw discovery order,
   // reordered below into the exam guide's own section order.
@@ -5050,10 +5053,21 @@
         && new Set(saved.order).size === saved.order.length
         && saved.order.every((v) => Number.isInteger(v) && v >= 0 && v < DATA.length);
 
-      const order = validOrder ? saved.order : buildOrder();
+      let order = validOrder ? saved.order : buildOrder();
+      let index = Math.max(0, Math.min(order.length - 1, Number(saved.index) || 0));
+
+      // Shuffle always starts On, so a queue that was saved while it was Off
+      // (still in ascending question order) is reshuffled on load. The
+      // ticket that was on screen stays on screen at its new position.
+      const savedInBankOrder = order.length > 1 && order.every((v, k) => k === 0 || order[k - 1] < v);
+      if (savedInBankOrder) {
+        const currentQi = order[index];
+        order = buildOrder(order);
+        index = Math.max(0, order.indexOf(currentQi));
+      }
 
       return {
-        index: Math.max(0, Math.min(order.length - 1, Number(saved.index) || 0)),
+        index,
         finished: !!saved.finished,
         section,
         order,
@@ -5152,6 +5166,28 @@
     saveState();
     renderAll();
     document.getElementById("ticket")?.scrollIntoView({behavior:"smooth", block:"start"});
+  };
+
+  // Flips shuffle mode and rebuilds the current queue (the full deck, a
+  // single section, or a review round) in the new order. Answers are kept,
+  // and the ticket currently on screen stays on screen at its new position.
+  const renderShuffleToggle = () => {
+    const input = document.getElementById("shuffleToggle");
+    const stateText = document.getElementById("shuffleToggleState");
+    if (input) input.checked = shuffleOn;
+    if (stateText) stateText.textContent = shuffleOn ? "On" : "Off";
+  };
+
+  const toggleShuffle = (on) => {
+    clearUnderSelectNotice();
+    shuffleOn = !!on;
+    const currentQi = state.order[state.index];
+    state.order = buildOrder(state.order);
+    const newPos = state.order.indexOf(currentQi);
+    state.index = newPos === -1 ? 0 : newPos;
+    saveState();
+    renderShuffleToggle();
+    renderAll();
   };
 
   const esc = (s) => s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
@@ -5532,6 +5568,8 @@
 
   populateSectionPicker();
   els.sectionSelect?.addEventListener("change", (e) => selectSection(e.target.value));
+  renderShuffleToggle();
+  document.getElementById("shuffleToggle")?.addEventListener("change", (e) => toggleShuffle(e.target.checked));
 
   document.getElementById("resetAll").addEventListener("click", () => {
     clearUnderSelectNotice();
