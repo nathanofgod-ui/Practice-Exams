@@ -29,6 +29,12 @@
   <div class="section-picker" id="sectionPicker">
     <label class="section-picker-label mono" for="sectionSelect">Practice section</label>
     <select class="section-picker-select mono" id="sectionSelect"></select>
+    <label class="sw-toggle" for="shuffleToggle" title="Shuffle the question order">
+      <span class="sw-toggle-label mono">Shuffle</span>
+      <input type="checkbox" class="sw-toggle-input" id="shuffleToggle" role="switch" checked>
+      <span class="sw-toggle-track" aria-hidden="true"><span class="sw-toggle-knob"></span></span>
+      <span class="sw-toggle-state mono" id="shuffleToggleState" aria-hidden="true">On</span>
+    </label>
   </div>
 
   <div class="stats" id="stats"></div>
