@@ -243,6 +243,71 @@
     outline-offset:2px;
   }
 
+  /* Shuffle switch, modeled on the SLDS / Lightning (LWC) checkbox toggle. */
+  .sw-toggle{
+    --sw-on:#0176D3;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin-left:4px;
+    cursor:pointer;
+    user-select:none;
+  }
+  .sw-toggle-label{
+    font-size:11px;
+    letter-spacing:0.09em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .sw-toggle-input{
+    position:absolute;
+    width:1px; height:1px;
+    margin:-1px; padding:0;
+    overflow:hidden;
+    clip:rect(0 0 0 0);
+    border:0;
+  }
+  .sw-toggle-track{
+    position:relative;
+    flex:none;
+    width:48px;
+    height:24px;
+    border-radius:15rem;
+    background:#C9C9C9;
+    border:1px solid #C9C9C9;
+    transition:background 0.2s ease, border-color 0.2s ease;
+  }
+  .sw-toggle-knob{
+    position:absolute;
+    top:2px; left:2px;
+    width:18px; height:18px;
+    border-radius:50%;
+    background:#FFFFFF;
+    box-shadow:0 1px 2px rgba(0,0,0,0.3);
+    transition:transform 0.2s ease;
+  }
+  .sw-toggle:hover .sw-toggle-track{ background:#AEAEAE; border-color:#AEAEAE; }
+  .sw-toggle-input:checked + .sw-toggle-track{
+    background:var(--sw-on);
+    border-color:var(--sw-on);
+  }
+  .sw-toggle:hover .sw-toggle-input:checked + .sw-toggle-track{
+    background:#014486;
+    border-color:#014486;
+  }
+  .sw-toggle-input:checked + .sw-toggle-track .sw-toggle-knob{
+    transform:translateX(24px);
+  }
+  .sw-toggle-input:focus-visible + .sw-toggle-track{
+    box-shadow:0 0 0 3px rgba(1,118,211,0.5);
+  }
+  .sw-toggle-state{
+    min-width:2.2em;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+  }
+
   /* ---------- stats bar ---------- */
   .stats{
     display:flex;
